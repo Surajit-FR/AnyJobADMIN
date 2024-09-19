@@ -1,0 +1,68 @@
+[
+    {
+        "title": "Customers",
+        "value": "54,214",
+        "badge": {
+            "text": "2,541",
+            "color": "bg-success",
+            "icon": "ri-arrow-up-line"
+        },
+        "icon": "ri-group-line",
+        "iconBg": "text-bg-success"
+    },
+    {
+        "title": "Orders",
+        "value": "7,543",
+        "badge": {
+            "text": "1.08%",
+            "color": "bg-danger",
+            "icon": "ri-arrow-down-line"
+        },
+        "icon": "ri-shopping-basket-2-line",
+        "iconBg": "text-bg-info"
+    },
+    {
+        "title": "Revenue",
+        "value": "$9,254",
+        "badge": {
+            "text": "7.00%",
+            "color": "bg-danger",
+            "icon": "ri-arrow-down-line"
+        },
+        "icon": "ri-money-dollar-circle-line",
+        "iconBg": "text-bg-danger"
+    },
+    {
+        "title": "Growth",
+        "value": "+ 20.6%",
+        "badge": {
+            "text": "4.87%",
+            "color": "bg-success",
+            "icon": "ri-arrow-up-line"
+        },
+        "icon": "ri-donut-chart-line",
+        "iconBg": "text-bg-primary"
+    },
+    {
+        "title": "Conversation",
+        "value": "9.62%",
+        "badge": {
+            "text": "3.07%",
+            "color": "bg-success",
+            "icon": "ri-arrow-up-line"
+        },
+        "icon": "ri-pulse-line",
+        "iconBg": "text-bg-warning"
+    },
+    {
+        "title": "Balance",
+        "value": "$168.5k",
+        "badge": {
+            "text": "18.34%",
+            "color": "bg-success",
+            "icon": "ri-arrow-up-line"
+        },
+        "icon": "ri-wallet-3-line",
+        "iconBg": "text-bg-dark"
+    }
+]

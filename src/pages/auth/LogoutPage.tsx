@@ -1,0 +1,78 @@
+import { Link } from "react-router-dom";
+import CommonSection from "./CommonSection";
+import AuthFooter from "./AuthFooter";
+
+const LogoutPage = (): JSX.Element => {
+    return (
+        <>
+            {/* CommonSection */}
+            <CommonSection />
+
+            <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-xxl-4 col-lg-5">
+                            <div className="card">
+
+                                {/* <!-- Logo --> */}
+                                <div className="card-header pt-4 text-center">
+                                    <div className="auth-brand mb-0">
+                                        <Link to="/dashboard" className="logo-dark">
+                                            <span><img src="/assets/images/logo-dark.png" alt="dark logo" height="28" /></span>
+                                        </Link>
+                                        <Link to="/dashboard" className="logo-light">
+                                            <span><img src="/assets/images/logo.png" alt="logo" height="28" /></span>
+                                        </Link>
+                                    </div>
+                                </div>
+
+                                <div className="card-body p-4">
+
+                                    <div className="text-center w-75 m-auto">
+                                        <h4 className="text-dark-50 text-center mt-0">See You Again !</h4>
+                                        <p className="text-muted mb-4">You are now successfully sign out.</p>
+                                    </div>
+
+                                    <div className="logout-icon m-auto">
+                                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                            viewBox="0 0 161.2 161.2" enable-background="new 0 0 161.2 161.2" xmlSpace="preserve">
+                                            <path className="path" fill="none" stroke="#0acf97" stroke-miterlimit="10" d="M425.9,52.1L425.9,52.1c-2.2-2.6-6-2.6-8.3-0.1l-42.7,46.2l-14.3-16.4
+                                            c-2.3-2.7-6.2-2.7-8.6-0.1c-1.9,2.1-2,5.6-0.1,7.7l17.6,20.3c0.2,0.3,0.4,0.6,0.6,0.9c1.8,2,4.4,2.5,6.6,1.4c0.7-0.3,1.4-0.8,2-1.5
+                                            c0.3-0.3,0.5-0.6,0.7-0.9l46.3-50.1C427.7,57.5,427.7,54.2,425.9,52.1z"/>
+                                            <circle className="path" fill="none" stroke="#0acf97" stroke-width="4" stroke-miterlimit="10" cx="80.6" cy="80.6" r="62.1" />
+                                            <polyline className="path" fill="none" stroke="#0acf97" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="113,52.8
+                                            74.1,108.4 48.2,86.4 "/>
+
+                                            <circle className="spin" fill="none" stroke="#0acf97" stroke-width="4" stroke-miterlimit="10" stroke-dasharray="12.2175,12.2175" cx="80.6" cy="80.6" r="73.9" />
+                                        </svg>
+                                    </div>
+                                    {/* <!-- end logout-icon--> */}
+
+                                </div>
+                                {/* <!-- end card-body--> */}
+                            </div>
+                            {/* <!-- end card--> */}
+
+                            <div className="row mt-3">
+                                <div className="col-12 text-center">
+                                    <p className="text-white-50">Back to <Link to="/login" className="text-white ms-1 link-offset-3 text-decoration-underline"><b>Log In</b></Link></p>
+                                </div>
+                                {/* <!-- end col --> */}
+                            </div>
+                            {/* <!-- end row --> */}
+
+                        </div>
+                        {/* <!-- end col --> */}
+                    </div>
+                    {/* <!-- end row --> */}
+                </div>
+                {/* <!-- end container --> */}
+            </div>
+
+            {/* AuthFooter */}
+            <AuthFooter />
+        </>
+    );
+};
+
+export default LogoutPage;
