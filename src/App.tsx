@@ -14,15 +14,26 @@ const App = (): JSX.Element => {
       <PreLoader loading={LOADING} />
 
       <div className="wrapper">
+        {/* Topbar */}
         <TopNavbar />
+        {/* Left Sidebar */}
         <SideNavbar />
 
+        {/* Start Page Content */}
         <div className="content-page">
-          <AllRoutes />
-          <Footer />
+          <div className="content">
+            {/* Start Content */}
+            <div className="container-fluid">
+              <AllRoutes />
+
+              {/* Footer */}
+              <Footer />
+            </div>
+          </div>
         </div>
       </div>
 
+      {/* ThemeSetting */}
       <ThemeSetting />
     </>
   );

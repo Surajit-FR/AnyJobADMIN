@@ -13,20 +13,20 @@ const SideNavbar = (): JSX.Element => {
                 {/* <!-- Brand Logo Light --> */}
                 <Link to="/dashboard" className="logo logo-light">
                     <span className="logo-lg">
-                        <img src="assets/images/logo.png" alt="logo" />
+                        <img src="/assets/images/AnyJobLogoW.png" alt="logo" />
                     </span>
                     <span className="logo-sm">
-                        <img src="assets/images/logo-sm.png" alt="small logo" />
+                        <img src="/assets/images/faviconW.png" alt="small logo" />
                     </span>
                 </Link>
 
                 {/* <!-- Brand Logo Dark --> */}
                 <Link to="/dashboard" className="logo logo-dark">
                     <span className="logo-lg">
-                        <img src="assets/images/logo-dark.png" alt="dark logo" />
+                        <img src="/assets/images/AnyJobLogo.png" alt="logo" />
                     </span>
                     <span className="logo-sm">
-                        <img src="assets/images/logo-sm.png" alt="small logo" />
+                        <img src="/assets/images/favicon.png" alt="small logo" />
                     </span>
                 </Link>
 
@@ -44,7 +44,7 @@ const SideNavbar = (): JSX.Element => {
                 <div className="h-100" id="leftside-menu-container" data-simplebar>
                     {/* <!-- Leftbar User --> */}
                     <div className="leftbar-user p-3 text-white">
-                        <Link to="pages-profile.html" className="d-flex align-items-center text-reset">
+                        <Link to="/profile" className="d-flex align-items-center text-reset">
                             <div className="flex-shrink-0">
                                 <img src="assets/images/users/avatar-1.jpg" alt="user-image" height="42"
                                     className="rounded-circle shadow" />

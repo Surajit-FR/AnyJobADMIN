@@ -17,64 +17,60 @@ const Dashboard = (): JSX.Element => {
 
     return (
         <>
-            <div className="content">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-12">
-                            <div className="page-title-box justify-content-between d-flex align-items-lg-center flex-lg-row flex-column">
-                                <h4 className="page-title">Dashboard</h4>
-                                <form className="d-flex mb-xxl-0 mb-2">
-                                    <div className="input-group">
-                                        <DatePicker
-                                            selected={startDate}
-                                            onChange={(date: SetStateAction<Date | null>) => setStartDate(date)}
-                                            className="form-control shadow border-0"
-                                            id="dash-daterange"
-                                        />
-                                        <span className="input-group-text bg-primary border-primary text-white">
-                                            <i className="ri-calendar-todo-fill fs-13"></i>
-                                        </span>
-                                    </div>
-                                    <Link to="#" className="btn btn-primary ms-2" onClick={() => window.location.reload()}>
-                                        <i className="ri-refresh-line"></i>
-                                    </Link>
-                                </form>
+            <div className="row">
+                <div className="col-12">
+                    <div className="page-title-box justify-content-between d-flex align-items-lg-center flex-lg-row flex-column">
+                        <h4 className="page-title">Dashboard</h4>
+                        <form className="d-flex mb-xxl-0 mb-2">
+                            <div className="input-group">
+                                <DatePicker
+                                    selected={startDate}
+                                    onChange={(date: SetStateAction<Date | null>) => setStartDate(date)}
+                                    className="form-control shadow border-0"
+                                    id="dash-daterange"
+                                />
+                                <span className="input-group-text bg-primary border-primary text-white">
+                                    <i className="ri-calendar-todo-fill fs-13"></i>
+                                </span>
                             </div>
-                        </div>
-                    </div>
-
-                    {/* DashboardCardData Section */}
-                    <DashboardCardData
-                        cardData={cardData}
-                    />
-
-                    <div className="row">
-                        {/* TotalSalesChart Section */}
-                        <TotalSalesChart colors={colors} />
-
-                        {/* RevenueChart Section */}
-                        <RevenueChart colors={colors} />
-                    </div>
-
-                    <div className="row">
-                        {/* CountryChart Section */}
-                        <CountryChart />
-
-                        {/* TopSellingProducts Section */}
-                        <TopSellingProducts />
-                    </div>
-
-                    <div className="row">
-                        {/* ChannelsData Section */}
-                        <ChannelsData />
-
-                        {/* SocialMediaTrafficData Section */}
-                        <SocialMediaTrafficData />
-
-                        {/* EngagementOverview Section */}
-                        <EngagementOverview />
+                            <Link to="#" className="btn btn-primary ms-2" onClick={() => window.location.reload()}>
+                                <i className="ri-refresh-line"></i>
+                            </Link>
+                        </form>
                     </div>
                 </div>
+            </div>
+
+            {/* DashboardCardData Section */}
+            <DashboardCardData
+                cardData={cardData}
+            />
+
+            <div className="row">
+                {/* TotalSalesChart Section */}
+                <TotalSalesChart colors={colors} />
+
+                {/* RevenueChart Section */}
+                <RevenueChart colors={colors} />
+            </div>
+
+            <div className="row">
+                {/* CountryChart Section */}
+                <CountryChart />
+
+                {/* TopSellingProducts Section */}
+                <TopSellingProducts />
+            </div>
+
+            <div className="row">
+                {/* ChannelsData Section */}
+                <ChannelsData />
+
+                {/* SocialMediaTrafficData Section */}
+                <SocialMediaTrafficData />
+
+                {/* EngagementOverview Section */}
+                <EngagementOverview />
             </div>
         </>
     );

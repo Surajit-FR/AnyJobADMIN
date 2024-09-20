@@ -3,7 +3,7 @@ const AuthFooter = (): JSX.Element => {
         <>
             <footer className="footer footer-alt">
                 <span className="text-white-50">
-                    <script>{new Date().getFullYear()}</script> © Jidox - Coderthemes.com
+                    <script>{new Date().getFullYear()}</script> © AnyJob - anyjob.com
                 </span>
             </footer>
         </>

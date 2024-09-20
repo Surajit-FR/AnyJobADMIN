@@ -17,37 +17,25 @@ const UserDropdown = (): JSX.Element => {
                 </Link>
                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
                     {/* <!-- item--> */}
-                    <div className=" dropdown-header noti-title">
+                    <div className="dropdown-header noti-title">
                         <h6 className="text-overflow m-0">Welcome !</h6>
                     </div>
 
                     {/* <!-- item--> */}
-                    <Link to="pages-profile.html" className="dropdown-item">
+                    <Link to="/profile" className="dropdown-item">
                         <i className="ri-account-circle-fill align-middle me-1"></i>
                         <span>My Account</span>
                     </Link>
 
                     {/* <!-- item--> */}
-                    <Link to="pages-profile.html" className="dropdown-item">
+                    <Link className="dropdown-item" data-bs-toggle="offcanvas" to="#theme-settings-offcanvas">
                         <i className="ri-settings-4-fill align-middle me-1"></i>
                         <span>Settings</span>
                     </Link>
 
                     {/* <!-- item--> */}
-                    <Link to="pages-faq.html" className="dropdown-item">
-                        <i className="ri-customer-service-2-fill align-middle me-1"></i>
-                        <span>Support</span>
-                    </Link>
-
-                    {/* <!-- item--> */}
-                    <Link to="auth-lock-screen.html" className="dropdown-item">
-                        <i className="ri-lock-password-fill align-middle me-1"></i>
-                        <span>Lock Screen</span>
-                    </Link>
-
-                    {/* <!-- item--> */}
                     <Link to="/logout-page" className="dropdown-item">
-                        <i className="ri-logout-box-fill align-middle me-1"></i>
+                        <i className="ri-logout-circle-line align-middle me-1"></i>
                         <span>Logout</span>
                     </Link>
                 </div>

@@ -9,6 +9,7 @@ import Login from './pages/auth/Login';
 import RegisterPage from './pages/auth/RegisterPage';
 import RecoveryPassword from './pages/auth/RecoveryPassword';
 import LogoutPage from './pages/auth/LogoutPage';
+import MaintenancePage from './pages/others/MaintenancePage';
 
 // Define default settings
 const defaultSettings: DefaultSettings = {
@@ -47,6 +48,7 @@ root.render(
       <Route path='/register' element={<RegisterPage />} />
       <Route path='/recovery-password' element={<RecoveryPassword />} />
       <Route path='/logout-page' element={<LogoutPage />} />
+      <Route path='/maintenance' element={<MaintenancePage />} />
     </Routes>
   </Router>
 );

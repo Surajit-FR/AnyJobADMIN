@@ -11,6 +11,10 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "typeRoots": [
+      "./types", // Your custom types folder
+      "./node_modules/@types"
+    ],
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
@@ -21,6 +25,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+    "types" // Include your types folder
   ]
 }

@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { toggleHtmlAttribute, toggleHtmlClass } from "../../utils/utility";
 import useThemeSettings from "../../hooks/useThemeSettings";
-import SearchBar from "./topnavbar/SearchBar";
-import LanguageDropdown from "./topnavbar/LanguageDropdown";
-import NotificationDropdown from "./topnavbar/NotificationDropdown";
-import ApplicationDropdown from "./topnavbar/ApplicationDropdown";
-import SearchSuggestionSection from "./topnavbar/SearchSuggestionSection";
+// import SearchBar from "./topnavbar/SearchBar";
+// import LanguageDropdown from "./topnavbar/LanguageDropdown";
+// import NotificationDropdown from "./topnavbar/NotificationDropdown";
+// import ApplicationDropdown from "./topnavbar/ApplicationDropdown";
+// import SearchSuggestionSection from "./topnavbar/SearchSuggestionSection";
 import SettingsSection from "./topnavbar/SettingsSection";
 import ThemeSettings from "./topnavbar/ThemeSettings";
 import FullScreenSettings from "./topnavbar/FullScreenSettings";
@@ -36,20 +36,20 @@ const TopNavbar = (): JSX.Element => {
                             {/* <!-- Logo light --> */}
                             <Link to="/dashboard" className="logo-light">
                                 <span className="logo-lg">
-                                    <img src="/assets/images/logo.png" alt="logo" />
+                                    <img src="/assets/images/AnyJobLogoW.png" alt="logo" />
                                 </span>
                                 <span className="logo-sm">
-                                    <img src="/assets/images/logo-sm.png" alt="small logo" />
+                                    <img src="/assets/images/faviconW.png" alt="small logo" />
                                 </span>
                             </Link>
 
                             {/* <!-- Logo Dark --> */}
                             <Link to="/dashboard" className="logo-dark">
                                 <span className="logo-lg">
-                                    <img src="/assets/images/logo-dark.png" alt="dark logo" />
+                                    <img src="/assets/images/AnyJobLogo.png" alt="logo" />
                                 </span>
                                 <span className="logo-sm">
-                                    <img src="/assets/images/logo-sm.png" alt="small logo" />
+                                    <img src="/assets/images/favicon.png" alt="small logo" />
                                 </span>
                             </Link>
                         </div>
@@ -69,21 +69,21 @@ const TopNavbar = (): JSX.Element => {
                         </button>
 
                         {/* <!-- Topbar Search Form --> */}
-                        <SearchSuggestionSection />
+                        {/* <SearchSuggestionSection /> */}
                     </div>
 
                     <ul className="topbar-menu d-flex align-items-center gap-3">
                         {/* SearchBar Section */}
-                        <SearchBar />
+                        {/* <SearchBar /> */}
 
                         {/* LanguageDropdown Section */}
-                        <LanguageDropdown />
+                        {/* <LanguageDropdown /> */}
 
                         {/* NotificationDropdown Section */}
-                        <NotificationDropdown />
+                        {/* <NotificationDropdown /> */}
 
                         {/* ApplicationDropdown Section */}
-                        <ApplicationDropdown />
+                        {/* <ApplicationDropdown /> */}
 
                         {/* Settings Section */}
                         <SettingsSection />
