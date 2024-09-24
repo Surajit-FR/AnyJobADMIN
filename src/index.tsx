@@ -19,7 +19,7 @@ const defaultSettings: DefaultSettings = {
   'data-topbar-color': 'light',
   'data-layout-position': 'fixed',
   'data-sidenav-size': 'default',
-  'data-sidenav-user': 'true'
+  'data-sidenav-user': 'flase'
 };
 
 // Load settings from sessionStorage

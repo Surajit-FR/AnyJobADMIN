@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import CommonSection from './CommonSection';
 import AuthFooter from './AuthFooter';
+import AuthPageLogoSection from './AuthPageLogoSection';
 
 const RecoveryPassword = (): JSX.Element => {
     return (
@@ -13,17 +14,9 @@ const RecoveryPassword = (): JSX.Element => {
                     <div className="row justify-content-center">
                         <div className="col-xxl-4 col-lg-5">
                             <div className="card">
+
                                 {/* <!-- Logo --> */}
-                                <div className="card-header pt-4 text-center">
-                                    <div className="auth-brand mb-0">
-                                        <Link to="/dashboard" className="logo-dark">
-                                            <span><img src="/assets/images/logo-dark.png" alt="dark logo" height="28" /></span>
-                                        </Link>
-                                        <Link to="/dashboard" className="logo-light">
-                                            <span><img src="/assets/images/logo.png" alt="logo" height="28" /></span>
-                                        </Link>
-                                    </div>
-                                </div>
+                                <AuthPageLogoSection />
 
                                 <div className="card-body p-4">
 

@@ -9,7 +9,6 @@ import "datatables.net-buttons-bs5";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
-    { label: "List", link: "#" },
     { label: "Service Provider List" }
 ];
 

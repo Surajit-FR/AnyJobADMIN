@@ -12,51 +12,6 @@
                 "items": []
             },
             {
-                "to": "/sale-sheet",
-                "icon": "ri-file-copy-2-fill",
-                "label": "Sale Sheet",
-                "isSubmenu": false,
-                "items": []
-            }
-        ]
-    },
-    {
-        "title": "Custom",
-        "icon": "",
-        "isSubmenu": false,
-        "items": [
-            {
-                "title": "Lists",
-                "to": "#",
-                "icon": "ri-list-check-2",
-                "label": "",
-                "isSubmenu": true,
-                "items": [
-                    {
-                        "to": "/user-list",
-                        "label": "User List",
-                        "icon": "",
-                        "isSubmenu": false,
-                        "items": []
-                    },
-                    {
-                        "to": "/service-provider-list",
-                        "icon": "",
-                        "label": "Service Provider List",
-                        "isSubmenu": false,
-                        "items": []
-                    },
-                    {
-                        "to": "/job-list",
-                        "icon": "",
-                        "label": "Job List",
-                        "isSubmenu": false,
-                        "items": []
-                    }
-                ]
-            },
-            {
-                "title": "",
                 "to": "/manage-role",
                 "icon": " ri-admin-fill",
                 "label": "Manage Role",
@@ -64,7 +19,6 @@
                 "items": []
             },
             {
-                "title": "",
                 "to": "/manage-user",
                 "icon": "ri-user-settings-fill",
                 "label": "Manage User",
@@ -72,27 +26,67 @@
                 "items": []
             },
             {
-                "title": "Service",
-                "to": "#",
+                "to": "/registered-customer-list",
+                "label": "Registered Customer List",
+                "icon": "ri-contacts-fill",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/service-provider-list",
+                "icon": "ri-team-fill",
+                "label": "Service Provider List",
+                "isSubmenu": false,
+                "items": []
+            }
+        ]
+    },
+    {
+        "title": "Service",
+        "icon": "",
+        "isSubmenu": false,
+        "items": [
+            {
+                "to": "/service-request-list",
+                "icon": "ri-list-check-2",
+                "label": "Service Request List",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/service-category",
+                "label": "Category",
+                "icon": "ri-layout-grid-fill",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/service-sub-category",
+                "icon": "ri-grid-fill",
+                "label": "Sub Category",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/manage-service-request-que",
+                "icon": " ri-stack-fill",
+                "label": "Manage Que",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/sale-sheet",
+                "icon": "ri-file-copy-2-fill",
+                "label": "Sale Sheet",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/system-ip-logs",
                 "icon": "ri-pages-fill",
-                "label": "",
-                "isSubmenu": true,
-                "items": [
-                    {
-                        "to": "/service-category",
-                        "label": "Category",
-                        "icon": "",
-                        "isSubmenu": false,
-                        "items": []
-                    },
-                    {
-                        "to": "/service-sub-category",
-                        "icon": "",
-                        "label": "Sub Category",
-                        "isSubmenu": false,
-                        "items": []
-                    }
-                ]
+                "label": "IP Address Logs",
+                "isSubmenu": false,
+                "items": []
             }
         ]
     }
