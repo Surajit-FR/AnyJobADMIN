@@ -1,103 +1,60 @@
-export type DerivedQuestion = {
-    option: string;
-    question: string;
-    options: { [key: string]: string }; // Change to an object
-    derivedQuestions: DerivedQuestion[];
-};
+import { UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { SubCategory } from "../../../../types/common";
 
-const DerivedQuestionComponent = ({
-    derivedQuestion,
-    questionIndex,
-    derivedQuestionIndex,
-    addDerivedQuestion,
-    handleDerivedQuestionInputChange,
-}: {
-    derivedQuestion: DerivedQuestion;
-    questionIndex: number;
-    derivedQuestionIndex: number;
-    addDerivedQuestion: (qIndex: number, optionIndex?: number) => void;
-    handleDerivedQuestionInputChange: (qIndex: number, field: string, value: any) => void;
-}) => {
-    const handleDerivedOptionChange = (index: number, value: string) => {
-        const updatedDerivedQuestion = { ...derivedQuestion };
-        updatedDerivedQuestion.options[index] = value;
+type DerivedQuestionProps = {
+    qIndex: number;
+    dIndex: number;
+    setValue: UseFormSetValue<SubCategory>;
+    watch: UseFormWatch<SubCategory>;
+    register: UseFormRegister<SubCategory>;
+}
 
-        handleDerivedQuestionInputChange(questionIndex, `derivedQuestions[${derivedQuestionIndex}]`, updatedDerivedQuestion);
+const DerivedQuestionComponent = ({ qIndex, dIndex, setValue, watch, register }: DerivedQuestionProps) => {
+    const addDerivedOption = () => {
+        const derivedOptionKey = prompt("Enter derived question option key (e.g., A, B):");
+        const derivedOptionLabel = prompt("Enter derived question option label:");
+        if (derivedOptionKey && derivedOptionLabel) {
+            const derivedOptions = { ...watch(`questionArray.${qIndex}.derivedQuestions.${dIndex}.options`) };
+            derivedOptions[derivedOptionKey] = derivedOptionLabel;
+            setValue(`questionArray.${qIndex}.derivedQuestions.${dIndex}.options`, derivedOptions);
+        }
     };
 
-    const addDerivedOption = () => {
-        const updatedDerivedQuestion = { ...derivedQuestion };
-        const newOptionKey = `Option ${updatedDerivedQuestion.options.length + 1}`; // Create a new option key
-        updatedDerivedQuestion.options[newOptionKey] = ''; // Initialize with an empty string
-
-        handleDerivedQuestionInputChange(questionIndex, `derivedQuestions[${derivedQuestionIndex}]`, updatedDerivedQuestion);
+    const removeDerivedOption = (optionKey: string) => {
+        const derivedOptions = { ...watch(`questionArray.${qIndex}.derivedQuestions.${dIndex}.options`) };
+        delete derivedOptions[optionKey];
+        setValue(`questionArray.${qIndex}.derivedQuestions.${dIndex}.options`, derivedOptions);
     };
 
     return (
         <>
-            <div className="mb-3">
-                <label className="form-label">Derived Question</label>
-                <input
-                    type="text"
-                    className="form-control mb-2"
-                    value={derivedQuestion.question}
-                    onChange={(e) =>
-                        handleDerivedQuestionInputChange(
-                            questionIndex,
-                            `derivedQuestions[${derivedQuestionIndex}].question`,
-                            e.target.value
-                        )
-                    }
-                    placeholder="Enter Derived Question"
-                />
-
-                <div className="mb-2">
-                    <label className="form-label me-2">Options</label>
-                    {Object.entries(derivedQuestion.options).map(([key, option], oIndex) => (
-                        <div key={oIndex} className="form-check">
-                            <input
-                                type="checkbox"
-                                className="form-check-input"
-                            />
-                            <input
-                                type="text"
-                                className="form-control mb-2"
-                                value={option}
-                                placeholder={`Option ${key}`} // Use the key for the placeholder
-                                onChange={(e) => handleDerivedOptionChange(oIndex, e.target.value)}
-                            />
-                        </div>
-                    ))}
+            <div className="mt-4" style={{ marginLeft: "20px" }}>
+                <h5>Derived Question for Option {watch(`questionArray.${qIndex}.derivedQuestions.${dIndex}.option`)}</h5>
+                <div className="d-flex">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Derived Question"
+                        {...register(`questionArray.${qIndex}.derivedQuestions.${dIndex}.question`)}
+                        style={{ width: "50%", marginRight: "20px" }}
+                    />
                     <button
-                        className="btn btn-sm btn-outline-primary"
+                        type="button"
+                        className="btn btn-sm btn-outline-info me-2"
                         onClick={addDerivedOption}
                     >
-                        Add Option
+                        Add Derived Option
                     </button>
                 </div>
 
-                <button
-                    className="btn btn-sm btn-outline-secondary"
-                    onClick={() => addDerivedQuestion(questionIndex, derivedQuestionIndex)}
-                >
-                    Add Derived Question
-                </button>
-
-                {/* Render nested derived questions recursively */}
-                {derivedQuestion.derivedQuestions && (
-                    <div className="ms-4">
-                        {derivedQuestion.derivedQuestions.map((nestedDerived, nIndex) => (
-                            <DerivedQuestionComponent
-                                key={nIndex}
-                                derivedQuestion={nestedDerived}
-                                questionIndex={questionIndex}
-                                derivedQuestionIndex={nIndex}
-                                addDerivedQuestion={addDerivedQuestion}
-                                handleDerivedQuestionInputChange={handleDerivedQuestionInputChange}
-                            />
-                        ))}
+                {Object.entries(watch(`questionArray.${qIndex}.derivedQuestions.${dIndex}.options`)).map(([optionKey]) => (
+                    <div className="mt-2" key={optionKey}>
+                        <span>{optionKey}: {watch(`questionArray.${qIndex}.derivedQuestions.${dIndex}.options.${optionKey}`)}</span>
+                        <button type="button" className="btn btn-sm btn-outline-danger mx-2" onClick={() => removeDerivedOption(optionKey)}>
+                            <i className="ri-delete-bin-5-fill"></i>
+                        </button>
                     </div>
-                )}
+                ))}
             </div>
         </>
     );

@@ -11,6 +11,7 @@ import CategoryPage from '../pages/others/CategoryPage';
 import SubCategoryPage from '../pages/others/SubCategoryPage';
 import ManageQue from '../pages/others/ManageQue';
 import IPAddressLog from '../pages/others/IPAddressLog';
+import AllSubCategory from '../components/core/subcategory/AllSubCategory';
 
 const AllRoutes = (): JSX.Element => {
     return (
@@ -25,6 +26,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/service-request-list' element={<ServiceRequestList />} />
                 <Route path='/service-category' element={<CategoryPage />} />
                 <Route path='/service-sub-category' element={<SubCategoryPage />} />
+                <Route path='/all-sub-category' element={<AllSubCategory />} />
                 <Route path='/manage-service-request-que' element={<ManageQue />} />
                 <Route path='/sale-sheet' element={<SaleSheet />} />
                 <Route path='/system-ip-logs' element={<IPAddressLog />} />
