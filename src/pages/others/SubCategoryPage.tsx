@@ -77,7 +77,7 @@ const SubCategoryPage = (): JSX.Element => {
                                 <Link className="btn btn-sm btn-dark" to="/all-sub-category">All Sub Category</Link>
                             </div>
                             <hr />
-                            
+
                             <form onSubmit={handleSubmit(handleFormSubmit)}>
                                 <div className="row">
                                     <div className="col-lg-4 pe-3 my-2">

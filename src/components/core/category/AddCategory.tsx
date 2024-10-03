@@ -1,11 +1,38 @@
+import { useForm } from "react-hook-form";
 import { useRef } from "react";
+import { TCategoryPayload } from "../../../../types/categoryTypes";
+import { AppDispatch } from "../../../store/Store";
+import { useDispatch } from "react-redux";
+import { addCategoryRequest } from "../../../store/reducers/CategoryReducers";
 
 const AddCategory = (): JSX.Element => {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<TCategoryPayload>();
+    const dispatch: AppDispatch = useDispatch();
+
+    const onSubmit = (data: TCategoryPayload): void => {
+        const formData = new FormData();
+
+        // Append category name
+        formData.append("name", data.name);
+
+        // Append the category image file if selected
+        if (data.categoryImage instanceof File) {
+            formData.append("categoryImage", data.categoryImage);
+        };
+
+        dispatch(addCategoryRequest({ data: formData, reset }));
+    };
 
     const handleDropzoneClick = (): void => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
+        }
+    };
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setValue("categoryImage", e.target.files[0]);
         }
     };
 
@@ -16,47 +43,61 @@ const AddCategory = (): JSX.Element => {
                     <div className="card-body">
                         <h4 className="header-title mb-3">Add Category</h4>
 
-                        <form className="needs-validation" noValidate>
+                        <form onSubmit={handleSubmit(onSubmit)} className="needs-validation" noValidate>
+                            {/* Category Name */}
                             <div className="position-relative mb-3">
-                                <label className="form-label" htmlFor="validationTooltip01">Category Name</label>
+                                <label className="form-label" htmlFor="name">
+                                    Category Name
+                                </label>
                                 <input
                                     type="text"
-                                    className="form-control"
-                                    id="validationTooltip01"
+                                    className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                                    id="name"
                                     placeholder="Enter Category Name"
-                                // style={{
-                                //     borderColor: "#fa9189"
-                                // }}
+                                    {...register("name", {
+                                        required: "Category Name is required",
+                                    })}
                                 />
-                                <div className="valid-tooltip"
-                                // style={{ display: "block" }}
+                                {errors.name && (
+                                    <div className="invalid-tooltip" style={{ display: "block" }}>
+                                        {errors.name.message}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Dropzone for File Upload */}
+                            <div className="form-group mb-3">
+                                <label className="form-label">Category Image</label>
+                                <div
+                                    className="dropzone text-center p-3 border rounded"
+                                    onClick={handleDropzoneClick}
+                                    style={{ cursor: "pointer" }}
                                 >
-                                    Looks good!
-                                </div>
-                                <div className="invalid-tooltip"
-                                // style={{ display: "block" }}
-                                >
-                                    Please enter first name.
+                                    <input
+                                        ref={fileInputRef}
+                                        type="file"
+                                        className="d-none"
+                                        onChange={handleImageUpload}
+                                    />
+                                    {watch("categoryImage") ? (
+                                        <img
+                                            src={URL.createObjectURL(watch("categoryImage") as File)}
+                                            alt="preview"
+                                            style={{ maxWidth: "100%", height: "auto" }}
+                                        />
+                                    ) : (
+                                        <div className="dz-message">
+                                            <i className="ri-upload-cloud-line h1"></i>
+                                            <h5>Click to upload or drag image here</h5>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
-                            <div className="position-relative mb-3 dropzone" onClick={handleDropzoneClick} style={{ cursor: 'pointer' }}>
-                                <input
-                                    ref={fileInputRef}
-                                    name="file"
-                                    type="file"
-                                    multiple
-                                />
-
-                                <div className="dz-message needsclick">
-                                    <i className="h1 text-muted ri-upload-cloud-2-line"></i>
-                                    <h3>Drop files here or click to upload.</h3>
-                                    <span className="text-muted fs-13">
-                                        (Please add a <strong>Category Image</strong>)
-                                    </span>
-                                </div>
-                            </div>
-                            <button className="btn btn-primary" type="submit">Submit</button>
+                            {/* Submit Button */}
+                            <button className="btn btn-lg btn-primary" type="submit">
+                                Create Category
+                            </button>
                         </form>
                     </div>
                 </div>

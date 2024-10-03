@@ -3,10 +3,15 @@ import SideNavbar from "./components/common/SideNavbar";
 import TopNavbar from "./components/common/TopNavbar";
 import AllRoutes from "./routes/AllRoutes";
 import ThemeSetting from "./components/common/topnavbar/ThemeSetting";
-import PreLoader from "./components/common/PreLoader";
+import PreLoader from "./components/PreLoader";
+import { useSelector } from "react-redux";
+import { RootState } from "./store/Store";
+import { isCategoryLoading } from "./utils/loading";
 
 const App = (): JSX.Element => {
-  const LOADING = false;
+  const category = useSelector((state: RootState) => state.categorySlice);
+  const LOADING = isCategoryLoading(category);
+  // console.log(LOADING);
 
   return (
     <>

@@ -1,3 +1,6 @@
+import { UserData } from "./authTypes";
+import { TCategory, TCategoryAPIResponse, TCategoryData } from "./categoryTypes";
+
 export type DefaultSettings = {
     'data-layout-mode': string;
     'data-bs-theme': string;
@@ -40,4 +43,24 @@ export type SubCategory = {
 export type Category = {
     id: string;
     name: string;
+};
+
+export type DataState = {
+    authData?: Partial<UserData>,
+    categoryData?: Partial<TCategoryAPIResponse>,
+    singleCategoryData?: Partial<TCategory>,
+    error: string | null,
+    type: string,
+};
+
+export type SagaGenerator<Y, R = void> = Generator<CallEffect<Y> | PutEffect | SelectEffect | TakeEffect, R, Y>;
+
+export type CommonResponse = {
+    statusCode: number,
+    message: string,
+    success: boolean,
+};
+
+export type ApiResponse<T> = CommonResponse & {
+    data?: T;
 };

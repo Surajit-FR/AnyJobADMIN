@@ -7,10 +7,16 @@ import { loadSettingsFromSessionStorage } from './utils/utility';
 import { DefaultSettings } from '../types/common';
 import "react-datepicker/dist/react-datepicker.css";
 import Login from './pages/auth/Login';
-import RegisterPage from './pages/auth/RegisterPage';
+// import RegisterPage from './pages/auth/RegisterPage';
 import RecoveryPassword from './pages/auth/RecoveryPassword';
 import LogoutPage from './pages/auth/LogoutPage';
 import MaintenancePage from './pages/others/MaintenancePage';
+import { Provider } from 'react-redux';
+import { store } from './store/Store';
+import { Toaster } from 'react-hot-toast';
+import Index from './pages/Index';
+import PrivateOne from './routes/private/PrivateOne';
+import PublicRouteAccess from './routes/PublicRouteAccess';
 
 // Define default settings
 const defaultSettings: DefaultSettings = {
@@ -42,16 +48,32 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <Router>
-    <Routes>
-      <Route path='*' element={<App />} />
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<RegisterPage />} />
-      <Route path='/recovery-password' element={<RecoveryPassword />} />
-      <Route path='/logout-page' element={<LogoutPage />} />
-      <Route path='/maintenance' element={<MaintenancePage />} />
-    </Routes>
-  </Router>
+  <Provider store={store}>
+    <Router>
+      <Routes>
+        <Route path='/' element={<Index />} />
+        <Route element={<PrivateOne />}>
+          <Route path='*' element={<App />} />
+        </Route>
+        <Route
+          path='/login'
+          element={
+            <PublicRouteAccess>
+              <Login />
+            </PublicRouteAccess>
+          } />
+        {/* <Route path='/register' element={<RegisterPage />} /> */}
+        <Route path='/recovery-password' element={<RecoveryPassword />} />
+        <Route path='/logout-page' element={<LogoutPage />} />
+        <Route path='/maintenance' element={<MaintenancePage />} />
+      </Routes>
+    </Router>
+    <Toaster
+      position='top-center'
+      reverseOrder={false}
+      gutter={10}
+    />
+  </Provider>
 );
 
 reportWebVitals();
