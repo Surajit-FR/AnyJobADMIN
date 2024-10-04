@@ -89,6 +89,8 @@ export const GETALLCATEGORY = () => API.get("/category");
 export const DELETECATEGORY = (categoryId: string | undefined) => API.delete(`/category/c/${categoryId}`);
 // Get Category
 export const GETCATEGORY = (categoryId: string | undefined) => API.get(`/category/c/${categoryId}`);
+// Update Category
+export const UPDATECATEGORY = (data: TCategoryPayload, categoryId: string | undefined) => API.put(`/category/c/${categoryId}`, data);
 
 // // Update cover image
 // export const UPDATECOVERIMAGE = (data: { coverImage: string }) => API.patch("/user/update-cover-image", data);

@@ -1,8 +1,8 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { ApiResponse, SagaGenerator } from "../../../types/common";
 import { TCategoryPayload, TCategoryAPIResponse, TCategory } from "../../../types/categoryTypes";
-import { ADDCATEGORY, DELETECATEGORY, GETALLCATEGORY, GETCATEGORY } from "../api/Api";
-import { addCategoryFailure, addCategorySuccess, getAllCategoryFailure, getAllCategoryRequest, getAllCategorySuccess, getCategoryFailure, getCategorySuccess } from "../reducers/CategoryReducers";
+import { ADDCATEGORY, DELETECATEGORY, GETALLCATEGORY, GETCATEGORY, UPDATECATEGORY } from "../api/Api";
+import { addCategoryFailure, addCategorySuccess, getAllCategoryFailure, getAllCategoryRequest, getAllCategorySuccess, getCategoryFailure, getCategorySuccess, updateCategoryFailure, updateCategorySuccess } from "../reducers/CategoryReducers";
 import { showToast } from "../../utils/Toast";
 
 
@@ -49,6 +49,23 @@ export function* getCategorySaga({ payload, type }: { payload: { categoryId: str
     };
 };
 
+// updateCategorySaga generator function
+export function* updateCategorySaga({ payload, type }: { payload: { data: TCategoryPayload, reset: () => void, categoryId: string }, type: string }): SagaGenerator<{ data: ApiResponse<TCategory> }> {
+    try {
+        const resp = yield call(UPDATECATEGORY, payload?.data, payload?.categoryId);
+        const result: ApiResponse<TCategory> = resp?.data;
+        if (result?.success) {
+            yield put(updateCategorySuccess(result));
+            payload?.reset();
+
+            showToast({ message: result?.message || 'Category updated successfully.', type: 'success', durationTime: 3500, position: "top-center" });
+            yield put(getAllCategoryRequest('categorySlice/getAllCategoryRequest'));
+        };
+    } catch (error: any) {
+        yield put(updateCategoryFailure(error?.response?.data?.message));
+    };
+};
+
 // deleteCategorySaga generator function
 export function* deleteCategorySaga({ payload, type }: { payload: { categoryId: string }, type: string }): SagaGenerator<{ data: ApiResponse<null> }> {
     try {
@@ -70,5 +87,6 @@ export default function* watchCategory() {
     yield takeLatest('categorySlice/addCategoryRequest', addCategorySaga);
     yield takeLatest('categorySlice/getAllCategoryRequest', getAllCategorySaga);
     yield takeLatest('categorySlice/getCategoryRequest', getCategorySaga);
+    yield takeLatest('categorySlice/updateCategoryRequest', updateCategorySaga);
     yield takeLatest('categorySlice/deleteCategoryRequest', deleteCategorySaga);
 };

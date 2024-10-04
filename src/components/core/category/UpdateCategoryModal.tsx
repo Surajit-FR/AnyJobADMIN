@@ -3,11 +3,12 @@ import { AppDispatch, RootState } from "../../../store/Store";
 import { useForm } from "react-hook-form";
 import { TCategoryPayload } from "../../../../types/categoryTypes";
 import { useDispatch, useSelector } from "react-redux";
+import { updateCategoryRequest } from "../../../store/reducers/CategoryReducers";
 
 const UpdateCategoryModal = (): JSX.Element => {
     const { singleCategoryData } = useSelector((state: RootState) => state.categorySlice);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<TCategoryPayload>();
+    const { register, handleSubmit, formState: { errors }, setValue, watch, reset } = useForm<TCategoryPayload>();
     const dispatch: AppDispatch = useDispatch();
 
     const onSubmit = (data: TCategoryPayload): void => {
@@ -21,7 +22,7 @@ const UpdateCategoryModal = (): JSX.Element => {
             formData.append("categoryImage", data.categoryImage);
         };
 
-        // dispatch(addCategoryRequest({ data: formData, reset }));
+        dispatch(updateCategoryRequest({ data: formData, reset, categoryId: singleCategoryData?._id }));
     };
 
     const handleDropzoneClick = (): void => {

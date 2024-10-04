@@ -50,6 +50,18 @@ const CategorySlice = createSlice({
             state.error = payload;
         },
 
+        // Update category
+        updateCategoryRequest: (state, { payload, type }) => {
+            state.type = type;
+        },
+        updateCategorySuccess: (state, { payload, type }) => {
+            state.type = type;
+        },
+        updateCategoryFailure: (state, { payload, type }) => {
+            state.type = type;
+            state.error = payload;
+        },
+
         // Delete category
         deleteCategoryRequest: (state, { payload, type }) => {
             state.type = type;
@@ -76,6 +88,10 @@ export const {
     getAllCategoryRequest,
     getAllCategorySuccess,
     getAllCategoryFailure,
+
+    updateCategoryRequest,
+    updateCategorySuccess,
+    updateCategoryFailure,
 
     deleteCategoryRequest,
     deleteCategorySuccess,

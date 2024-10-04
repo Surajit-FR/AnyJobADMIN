@@ -130,7 +130,7 @@ const Login = (): JSX.Element => {
                             </div>
                             {/* end card */}
 
-                            <div className="row mt-3">
+                            {/* <div className="row mt-3">
                                 <div className="col-12 text-center">
                                     <p className="text-white-50">
                                         Don't have an account?{" "}
@@ -142,7 +142,7 @@ const Login = (): JSX.Element => {
                                         </Link>
                                     </p>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
