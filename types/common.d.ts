@@ -20,35 +20,12 @@ export type MenuItems = {
     items?: Array<MenuItems>;
 };
 
-export type DerivedQuestion = {
-    option: string;
-    question: string;
-    options: { [key: string]: string };
-    derivedQuestions: Array<DerivedQuestion>;
-};
-
-export type Question = {
-    question: string;
-    options: { [key: string]: string };
-    derivedQuestions: Array<DerivedQuestion>;
-};
-
-export type SubCategory = {
-    categoryId: string;
-    name: string;
-    image: File | null;
-    questionArray: Array<Question>;
-};
-
-export type Category = {
-    id: string;
-    name: string;
-};
-
 export type DataState = {
     authData?: Partial<UserData>,
-    categoryData?: Partial<TCategoryAPIResponse>,
+    categoryData?: Array<TCategory>,
     singleCategoryData?: Partial<TCategory>,
+    subCategoryData?: Array<any>,
+    singleSubCategoryData?: Partial<any>,
     error: string | null,
     type: string,
 };

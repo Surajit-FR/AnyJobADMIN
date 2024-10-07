@@ -1,4 +1,10 @@
+import { useEffect } from "react";
 import PageTitle from "../../PageTitle";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store/Store";
+// import { getAllSubCategoryRequest } from "../../../store/reducers/SubCategoryReducers";
+import { TCategory } from "../../../../types/categoryTypes";
+import { getAllCategoryRequest } from "../../../store/reducers/CategoryReducers";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -7,6 +13,14 @@ const breadcrumbs = [
 ];
 
 const AllSubCategory = (): JSX.Element => {
+    const { categoryData } = useSelector((state: RootState) => state.categorySlice);
+    const dispatch: AppDispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getAllCategoryRequest("categorySlice/getAllCategoryRequest"));
+        // dispatch(getAllSubCategoryRequest('subCategorySlice/getAllSubCategoryRequest'));
+    }, [dispatch]);
+
     return (
         <>
             <PageTitle pageName="All Sub Category" breadcrumbs={breadcrumbs} />
@@ -17,7 +31,6 @@ const AllSubCategory = (): JSX.Element => {
                         <div className="card-body">
                             <h4 className="header-title">Sub Category List</h4>
                             <p className="text-muted fs-14 mb-3">Click the sub-categories below to expand/collapse the sub-category content.</p>
-
 
                             <div className="accordion" id="accordionExample">
                                 <div className="accordion-item">
@@ -43,7 +56,7 @@ const AllSubCategory = (): JSX.Element => {
                                     </div>
                                 </div>
 
-                                <div className="accordion-item">
+                                {/* <div className="accordion-item">
                                     <h2 className="accordion-header" id="headingTwo">
                                         <button className="accordion-button fw-medium collapsed" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -86,9 +99,28 @@ const AllSubCategory = (): JSX.Element => {
                                             within the <code>.accordion-body</code>, though the transition does limit overflow.
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div className="col-xl-4">
+                    <div className="card">
+                        <div className="card-body">
+                            <p className="mb-1 fw-bold text-muted">Single Category</p>
+                            <p className="text-muted fs-14">Select category to filter...</p>
+
+                            <select className="form-control select2" data-toggle="select2">
+                                <option value="">Select Category</option>
+                                {categoryData &&
+                                    categoryData?.map((category: TCategory) => (
+                                        <option key={category._id} value={category._id}>
+                                            {category.name}
+                                        </option>
+                                    ))
+                                }
+                            </select>
                         </div>
                     </div>
                 </div>

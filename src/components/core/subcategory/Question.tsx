@@ -1,15 +1,15 @@
 import { UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
-import { DerivedQuestion, SubCategory } from "../../../../types/common";
 import DerivedQuestionComponent from "./DerivedQuestionComponent";
+import { DerivedQuestion, TSubCategoryPayload } from "../../../../types/subCategoryTypes";
 
 type QuestionProps = {
     question: any;
     qIndex: number;
     remove: (index: number) => void;
     control: any;
-    register: UseFormRegister<SubCategory>;
-    setValue: UseFormSetValue<SubCategory>;
-    watch: UseFormWatch<SubCategory>;
+    register: UseFormRegister<TSubCategoryPayload>;
+    setValue: UseFormSetValue<TSubCategoryPayload>;
+    watch: UseFormWatch<TSubCategoryPayload>;
 }
 
 const Question = ({ question, qIndex, remove, register, setValue, watch }: QuestionProps) => {
@@ -29,7 +29,8 @@ const Question = ({ question, qIndex, remove, register, setValue, watch }: Quest
     };
 
     const addDerivedQuestion = (optionKey: string) => {
-        const derivedQuestions = watch(`questionArray.${qIndex}.derivedQuestions`);
+        // Ensure derivedQuestions is initialized as an array if undefined
+        const derivedQuestions = watch(`questionArray.${qIndex}.derivedQuestions`) ?? [];
         if (!derivedQuestions.some(dq => dq.option === optionKey)) {
             const newDerivedQuestion: DerivedQuestion = {
                 option: optionKey,
@@ -79,7 +80,7 @@ const Question = ({ question, qIndex, remove, register, setValue, watch }: Quest
                     </div>
                 ))}
 
-                {watch(`questionArray.${qIndex}.derivedQuestions`).map((derivedQuestion, dIndex) => (
+                {watch(`questionArray.${qIndex}.derivedQuestions`)?.map((derivedQuestion, dIndex) => (
                     <DerivedQuestionComponent
                         key={dIndex}
                         qIndex={qIndex}

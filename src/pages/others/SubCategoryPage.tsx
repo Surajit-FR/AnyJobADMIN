@@ -1,10 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import PageTitle from "../../components/PageTitle";
-import { Category, SubCategory } from "../../../types/common";
 import FileUpload from "../../components/core/subcategory/FileUpload";
 import Question from "../../components/core/subcategory/Question";
 import { Link } from "react-router-dom";
+import { TCategory } from "../../../types/categoryTypes";
+import { AppDispatch, RootState } from "../../store/Store";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCategoryRequest } from "../../store/reducers/CategoryReducers";
+import { TSubCategoryPayload } from "../../../types/subCategoryTypes";
+import { addSubCategoryRequest } from "../../store/reducers/SubCategoryReducers";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -12,13 +17,18 @@ const breadcrumbs = [
 ];
 
 const SubCategoryPage = (): JSX.Element => {
+    const { categoryData } = useSelector((state: RootState) => state.categorySlice);
+    const dispatch: AppDispatch = useDispatch();
+    const [categoryStateData, setCategoryStateData] = useState<Array<TCategory>>();
+
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const { register, handleSubmit, control, setValue, watch } = useForm<SubCategory>({
+    const { register, handleSubmit, control, setValue, watch, reset } = useForm<TSubCategoryPayload>({
         defaultValues: {
             name: "",
-            image: null,
+            subCategoryImage: null,
             categoryId: "",
-            questionArray: [{ question: "", options: {}, derivedQuestions: [] }]
+            questionArray: []
+            // questionArray: [{ question: "", options: {}, derivedQuestions: [] }]
         }
     });
 
@@ -27,21 +37,7 @@ const SubCategoryPage = (): JSX.Element => {
         name: "questionArray"
     });
 
-    const [categories, setCategories] = useState<Category[]>([]);
-
-    useEffect(() => {
-        const fetchCategories = () => {
-            const mockCategories = [
-                { id: "650c4c26e48c46227c275b2e", name: "Category 1" },
-                { id: "650c4c26e48c46227c275b3f", name: "Category 2" },
-                { id: "650c4c26e48c46227c275b4a", name: "Category 3" },
-            ];
-            setCategories(mockCategories);
-        };
-        fetchCategories();
-    }, []);
-
-    const handleFormSubmit = (data: SubCategory) => {
+    const handleFormSubmit = (data: TSubCategoryPayload) => {
         if (!data.categoryId) {
             alert("Please select a category.");
             return;
@@ -52,18 +48,23 @@ const SubCategoryPage = (): JSX.Element => {
 
         formData.append("name", data.name);
         formData.append("categoryId", data.categoryId);
-
         // Append the image file (if exists)
-        if (data.image instanceof File) {
-            formData.append("subCategoryImage", data.image);
+        if (data.subCategoryImage instanceof File) {
+            formData.append("subCategoryImage", data.subCategoryImage);
         };
-
         formData.append("questionArray", JSON.stringify(data.questionArray));
 
-        Array.from(formData.entries()).forEach(([key, value]) => {
-            console.log(`${key}: ${value}`);
-        });
+        dispatch(addSubCategoryRequest({ data: formData, reset }));
     };
+
+    useEffect(() => {
+        dispatch(getAllCategoryRequest("categorySlice/getAllCategoryRequest"));
+    }, [dispatch]);
+
+    useEffect(() => {
+        setCategoryStateData(categoryData as Array<TCategory>);
+    }, [categoryData]);
+
 
     return (
         <>
@@ -74,7 +75,7 @@ const SubCategoryPage = (): JSX.Element => {
                         <div className="card-body">
                             <div className="d-flex justify-content-between">
                                 <h4 className="card-title">Create Sub Category</h4>
-                                <Link className="btn btn-sm btn-dark" to="/all-sub-category">All Sub Category</Link>
+                                <Link className="btn btn-dark" to="/all-sub-category">All Sub Category</Link>
                             </div>
                             <hr />
 
@@ -89,11 +90,13 @@ const SubCategoryPage = (): JSX.Element => {
                                                 {...register("categoryId")}
                                             >
                                                 <option value="" disabled>Select Category</option>
-                                                {categories.map((category: Category) => (
-                                                    <option key={category.id} value={category.id}>
-                                                        {category.name}
-                                                    </option>
-                                                ))}
+                                                {categoryStateData &&
+                                                    categoryStateData?.map((category: TCategory) => (
+                                                        <option key={category._id} value={category._id}>
+                                                            {category.name}
+                                                        </option>
+                                                    ))
+                                                }
                                             </select>
                                         </div>
 
@@ -115,8 +118,8 @@ const SubCategoryPage = (): JSX.Element => {
                                         />
                                     </div>
 
-                                    <div className="col-lg-8">
-                                        <button type="button" className="btn btn-sm btn-success mb-2" onClick={() => append({ question: "", options: {}, derivedQuestions: [] })}>
+                                    <div className="col-lg-8" style={{ marginTop: "39px" }}>
+                                        <button type="button" className="btn btn-success mb-2" onClick={() => append({ question: "", options: {}, derivedQuestions: [] })}>
                                             Add Question
                                         </button>
                                         {questions.map((question, qIndex) => (

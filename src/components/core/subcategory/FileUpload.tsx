@@ -1,11 +1,11 @@
 import React from "react";
 import { UseFormWatch, UseFormSetValue } from "react-hook-form";
-import { SubCategory } from "../../../../types/common";
+import { TSubCategoryPayload } from "../../../../types/subCategoryTypes";
 
 interface FileUploadProps {
     fileInputRef: React.RefObject<HTMLInputElement>;
-    watch: UseFormWatch<SubCategory>;
-    setValue: UseFormSetValue<SubCategory>;
+    watch: UseFormWatch<TSubCategoryPayload>;
+    setValue: UseFormSetValue<TSubCategoryPayload>;
 }
 
 const FileUpload = ({ fileInputRef, watch, setValue }: FileUploadProps) => {
@@ -17,7 +17,7 @@ const FileUpload = ({ fileInputRef, watch, setValue }: FileUploadProps) => {
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            setValue("image", e.target.files[0]);
+            setValue("subCategoryImage", e.target.files[0]);
         }
     };
 
@@ -36,9 +36,9 @@ const FileUpload = ({ fileInputRef, watch, setValue }: FileUploadProps) => {
                         className="d-none"
                         onChange={handleImageUpload}
                     />
-                    {watch("image") ? (
+                    {watch("subCategoryImage") ? (
                         <img
-                            src={URL.createObjectURL(watch("image") as File)}
+                            src={URL.createObjectURL(watch("subCategoryImage") as File)}
                             alt="Sub Category Preview"
                             style={{ maxWidth: "100p%", height: "auto" }}
                         />

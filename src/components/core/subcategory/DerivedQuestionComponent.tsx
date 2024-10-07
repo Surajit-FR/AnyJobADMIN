@@ -1,12 +1,12 @@
 import { UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
-import { SubCategory } from "../../../../types/common";
+import { TSubCategoryPayload } from "../../../../types/subCategoryTypes";
 
 type DerivedQuestionProps = {
     qIndex: number;
     dIndex: number;
-    setValue: UseFormSetValue<SubCategory>;
-    watch: UseFormWatch<SubCategory>;
-    register: UseFormRegister<SubCategory>;
+    setValue: UseFormSetValue<TSubCategoryPayload>;
+    watch: UseFormWatch<TSubCategoryPayload>;
+    register: UseFormRegister<TSubCategoryPayload>;
 }
 
 const DerivedQuestionComponent = ({ qIndex, dIndex, setValue, watch, register }: DerivedQuestionProps) => {

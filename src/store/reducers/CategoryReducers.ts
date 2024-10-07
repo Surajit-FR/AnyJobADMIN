@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { DataState } from "../../../types/common";
 
 const initialState: DataState = {
-    categoryData: {},
+    categoryData: [],
     singleCategoryData: {},
     error: null,
     type: ''
