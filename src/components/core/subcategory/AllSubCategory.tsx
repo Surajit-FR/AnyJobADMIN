@@ -26,7 +26,7 @@ const AllSubCategory = (): JSX.Element => {
             <PageTitle pageName="All Sub Category" breadcrumbs={breadcrumbs} />
 
             <div className="row">
-                <div className="col-xl-7">
+                <div className="col-xl-6">
                     <div className="card">
                         <div className="card-body">
                             <h4 className="header-title">Sub Category List</h4>

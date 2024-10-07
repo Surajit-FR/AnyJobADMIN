@@ -70,7 +70,7 @@ const SubCategoryPage = (): JSX.Element => {
         <>
             <PageTitle pageName="Sub Category" breadcrumbs={breadcrumbs} />
             <div className="row">
-                <div className="col-lg-12">
+                <div className="col-lg-10">
                     <div className="card">
                         <div className="card-body">
                             <div className="d-flex justify-content-between">

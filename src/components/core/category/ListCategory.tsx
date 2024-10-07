@@ -17,7 +17,7 @@ const ListCategory = ({
 
     return (
         <>
-            <div className="col-lg-6">
+            <div className="col-lg-4">
                 <div className="card">
                     <div className="card-body">
                         <h4 className="header-title mb-3">List Category</h4>
