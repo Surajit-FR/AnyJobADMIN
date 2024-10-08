@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { ApiResponse, SagaGenerator } from "../../../types/common";
-import { AddSubCategoryResponse, TSubCategoryPayload } from "../../../types/subCategoryTypes";
+import { AddSubCategoryResponse, GetAllSubcategoryParams, TSubCategoryPayload, TSubCategoryResponse } from "../../../types/subCategoryTypes";
 import { showToast } from "../../utils/Toast";
 import { ADDSUBCATEGORY, GETALLSUBCATEGORY } from "../api/Api";
 import {
@@ -12,7 +12,7 @@ import {
 } from "../reducers/SubCategoryReducers";
 
 
-// addCategorySaga generator function
+// addSubCategorySaga generator function
 export function* addSubCategorySaga({ payload, type }: { payload: { data: TSubCategoryPayload, reset: () => void }, type: string }): SagaGenerator<{ data: ApiResponse<AddSubCategoryResponse> }> {
     try {
         const resp = yield call(ADDSUBCATEGORY, payload?.data);
@@ -28,11 +28,11 @@ export function* addSubCategorySaga({ payload, type }: { payload: { data: TSubCa
     };
 };
 
-// getAllCategorySaga generator function
-export function* getAllSubCategorySaga({ type }: { type: string }): SagaGenerator<{ data: ApiResponse<any> }> {
+// getAllSubCategorySaga generator function
+export function* getAllSubCategorySaga({ payload, type }: { payload: GetAllSubcategoryParams, type: string }): SagaGenerator<{ data: ApiResponse<TSubCategoryResponse> }> {
     try {
-        const resp = yield call(GETALLSUBCATEGORY);
-        const result: ApiResponse<any> = resp?.data;
+        const resp = yield call(GETALLSUBCATEGORY, payload);
+        const result: ApiResponse<TSubCategoryResponse> = resp?.data;
         if (result?.success) {
             yield put(getAllSubCategorySuccess(result));
         };

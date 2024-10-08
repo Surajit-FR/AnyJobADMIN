@@ -1,8 +1,11 @@
+import { TCategory } from "./categoryTypes";
+
 export type DerivedQuestion = {
     option: string;
     question: string;
     options: { [key: string]: string };
     derivedQuestions?: Array<Record<string, unknown>>;
+    _id?: string;
 };
 
 export type Question = {
@@ -25,4 +28,22 @@ export type AddSubCategoryResponse = TSubCategoryPayload & {
     createdAt: string;
     updatedAt: string;
     __v: number;
+};
+
+export type GetAllSubcategoryParams = {
+    categoryId?: string;
+};
+
+export type TSubCategory = {
+    _id: string;
+    categoryId: TCategory;
+    name: string;
+    subCategoryImage: string;
+    owner: string;
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type TSubCategoryResponse = {
+    data: Array<TSubCategory>,
 };

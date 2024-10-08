@@ -1,5 +1,7 @@
 import { UserData } from "./authTypes";
 import { TCategory, TCategoryAPIResponse, TCategoryData } from "./categoryTypes";
+import { TQuestion } from "./questionTypes";
+import { TSubCategory } from "./subCategoryTypes";
 
 export type DefaultSettings = {
     'data-layout-mode': string;
@@ -24,8 +26,9 @@ export type DataState = {
     authData?: Partial<UserData>,
     categoryData?: Array<TCategory>,
     singleCategoryData?: Partial<TCategory>,
-    subCategoryData?: Array<any>,
-    singleSubCategoryData?: Partial<any>,
+    subCategoryData?: Array<TSubCategory>,
+    singleSubCategoryData?: Partial<TSubCategory>,
+    questionData?: Array<TQuestion>,
     error: string | null,
     type: string,
 };

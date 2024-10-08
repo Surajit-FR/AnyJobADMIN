@@ -50,15 +50,14 @@ const CategoryPage = (): JSX.Element => {
             />
 
             <div className="row">
-                {/* AddCategory Section */}
-                <AddCategory />
-
                 {/* ListCategory Section */}
                 <ListCategory
                     categoryStateData={categoryStateData as Array<TCategory>}
                     setItemID={setItemID}
                     setItemName={setItemName}
                 />
+                {/* AddCategory Section */}
+                <AddCategory />
             </div>
         </>
     );

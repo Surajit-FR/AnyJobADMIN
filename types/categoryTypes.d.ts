@@ -7,6 +7,7 @@ export type TCategory = {
     _id: string;
     name: string;
     categoryImage?: string;
+    owner: string;
     isDeleted: boolean;
     createdAt: string;
     updatedAt: string;

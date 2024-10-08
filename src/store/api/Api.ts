@@ -2,6 +2,7 @@ import axios from "axios";
 import { REACT_APP_BASE_URL } from "../../config/app.config";
 import { TLoginCredentials } from "../../../types/authTypes";
 import { TCategoryPayload } from "../../../types/categoryTypes";
+import { GetAllSubcategoryParams } from "../../../types/subCategoryTypes";
 
 // Create axios instance
 export const API = axios.create({ baseURL: REACT_APP_BASE_URL, withCredentials: true });
@@ -94,38 +95,17 @@ export const UPDATECATEGORY = (data: TCategoryPayload, categoryId: string | unde
 // Add Sub Category
 export const ADDSUBCATEGORY = (data: any) => API.post("/subcategory", data);
 // Get All Sub Category
-export const GETALLSUBCATEGORY = () => API.get("/subcategory");
+export const GETALLSUBCATEGORY = (params: GetAllSubcategoryParams) => {
+    const queryString = new URLSearchParams(params).toString();
+    return API.get(`/subcategory?${queryString}`)
+};
+// Get All questions
+export const GETALLQUESTIONS = (subCategoryId: string, params: GetAllSubcategoryParams) => {
+    const queryString = new URLSearchParams();
 
-// // Update cover image
-// export const UPDATECOVERIMAGE = (data: { coverImage: string }) => API.patch("/user/update-cover-image", data);
-// // Channel stats
-// export const CHANNELSTATS = () => API.get("/dashboard/stats");
-// // Watch history
-// export const WATCHHISTORY = () => API.get("/user/watch-history");
-// // Add video
-// export const ADDVIDEO = (data: TUploadVideo) => API.post("/videos", data);
-// // All videos
-// export const ALLVIDEOS = (params: GetAllVideosParams) => {
-//     const queryString = new URLSearchParams(params as any).toString();
-//     return API.get(`/videos?${queryString}`);
-// };
-// // Get a video
-// export const GETAVIDEO = (video_id: string | undefined) => API.get(`/videos/${video_id}`);
-// // Add video
-// export const UPDATEVIDEO = (data: TUploadVideo, video_id: string | undefined) => API.patch(`/videos/${video_id}`, data);
-// // Delete video
-// export const DELETEVIDEO = (video_id: string | undefined) => API.delete(`/videos/${video_id}`);
-// // Toggle video status
-// export const TOGGLEVIDEOSTATUS = (video_id: string | undefined) => API.patch(`/videos/toggle/publish/${video_id}`);
-// // Add comment
-// export const ADDVIDEOCOMMENT = (video_id: string | undefined, content: string) => API.post(`/comments/${video_id}`, { content });
-// // Get video comments
-// export const GETVIDEOCOMMENTS = (video_id: string | undefined) => API.get(`/comments/${video_id}`);
-// // Edit video comments
-// export const EDITVIDEOCOMMENTS = (commentId: string | undefined, content: string) => API.patch(`/comments/c/${commentId}`, { content });
-// // Delete video comments
-// export const DELETEVIDEOCOMMENTS = (commentId: string | undefined) => API.delete(`/comments/c/${commentId}`);
-// // Like video
-// export const LIKEVIDEO = (video_id: string | undefined) => API.post(`/likes/toggle/v/${video_id}`);
-// // Video likes
-// export const GETVIDEOLIKES = (video_id: string | undefined) => API.get(`/likes/v/${video_id}`);
+    // Add categoryId only if it exists
+    if (params.categoryId) {
+        queryString.append('categoryId', params.categoryId);
+    }
+    return API.get(`/question/${subCategoryId}?${queryString.toString()}`);
+};

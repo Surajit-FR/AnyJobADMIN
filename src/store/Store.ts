@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import AuthSlice from "./reducers/AuthReducers";
 import CategorySlice from "./reducers/CategoryReducers";
 import SubCategorySlice from "./reducers/SubCategoryReducers";
+import QuestionSlice from "./reducers/QuestionReducers";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "./rootSaga";
 
@@ -13,6 +14,7 @@ export const store = configureStore({
         authSlice: AuthSlice,
         categorySlice: CategorySlice,
         subCategorySlice: SubCategorySlice,
+        questionSlice: QuestionSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(middleware),
 });
