@@ -1,6 +1,7 @@
 import { TCategory } from "./categoryTypes";
-import { DerivedQuestion, TSubCategory } from "./subCategoryTypes";
+import { DerivedQuestion, Question, TSubCategory } from "./subCategoryTypes";
 
+export type TQuestionPayload = any;
 
 export type TQuestion = {
     _id: string;
@@ -14,4 +15,4 @@ export type TQuestion = {
 
 export type TQuestionAPIResponse = {
     data: Array<TQuestion>;
-}
+};

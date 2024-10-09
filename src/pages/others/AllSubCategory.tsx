@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import PageTitle from "../../PageTitle";
+import PageTitle from "../../components/PageTitle";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store/Store";
-import { getAllSubCategoryRequest } from "../../../store/reducers/SubCategoryReducers";
-import { TCategory } from "../../../../types/categoryTypes";
-import { getAllCategoryRequest } from "../../../store/reducers/CategoryReducers";
-import { getAllQuestionRequest } from "../../../store/reducers/QuestionReducers";
-import QuestionAccordion from "./QuestionAccordion"; // Import the recursive component
+import { AppDispatch, RootState } from "../../store/Store";
+import { deleteSubCategoryRequest, getAllSubCategoryRequest, getSubCategoryRequest } from "../../store/reducers/SubCategoryReducers";
+import { TCategory } from "../../../types/categoryTypes";
+import { getAllCategoryRequest } from "../../store/reducers/CategoryReducers";
+import { getAllQuestionRequest } from "../../store/reducers/QuestionReducers";
+import QuestionAccordion from "../../components/core/subcategory/QuestionAccordion"; // Import the recursive component
+import ConfirmationModal from "../../components/ConfirmationModal";
+import UpdateSubCategoryModal from "../../components/core/subcategory/UpdateSubCategoryModal";
+import UpdateQuestionsModal from "../../components/core/subcategory/UpdateQuestionsModal";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -21,6 +24,7 @@ const AllSubCategory = (): JSX.Element => {
 
     const dispatch: AppDispatch = useDispatch();
     const [selectedCategoryID, setSelectedCategoryID] = useState<string>("");
+    const [selectedSubCategoryID, setSelectedSubCategoryID] = useState<string>("");
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategoryID(event.target.value);
@@ -33,6 +37,19 @@ const AllSubCategory = (): JSX.Element => {
         }));
     };
 
+    // Transform question data
+    const transformedQuestionData = questionData?.map((question) => ({
+        ...question,
+        derivedQuestions: question.derivedQuestions || [], // Ensure derivedQuestions is always an array
+    }));
+
+    const handleCategoryDelete = () => {
+        dispatch(deleteSubCategoryRequest({
+            categoryId: selectedCategoryID,
+            SubCategoryId: selectedSubCategoryID,
+        }))
+    };
+
     useEffect(() => {
         dispatch(getAllCategoryRequest("categorySlice/getAllCategoryRequest"));
     }, [dispatch]);
@@ -43,14 +60,22 @@ const AllSubCategory = (): JSX.Element => {
         }));
     }, [dispatch, selectedCategoryID]);
 
-    // Transform question data
-    const transformedQuestionData = questionData?.map((question) => ({
-        ...question,
-        derivedQuestions: question.derivedQuestions || [], // Ensure derivedQuestions is always an array
-    }));
 
     return (
         <>
+            {/* UpdateSubCategoryModal */}
+            <UpdateSubCategoryModal />
+
+            {/* UpdateQuestionsModal */}
+            <UpdateQuestionsModal />
+
+            {/* ConfirmationModal */}
+            <ConfirmationModal
+                modalId="delete-sub-modal"
+                modalText={`Want To Delete This Sub Category?`}
+                onDelete={handleCategoryDelete}
+            />
+
             <PageTitle pageName="All Sub Category" breadcrumbs={breadcrumbs} />
 
             <div className="row">
@@ -71,7 +96,10 @@ const AllSubCategory = (): JSX.Element => {
                                                 data-bs-target={`#collapse${index}`}
                                                 aria-expanded="false"
                                                 aria-controls={`collapse${index}`}
-                                                onClick={() => handleSubCategoryChange(subCategory._id)}
+                                                onClick={() => {
+                                                    handleSubCategoryChange(subCategory._id);
+                                                    setSelectedSubCategoryID(subCategory._id);
+                                                }}
                                             >
                                                 {subCategory.name}
                                             </button>
@@ -87,6 +115,8 @@ const AllSubCategory = (): JSX.Element => {
                                                 {transformedQuestionData?.map((question) => (
                                                     <QuestionAccordion
                                                         key={question._id}
+                                                        subCategoryId={selectedSubCategoryID}
+                                                        questionId={question._id}
                                                         question={question.question}
                                                         options={question.options}
                                                         derivedQuestions={question.derivedQuestions}
@@ -94,8 +124,18 @@ const AllSubCategory = (): JSX.Element => {
                                                 ))}
                                             </div>
                                             <div className="text-end">
-                                                <button className="btn btn-sm btn-soft-warning m-1">Edit</button>
-                                                <button className="btn btn-sm btn-soft-danger m-1">Delete</button>
+                                                <button
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#subcatupdate-centermodal"
+                                                    className="btn btn-sm btn-soft-warning m-1"
+                                                    onClick={() => dispatch(getSubCategoryRequest({ SubCategoryId: subCategory?._id }))}
+                                                >Edit</button>
+                                                <button
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#delete-sub-modal"
+                                                    className="btn btn-sm btn-soft-danger m-1"
+                                                    onClick={() => setSelectedSubCategoryID(subCategory?._id)}
+                                                >Delete</button>
                                             </div>
                                         </div>
                                     </div>
@@ -117,7 +157,7 @@ const AllSubCategory = (): JSX.Element => {
                                 value={selectedCategoryID}
                                 onChange={handleCategoryChange}
                             >
-                                <option value="">Select Category</option>
+                                <option value="">All</option>
                                 {categoryData &&
                                     categoryData.map((category: TCategory) => (
                                         <option key={category._id} value={category._id}>

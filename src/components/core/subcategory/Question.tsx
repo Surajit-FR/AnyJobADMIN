@@ -17,19 +17,23 @@ const Question = ({ question, qIndex, remove, register, setValue, watch }: Quest
         const optionKey = prompt("Enter option key (e.g., A, B, C):");
         const optionLabel = prompt("Enter option label:");
         if (optionKey && optionLabel) {
-            const updatedOptions = { ...watch(`questionArray.${qIndex}.options`), [optionKey]: optionLabel };
+            const updatedOptions = { ...watch(`questionArray.${qIndex}.options`) ?? {}, [optionKey]: optionLabel };
             setValue(`questionArray.${qIndex}.options`, updatedOptions);
         }
     };
 
     const removeOption = (optionKey: string) => {
-        const options = { ...watch(`questionArray.${qIndex}.options`) };
-        delete options[optionKey];
+        const options = { ...watch(`questionArray.${qIndex}.options`) ?? {} };
+        delete options[optionKey]; // Remove the selected option
         setValue(`questionArray.${qIndex}.options`, options);
+
+        // Now also remove the associated derived question (if any)
+        const derivedQuestions = watch(`questionArray.${qIndex}.derivedQuestions`) ?? [];
+        const updatedDerivedQuestions = derivedQuestions.filter(dq => dq.option !== optionKey);
+        setValue(`questionArray.${qIndex}.derivedQuestions`, updatedDerivedQuestions);
     };
 
     const addDerivedQuestion = (optionKey: string) => {
-        // Ensure derivedQuestions is initialized as an array if undefined
         const derivedQuestions = watch(`questionArray.${qIndex}.derivedQuestions`) ?? [];
         if (!derivedQuestions.some(dq => dq.option === optionKey)) {
             const newDerivedQuestion: DerivedQuestion = {
@@ -47,7 +51,7 @@ const Question = ({ question, qIndex, remove, register, setValue, watch }: Quest
     return (
         <>
             <div style={{ marginBottom: "20px", padding: "10px", border: "1px solid #464f5b", borderRadius: "5px" }}>
-                <h4 className="card-title">Question {qIndex + 1}</h4>
+                <h4 className="card-title mb-2">Question {qIndex + 1}</h4>
                 <div className="d-flex">
                     <input
                         type="text"
@@ -64,7 +68,7 @@ const Question = ({ question, qIndex, remove, register, setValue, watch }: Quest
                     </button>
                 </div>
 
-                {Object.entries(watch(`questionArray.${qIndex}.options`)).map(([optionKey]) => (
+                {Object.entries(watch(`questionArray.${qIndex}.options`) ?? {}).map(([optionKey]) => (
                     <div className="mt-2" key={optionKey}>
                         <span>{optionKey}: {watch(`questionArray.${qIndex}.options.${optionKey}`)}</span>
                         <button

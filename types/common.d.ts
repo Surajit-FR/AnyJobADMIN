@@ -29,6 +29,7 @@ export type DataState = {
     subCategoryData?: Array<TSubCategory>,
     singleSubCategoryData?: Partial<TSubCategory>,
     questionData?: Array<TQuestion>,
+    singleQuestionData?: Array<TQuestion>,
     error: string | null,
     type: string,
 };

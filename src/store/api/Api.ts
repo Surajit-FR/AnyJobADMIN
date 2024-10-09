@@ -2,80 +2,14 @@ import axios from "axios";
 import { REACT_APP_BASE_URL } from "../../config/app.config";
 import { TLoginCredentials } from "../../../types/authTypes";
 import { TCategoryPayload } from "../../../types/categoryTypes";
-import { GetAllSubcategoryParams } from "../../../types/subCategoryTypes";
+import { GetAllSubcategoryParams, TSubCategoryPayload } from "../../../types/subCategoryTypes";
+import { setupInterceptors } from "./interceptor";
 
 // Create axios instance
 export const API = axios.create({ baseURL: REACT_APP_BASE_URL, withCredentials: true });
 
-// Flag to control token refresh attempts
-let isRefreshing = false;
-let refreshSubscribers: ((token: string) => void)[] = [];
-
-// Function to handle the refresh queue
-const onRrefreshed = (token: string) => {
-    refreshSubscribers.map((callback) => callback(token));
-    refreshSubscribers = [];
-};
-
-// Function to add subscriber to the refresh queue
-const addRefreshSubscriber = (callback: (token: string) => void) => {
-    refreshSubscribers.push(callback);
-};
-
-// Request Interceptor
-API.interceptors.request.use(
-    (config) => {
-        // If using cookies, you don't need to manually add tokens to headers
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
-
-// Response Interceptor
-API.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        const { config, response } = error;
-        const originalRequest = config;
-
-        // Check if the error is due to an expired token
-        if (response?.status === 401 && !originalRequest._retry) {
-            if (isRefreshing) {
-                // Push the failed request to the subscribers' queue and return a promise
-                return new Promise((resolve, reject) => {
-                    addRefreshSubscriber((token) => {
-                        originalRequest.headers.Authorization = `Bearer ${token}`;
-                        resolve(API(originalRequest));
-                    });
-                });
-            }
-
-            originalRequest._retry = true;
-            isRefreshing = true;
-
-            try {
-                // Call the refresh token API
-                const refreshResponse = await API.post("/auth/refresh-token"); // No need to send token explicitly as it's in cookies
-                const { accessToken } = refreshResponse.data.data;
-
-                if (accessToken) {
-                    onRrefreshed(accessToken);
-                }
-
-                isRefreshing = false;
-
-                // Retry the original request with the new token
-                originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-                return API(originalRequest);
-            } catch (err: any) {
-                isRefreshing = false;
-                return Promise.reject(err);
-            }
-        }
-
-        return Promise.reject(error);
-    }
-);
+// Set up interceptors
+setupInterceptors();
 
 // Login
 export const LOGIN = (data: TLoginCredentials) => API.post("/auth/signin", data);
@@ -93,12 +27,18 @@ export const GETCATEGORY = (categoryId: string | undefined) => API.get(`/categor
 // Update Category
 export const UPDATECATEGORY = (data: TCategoryPayload, categoryId: string | undefined) => API.put(`/category/c/${categoryId}`, data);
 // Add Sub Category
-export const ADDSUBCATEGORY = (data: any) => API.post("/subcategory", data);
+export const ADDSUBCATEGORY = (data: TSubCategoryPayload) => API.post("/subcategory", data);
 // Get All Sub Category
 export const GETALLSUBCATEGORY = (params: GetAllSubcategoryParams) => {
     const queryString = new URLSearchParams(params).toString();
     return API.get(`/subcategory?${queryString}`)
 };
+// Get Sub Category
+export const GETSUBCATEGORY = (SubCategoryId: string | undefined) => API.get(`/subcategory/c/${SubCategoryId}`);
+// Update Sub Category
+export const UPDATESUBCATEGORY = (data: TSubCategoryPayload, SubCategoryId: string | undefined) => API.patch(`/subcategory/c/${SubCategoryId}`, data);
+// Delete Sub Category
+export const DELETESUBCATEGORY = (SubCategoryId: string | undefined) => API.delete(`/subcategory/c/${SubCategoryId}`);
 // Get All questions
 export const GETALLQUESTIONS = (subCategoryId: string, params: GetAllSubcategoryParams) => {
     const queryString = new URLSearchParams();
@@ -109,3 +49,5 @@ export const GETALLQUESTIONS = (subCategoryId: string, params: GetAllSubcategory
     }
     return API.get(`/question/${subCategoryId}?${queryString.toString()}`);
 };
+// Get questions
+export const GETQUESTION = (subCategoryId: string, questionId: string) => API.get(`/question/${subCategoryId}/${questionId}`);

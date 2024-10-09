@@ -11,6 +11,8 @@ import {
 import {
     addCategoryFailure,
     addCategorySuccess,
+    deleteCategoryFailure,
+    deleteCategorySuccess,
     getAllCategoryFailure,
     getAllCategoryRequest,
     getAllCategorySuccess,
@@ -88,12 +90,12 @@ export function* deleteCategorySaga({ payload, type }: { payload: { categoryId: 
         const resp = yield call(DELETECATEGORY, payload?.categoryId);
         const result: ApiResponse<null> = resp?.data;
         if (result?.success) {
-            yield put(getAllCategorySuccess(result));
+            yield put(deleteCategorySuccess(result));
             showToast({ message: result?.message || 'Category deleted.', type: 'success', durationTime: 3500, position: "top-center" });
             yield put(getAllCategoryRequest('categorySlice/getAllCategoryRequest'));
         };
     } catch (error: any) {
-        yield put(getAllCategoryFailure(error?.response?.data?.message));
+        yield put(deleteCategoryFailure(error?.response?.data?.message));
     };
 };
 

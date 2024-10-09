@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import { DerivedQuestion } from "../../../../types/subCategoryTypes";
+import { getQuestionRequest } from "../../../store/reducers/QuestionReducers";
+import { AppDispatch } from "../../../store/Store";
+import { useDispatch } from "react-redux";
 
 type QuestionProps = {
+    subCategoryId: string | undefined;
+    questionId: string | undefined;
     question: string;
     options: { [key: string]: string };
     derivedQuestions?: Array<DerivedQuestion>;
+    isDerived?: boolean; // New prop to track if it's a derived question
 }
 
 const sanitizeId = (id: string) => {
@@ -13,13 +19,15 @@ const sanitizeId = (id: string) => {
         .toLowerCase();
 }
 
-const QuestionAccordion = ({ question, options, derivedQuestions = [] }: QuestionProps) => {
+const QuestionAccordion = ({ subCategoryId, questionId, question, options, derivedQuestions = [], isDerived = false }: QuestionProps) => {
     const sanitizedQuestionId = sanitizeId(question);
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch: AppDispatch = useDispatch();
 
     const toggleAccordion = () => {
         setIsOpen((prev) => !prev); // Toggle the open state
     };
+
 
     return (
         <>
@@ -42,6 +50,17 @@ const QuestionAccordion = ({ question, options, derivedQuestions = [] }: Questio
                     data-bs-parent={false} // Prevent Bootstrap from managing parent-child relationship
                 >
                     <div className="accordion-body">
+                        {!isDerived && ( // Only show edit button if it's not a derived question
+                            <div className="text-end">
+                                <button
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#questionupdate-centermodal"
+                                    className="btn btn-sm btn-soft-secondary"
+                                    onClick={() => dispatch(getQuestionRequest({ subCategoryId: subCategoryId, questionId: questionId }))}>
+                                    <i className="ri-edit-fill"></i>
+                                </button>
+                            </div>
+                        )}
                         <ul>
                             {Object.entries(options).map(([key, value]) => (
                                 <li key={key}>
@@ -50,9 +69,12 @@ const QuestionAccordion = ({ question, options, derivedQuestions = [] }: Questio
                                         derivedQuestions.map((dq) => (
                                             <QuestionAccordion
                                                 key={dq.option} // Use a unique key for each derived question
+                                                subCategoryId={subCategoryId}
+                                                questionId={dq._id}
                                                 question={dq.question}
                                                 options={dq.options}
                                                 derivedQuestions={dq.derivedQuestions as Array<DerivedQuestion>}
+                                                isDerived={true} // Pass isDerived as true for nested accordions
                                             />
                                         ))
                                     )}

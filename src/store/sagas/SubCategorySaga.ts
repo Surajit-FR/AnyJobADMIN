@@ -1,14 +1,26 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { ApiResponse, SagaGenerator } from "../../../types/common";
-import { AddSubCategoryResponse, GetAllSubcategoryParams, TSubCategoryPayload, TSubCategoryResponse } from "../../../types/subCategoryTypes";
+import { AddSubCategoryResponse, GetAllSubcategoryParams, TSubCategory, TSubCategoryPayload, TSubCategoryResponse } from "../../../types/subCategoryTypes";
 import { showToast } from "../../utils/Toast";
-import { ADDSUBCATEGORY, GETALLSUBCATEGORY } from "../api/Api";
+import {
+    ADDSUBCATEGORY,
+    DELETESUBCATEGORY,
+    GETALLSUBCATEGORY,
+    GETSUBCATEGORY,
+    UPDATESUBCATEGORY
+} from "../api/Api";
 import {
     addSubCategoryFailure,
     addSubCategorySuccess,
+    deleteSubCategoryFailure,
+    deleteSubCategorySuccess,
     getAllSubCategoryFailure,
-    // getAllSubCategoryRequest,
-    getAllSubCategorySuccess
+    getAllSubCategoryRequest,
+    getAllSubCategorySuccess,
+    getSubCategoryFailure,
+    getSubCategorySuccess,
+    updateSubCategoryFailure,
+    updateSubCategorySuccess
 } from "../reducers/SubCategoryReducers";
 
 
@@ -41,58 +53,57 @@ export function* getAllSubCategorySaga({ payload, type }: { payload: GetAllSubca
     };
 };
 
-// getCategorySaga generator function
-// export function* getCategorySaga({ payload, type }: { payload: { categoryId: string }, type: string }): SagaGenerator<{ data: ApiResponse<TCategory> }> {
-//     try {
-//         const resp = yield call(GETCATEGORY, payload?.categoryId);
-//         const result: ApiResponse<TCategory> = resp?.data;
-//         if (result?.success) {
-//             yield put(getCategorySuccess(result));
-//         };
-//     } catch (error: any) {
-//         yield put(getCategoryFailure(error?.response?.data?.message));
-//         showToast({ message: error?.response?.data?.message, type: 'error', durationTime: 3500, position: "top-center" });
-//     };
-// };
+// getSubCategorySaga generator function
+export function* getSubCategorySaga({ payload, type }: { payload: { SubCategoryId: string }, type: string }): SagaGenerator<{ data: ApiResponse<TSubCategory> }> {
+    try {
+        const resp = yield call(GETSUBCATEGORY, payload?.SubCategoryId);
+        const result: ApiResponse<TSubCategory> = resp?.data;
+        if (result?.success) {
+            yield put(getSubCategorySuccess(result));
+        };
+    } catch (error: any) {
+        yield put(getSubCategoryFailure(error?.response?.data?.message));
+        showToast({ message: error?.response?.data?.message, type: 'error', durationTime: 3500, position: "top-center" });
+    };
+};
 
-// updateCategorySaga generator function
-// export function* updateCategorySaga({ payload, type }: { payload: { data: TCategoryPayload, reset: () => void, categoryId: string }, type: string }): SagaGenerator<{ data: ApiResponse<TCategory> }> {
-//     try {
-//         const resp = yield call(UPDATECATEGORY, payload?.data, payload?.categoryId);
-//         const result: ApiResponse<TCategory> = resp?.data;
-//         if (result?.success) {
-//             yield put(updateCategorySuccess(result));
-//             payload?.reset();
+// updateSubCategorySaga generator function
+export function* updateSubCategorySaga({ payload, type }: { payload: { data: TSubCategoryPayload, reset: () => void, categoryId: string, SubCategoryId: string }, type: string }): SagaGenerator<{ data: ApiResponse<TSubCategory> }> {
+    try {
+        const resp = yield call(UPDATESUBCATEGORY, payload?.data, payload?.SubCategoryId);
+        const result: ApiResponse<TSubCategory> = resp?.data;
+        if (result?.success) {
+            yield put(updateSubCategorySuccess(result));
+            payload?.reset();
+            showToast({ message: result?.message || 'Category updated successfully.', type: 'success', durationTime: 3500, position: "top-center" });
+            yield put(getAllSubCategoryRequest({ categoryId: payload?.categoryId }));
+        };
+    } catch (error: any) {
+        yield put(updateSubCategoryFailure(error?.response?.data?.message));
+    };
+};
 
-//             showToast({ message: result?.message || 'Category updated successfully.', type: 'success', durationTime: 3500, position: "top-center" });
-//             yield put(getAllCategoryRequest('categorySlice/getAllCategoryRequest'));
-//         };
-//     } catch (error: any) {
-//         yield put(updateCategoryFailure(error?.response?.data?.message));
-//     };
-// };
-
-// deleteCategorySaga generator function
-// export function* deleteCategorySaga({ payload, type }: { payload: { categoryId: string }, type: string }): SagaGenerator<{ data: ApiResponse<null> }> {
-//     try {
-//         const resp = yield call(DELETECATEGORY, payload?.categoryId);
-//         const result: ApiResponse<null> = resp?.data;
-//         if (result?.success) {
-//             yield put(getAllCategorySuccess(result));
-//             showToast({ message: result?.message || 'Category deleted.', type: 'success', durationTime: 3500, position: "top-center" });
-//             yield put(getAllCategoryRequest('categorySlice/getAllCategoryRequest'));
-//         };
-//     } catch (error: any) {
-//         yield put(getAllCategoryFailure(error?.response?.data?.message));
-//     };
-// };
+// deleteSubCategorySaga generator function
+export function* deleteSubCategorySaga({ payload, type }: { payload: { categoryId: string, SubCategoryId: string }, type: string }): SagaGenerator<{ data: ApiResponse<null> }> {
+    try {
+        const resp = yield call(DELETESUBCATEGORY, payload?.SubCategoryId);
+        const result: ApiResponse<null> = resp?.data;
+        if (result?.success) {
+            yield put(deleteSubCategorySuccess(result));
+            showToast({ message: result?.message || 'Sub Category deleted.', type: 'success', durationTime: 3500, position: "top-center" });
+            yield put(getAllSubCategoryRequest({ categoryId: payload?.categoryId }));
+        };
+    } catch (error: any) {
+        yield put(deleteSubCategoryFailure(error?.response?.data?.message));
+    };
+};
 
 
 // Watcher generator function
 export default function* watchSubCategory() {
     yield takeLatest('subCategorySlice/addSubCategoryRequest', addSubCategorySaga);
     yield takeLatest('subCategorySlice/getAllSubCategoryRequest', getAllSubCategorySaga);
-    // yield takeLatest('categorySlice/getCategoryRequest', getCategorySaga);
-    // yield takeLatest('categorySlice/updateCategoryRequest', updateCategorySaga);
-    // yield takeLatest('categorySlice/deleteCategoryRequest', deleteCategorySaga);
+    yield takeLatest('subCategorySlice/getSubCategoryRequest', getSubCategorySaga);
+    yield takeLatest('subCategorySlice/updateSubCategoryRequest', updateSubCategorySaga);
+    yield takeLatest('subCategorySlice/deleteSubCategoryRequest', deleteSubCategorySaga);
 };

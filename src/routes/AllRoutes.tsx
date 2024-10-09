@@ -11,7 +11,7 @@ import CategoryPage from '../pages/others/CategoryPage';
 import SubCategoryPage from '../pages/others/SubCategoryPage';
 import ManageQue from '../pages/others/ManageQue';
 import IPAddressLog from '../pages/others/IPAddressLog';
-import AllSubCategory from '../components/core/subcategory/AllSubCategory';
+import AllSubCategory from '../pages/others/AllSubCategory';
 
 const AllRoutes = (): JSX.Element => {
     return (

@@ -1,9 +1,16 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { ApiResponse, SagaGenerator } from "../../../types/common";
-import { showToast } from "../../utils/Toast";
-import { TQuestionAPIResponse } from "../../../types/questionTypes";
-import { GETALLQUESTIONS } from "../api/Api";
-import { getAllQuestionFailure, getAllQuestionSuccess } from "../reducers/QuestionReducers";
+import { TQuestion, TQuestionAPIResponse } from "../../../types/questionTypes";
+import {
+    GETALLQUESTIONS,
+    GETQUESTION
+} from "../api/Api";
+import {
+    getAllQuestionFailure,
+    getAllQuestionSuccess,
+    getQuestionFailure,
+    getQuestionSuccess
+} from "../reducers/QuestionReducers";
 
 
 // getAllQuestionSaga generator function
@@ -17,7 +24,20 @@ export function* getAllQuestionSaga({ payload, type }: { payload: { subCategoryI
         }
     } catch (error: any) {
         yield put(getAllQuestionFailure(error?.response?.data?.message));
-        showToast({ message: error?.response?.data?.message, type: 'error', durationTime: 3500, position: "top-center" });
+    }
+};
+
+// getQuestionSaga generator function
+export function* getQuestionSaga({ payload, type }: { payload: { subCategoryId: string, questionId: string }, type: string }): SagaGenerator<{ data: ApiResponse<TQuestion> }> {
+    try {
+        // Call the API with subCategoryId and categoryId
+        const resp = yield call(GETQUESTION, payload.subCategoryId, payload.questionId);
+        const result: ApiResponse<TQuestion> = resp?.data;
+        if (result?.success) {
+            yield put(getQuestionSuccess(result));
+        }
+    } catch (error: any) {
+        yield put(getQuestionFailure(error?.response?.data?.message));
     }
 };
 
@@ -25,4 +45,5 @@ export function* getAllQuestionSaga({ payload, type }: { payload: { subCategoryI
 // Watcher generator function
 export default function* watchQuestion() {
     yield takeLatest('questionSlice/getAllQuestionRequest', getAllQuestionSaga);
+    yield takeLatest('questionSlice/getQuestionRequest', getQuestionSaga);
 };
