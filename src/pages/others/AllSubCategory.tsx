@@ -115,6 +115,7 @@ const AllSubCategory = (): JSX.Element => {
                                                 {transformedQuestionData?.map((question) => (
                                                     <QuestionAccordion
                                                         key={question._id}
+                                                        categoryId={selectedCategoryID}
                                                         subCategoryId={selectedSubCategoryID}
                                                         questionId={question._id}
                                                         question={question.question}

@@ -37,6 +37,18 @@ const QuestionSlice = createSlice({
             state.type = type;
             state.error = payload;
         },
+
+        // Update question
+        updateQuestionRequest: (state, { payload, type }) => {
+            state.type = type;
+        },
+        updateQuestionSuccess: (state, { payload, type }) => {
+            state.type = type;
+        },
+        updateQuestionFailure: (state, { payload, type }) => {
+            state.type = type;
+            state.error = payload;
+        },
     }
 });
 
@@ -48,6 +60,10 @@ export const {
     getQuestionRequest,
     getQuestionSuccess,
     getQuestionFailure,
+
+    updateQuestionRequest,
+    updateQuestionSuccess,
+    updateQuestionFailure,
 } = QuestionSlice.actions;
 
 export default QuestionSlice.reducer;

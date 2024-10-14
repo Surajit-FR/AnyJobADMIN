@@ -3,8 +3,10 @@ import { DerivedQuestion } from "../../../../types/subCategoryTypes";
 import { getQuestionRequest } from "../../../store/reducers/QuestionReducers";
 import { AppDispatch } from "../../../store/Store";
 import { useDispatch } from "react-redux";
+import { getSubCategoryRequest } from "../../../store/reducers/SubCategoryReducers";
 
 type QuestionProps = {
+    categoryId: string | undefined;
     subCategoryId: string | undefined;
     questionId: string | undefined;
     question: string;
@@ -19,10 +21,15 @@ const sanitizeId = (id: string) => {
         .toLowerCase();
 }
 
-const QuestionAccordion = ({ subCategoryId, questionId, question, options, derivedQuestions = [], isDerived = false }: QuestionProps) => {
+const QuestionAccordion = ({ categoryId, subCategoryId, questionId, question, options, derivedQuestions = [], isDerived = false }: QuestionProps) => {
     const sanitizedQuestionId = sanitizeId(question);
     const [isOpen, setIsOpen] = useState(false);
     const dispatch: AppDispatch = useDispatch();
+
+    const handleEditQuestion = () => {
+        dispatch(getQuestionRequest({ categoryId: categoryId, subCategoryId: subCategoryId, questionId: questionId }))
+        dispatch(getSubCategoryRequest({ SubCategoryId: subCategoryId }))
+    };
 
     const toggleAccordion = () => {
         setIsOpen((prev) => !prev); // Toggle the open state
@@ -56,7 +63,7 @@ const QuestionAccordion = ({ subCategoryId, questionId, question, options, deriv
                                     data-bs-toggle="modal"
                                     data-bs-target="#questionupdate-centermodal"
                                     className="btn btn-sm btn-soft-secondary"
-                                    onClick={() => dispatch(getQuestionRequest({ subCategoryId: subCategoryId, questionId: questionId }))}>
+                                    onClick={handleEditQuestion}>
                                     <i className="ri-edit-fill"></i>
                                 </button>
                             </div>
@@ -68,7 +75,8 @@ const QuestionAccordion = ({ subCategoryId, questionId, question, options, deriv
                                     {derivedQuestions.length > 0 && (
                                         derivedQuestions.map((dq) => (
                                             <QuestionAccordion
-                                                key={dq.option} // Use a unique key for each derived question
+                                                key={dq.option}
+                                                categoryId={categoryId}
                                                 subCategoryId={subCategoryId}
                                                 questionId={dq._id}
                                                 question={dq.question}

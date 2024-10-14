@@ -4,6 +4,7 @@ import { TLoginCredentials } from "../../../types/authTypes";
 import { TCategoryPayload } from "../../../types/categoryTypes";
 import { GetAllSubcategoryParams, TSubCategoryPayload } from "../../../types/subCategoryTypes";
 import { setupInterceptors } from "./interceptor";
+import { TQuestionPayload } from "../../../types/questionTypes";
 
 // Create axios instance
 export const API = axios.create({ baseURL: REACT_APP_BASE_URL, withCredentials: true });
@@ -49,5 +50,7 @@ export const GETALLQUESTIONS = (subCategoryId: string, params: GetAllSubcategory
     }
     return API.get(`/question/${subCategoryId}?${queryString.toString()}`);
 };
-// Get questions
+// Get question
 export const GETQUESTION = (subCategoryId: string, questionId: string) => API.get(`/question/${subCategoryId}/${questionId}`);
+// Update question
+export const UPDATEQUESTION = (data: TQuestionPayload, subCategoryId: string, questionId: string) => API.patch(`/question/${subCategoryId}/${questionId}`, data);

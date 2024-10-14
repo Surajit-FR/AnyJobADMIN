@@ -4,9 +4,11 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { AppDispatch, RootState } from "../../../store/Store";
 import { TQuestionPayload } from "../../../../types/questionTypes";
 import Question from "./Question";
+import { updateQuestionRequest } from "../../../store/reducers/QuestionReducers";
 
 const UpdateQuestionsModal = (): JSX.Element => {
     const { singleQuestionData } = useSelector((state: RootState) => state.questionSlice);
+    const { singleSubCategoryData } = useSelector((state: RootState) => state.subCategorySlice);
     const dispatch: AppDispatch = useDispatch();
 
     const { register, control, handleSubmit, setValue, watch, reset } = useForm<TQuestionPayload>({
@@ -52,14 +54,14 @@ const UpdateQuestionsModal = (): JSX.Element => {
             };
         });
         const _data = transformedData[0];
-        console.log(_data);
 
-        // Dispatch the transformed data (uncomment the below code when you're ready to dispatch)
-        // dispatch(updateQuestionsRequest({
-        //     questionArray: transformedData,
-        //     subCategoryId: singleSubCategoryData?._id
-        // }));
+        dispatch(updateQuestionRequest({
+            data: _data,
+            subCategoryId: singleSubCategoryData?._id,
+            questionId: singleQuestionData && singleQuestionData[0]?._id
+        }));
     };
+
 
     return (
         <>
