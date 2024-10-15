@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import PageTitle from "../../components/PageTitle";
 import $ from "jquery";
 import axios from "axios";
@@ -6,6 +6,18 @@ import "datatables.net";
 import "datatables.net-bs5";
 import "datatables.net-responsive";
 import "datatables.net-buttons-bs5";
+import { REACT_APP_BASE_URL } from "../../config/app.config";
+
+// Debounce function
+const debounce = (func: Function, delay: number) => {
+    let timeoutId: NodeJS.Timeout;
+    return (...args: any[]) => {
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func(...args);
+        }, delay);
+    };
+};
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -13,6 +25,10 @@ const breadcrumbs = [
 ];
 
 const RegisteredCustomerList = (): JSX.Element => {
+    const handleActionClick = useCallback((id: string) => {
+        alert(`Button clicked for user with ID: ${id}`);
+    }, []);
+
     useEffect(() => {
         const table = $('#datatable-buttons').DataTable({
             responsive: true,
@@ -20,63 +36,91 @@ const RegisteredCustomerList = (): JSX.Element => {
             fixedColumns: true,
             select: true,
             buttons: ["copy", "csv", "excel", "pdf", "print"],
-            serverSide: true, // Enable server-side processing
-            processing: true, // Show processing indicator
+            serverSide: true,
+            processing: true,
             ajax: async (data: any, callback: Function) => {
                 try {
-                    // Construct the API parameters
                     const params = {
-                        page: data.start / data.length + 1, // Page number (1-indexed)
-                        limit: data.length, // Number of records per page
-                        query: data.search.value || '', // Search query
-                        sortBy: data.columns[data.order[0].column].data, // Column to sort by
-                        sortType: data.order[0].dir // Sort direction
+                        page: data.start / data.length + 1,
+                        limit: data.length,
+                        query: data.search.value || '',
+                        sortBy: data.columns[data.order[0].column].data,
+                        sortType: data.order[0].dir
                     };
 
-                    // Log the parameters being sent to the API
-                    console.log('API Request Params:', params);
+                    const response = await axios.get(`${REACT_APP_BASE_URL}/user/get-registered-customers`, {
+                        params,
+                        withCredentials: true
+                    });
 
-                    // Make the API request
-                    const response = await axios.get('/api/your-endpoint', { params });
+                    const customerData = response?.data?.data?.customers.map((item: any) => [
+                        `${item.firstName} ${item.lastName}`,
+                        item.email,
+                        item.userType,
+                        new Date(item.createdAt).toLocaleDateString(),
+                        item._id
+                    ]);
 
-                    // Call the callback with the data from the server
+                    const totalRecords = response.data.data.pagination.total;
+
                     callback({
-                        draw: data.draw, // Draw counter for DataTables
-                        recordsTotal: response.data.total, // Total records in the database
-                        recordsFiltered: response.data.filteredTotal, // Total records after filtering
-                        data: response.data.data.map((item: any) => [
-                            item.name,
-                            item.position,
-                            item.office,
-                            item.age,
-                            item.start_date,
-                            item.salary
-                        ]) // Data for DataTables
+                        draw: data.draw,
+                        recordsTotal: totalRecords,
+                        recordsFiltered: totalRecords,
+                        data: customerData
                     });
                 } catch (error) {
                     console.error('Error fetching data:', error);
                 }
             },
             columns: [
-                { data: "name", title: "Name" },
-                { data: "position", title: "Position" },
-                { data: "office", title: "Office" },
-                { data: "age", title: "Age" },
-                { data: "start_date", title: "Start date" },
-                { data: "salary", title: "Salary" }
+                { title: "Name" },
+                { title: "Email" },
+                { title: "User Type" },
+                { title: "Date Registered" },
+                {
+                    title: "Action",
+                    render: (data: any, type: any, row: any) => {
+                        return `
+                            <button class="btn btn-primary btn-sm action-button" data-id="${row[4]}">
+                                View Details
+                            </button>
+                        `;
+                    }
+                }
             ],
         });
 
+        // Debounced search function
+        const debouncedSearch = debounce((value: string) => {
+            table.search(value).draw();
+        }, 600); // 600ms delay
+
+        // Attach search input event handler
+        const searchInput = $('#datatable-buttons_filter input');
+
+        searchInput.on('input', function () {
+            const searchValue = $(this).val();
+            debouncedSearch(searchValue);
+        });
+
+        // Event delegation for dynamic elements (action buttons)
+        $('#datatable-buttons tbody').on('click', '.action-button', function () {
+            const id = $(this).data('id');
+            handleActionClick(id);  // Call the handleActionClick function
+        });
+
+        // Clean up the search input event listener and DataTable on unmount
         return () => {
-            table.destroy();
+            searchInput.off('input'); // Clean up the input event listener
+            $('#datatable-buttons tbody').off('click', '.action-button'); // Remove the delegated event listener
+            table.destroy(); // Clean up the DataTable instance
         };
-    }, []);
+    }, [handleActionClick]);
 
     return (
         <>
-            {/* PageTitle section */}
             <PageTitle pageName="Registered Customer List" breadcrumbs={breadcrumbs} />
-
             <div className="row">
                 <div className="col-12">
                     <div className="card">
@@ -85,11 +129,10 @@ const RegisteredCustomerList = (): JSX.Element => {
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>Email</th>
+                                        <th>User Type</th>
+                                        <th>Date Registered</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>

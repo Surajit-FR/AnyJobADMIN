@@ -54,3 +54,5 @@ export const GETALLQUESTIONS = (subCategoryId: string, params: GetAllSubcategory
 export const GETQUESTION = (subCategoryId: string, questionId: string) => API.get(`/question/${subCategoryId}/${questionId}`);
 // Update question
 export const UPDATEQUESTION = (data: TQuestionPayload, subCategoryId: string, questionId: string) => API.patch(`/question/${subCategoryId}/${questionId}`, data);
+// Get registered customers
+export const GETREGISTEREDCUSTOMERS = () => API.get("/user/get-registered-customers");
