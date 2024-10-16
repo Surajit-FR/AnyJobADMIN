@@ -6,11 +6,13 @@ import ThemeSetting from "./components/common/topnavbar/ThemeSetting";
 import PreLoader from "./components/PreLoader";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/Store";
-import { isCategoryLoading } from "./utils/loading";
+import { isCategoryLoading, isQuestionLoading, isSubCategoryLoading } from "./utils/loading";
 
 const App = (): JSX.Element => {
   const category = useSelector((state: RootState) => state.categorySlice);
-  const LOADING = isCategoryLoading(category);
+  const question = useSelector((state: RootState) => state.questionSlice);
+  const subCategory = useSelector((state: RootState) => state.subCategorySlice);
+  const LOADING = isCategoryLoading(category) || isQuestionLoading(question) || isSubCategoryLoading(subCategory);
   // console.log(LOADING);
 
   return (

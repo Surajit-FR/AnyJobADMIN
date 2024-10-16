@@ -7,6 +7,17 @@ const loadingActions = [
     'AuthLogoutRequest',
     'addCategoryRequest',
     'getCategoryRequest',
+    'getAllCategoryRequest',
+    'updateCategoryRequest',
+    'deleteCategoryRequest',
+    'getAllQuestionRequest',
+    'getQuestionRequest',
+    'updateQuestionRequest',
+    'addSubCategoryRequest',
+    'getSubCategoryRequest',
+    'getAllSubCategoryRequest',
+    'updateSubCategoryRequest',
+    'deleteSubCategoryRequest',
 ];
 
 export const isLoading = (slice: SliceState, actions: string[]): boolean => {
@@ -19,4 +30,12 @@ export const isAuthLoading = (auth: SliceState): boolean => {
 
 export const isCategoryLoading = (category: SliceState): boolean => {
     return isLoading(category, loadingActions.filter(action => action.includes('Category')));
+};
+
+export const isQuestionLoading = (question: SliceState): boolean => {
+    return isLoading(question, loadingActions.filter(action => action.includes('Question')));
+};
+
+export const isSubCategoryLoading = (subCategory: SliceState): boolean => {
+    return isLoading(subCategory, loadingActions.filter(action => action.includes('SubCategory')));
 };
