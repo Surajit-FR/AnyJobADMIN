@@ -13,7 +13,7 @@ import UpdateQuestionsModal from "../../components/core/subcategory/UpdateQuesti
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
-    { label: "Sub Category", link: "/service-sub-category" },
+    { label: "Sub Category", link: "/manage-service-sub-category" },
     { label: "All Sub Category" },
 ];
 
