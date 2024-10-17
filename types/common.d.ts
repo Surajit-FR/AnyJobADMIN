@@ -1,6 +1,7 @@
 import { UserData } from "./authTypes";
 import { TCategory, TCategoryAPIResponse, TCategoryData } from "./categoryTypes";
 import { TQuestion } from "./questionTypes";
+import { TShift } from "./shiftTypes";
 import { TSubCategory } from "./subCategoryTypes";
 
 export type DefaultSettings = {
@@ -30,6 +31,8 @@ export type DataState = {
     singleSubCategoryData?: Partial<TSubCategory>,
     questionData?: Array<TQuestion>,
     singleQuestionData?: Array<TQuestion>,
+    shiftData?: Array<TShift>,
+    singleShiftData?: Partial<TShift>,
     error: string | null,
     type: string,
 };

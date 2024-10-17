@@ -3,6 +3,7 @@ import AuthSlice from "./reducers/AuthReducers";
 import CategorySlice from "./reducers/CategoryReducers";
 import SubCategorySlice from "./reducers/SubCategoryReducers";
 import QuestionSlice from "./reducers/QuestionReducers";
+import ShiftSlice from "./reducers/ShiftReducers";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "./rootSaga";
 
@@ -15,6 +16,7 @@ export const store = configureStore({
         categorySlice: CategorySlice,
         subCategorySlice: SubCategorySlice,
         questionSlice: QuestionSlice,
+        shiftSlice: ShiftSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(middleware),
 });

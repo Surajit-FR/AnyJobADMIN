@@ -54,16 +54,23 @@
                 "items": []
             },
             {
-                "to": "/service-category",
+                "to": "/manage-service-category",
                 "label": "Category",
                 "icon": "ri-layout-grid-fill",
                 "isSubmenu": false,
                 "items": []
             },
             {
-                "to": "/service-sub-category",
+                "to": "/manage-service-sub-category",
                 "icon": "ri-grid-fill",
                 "label": "Sub Category",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/manage-service-shift",
+                "label": "Manage Shift",
+                "icon": "ri-time-fill",
                 "isSubmenu": false,
                 "items": []
             },

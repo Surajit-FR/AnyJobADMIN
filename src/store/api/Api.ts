@@ -5,6 +5,7 @@ import { TCategoryPayload } from "../../../types/categoryTypes";
 import { GetAllSubcategoryParams, TSubCategoryPayload } from "../../../types/subCategoryTypes";
 import { setupInterceptors } from "./interceptor";
 import { TQuestionPayload } from "../../../types/questionTypes";
+import { TShiftPayload } from "../../../types/shiftTypes";
 
 // Create axios instance
 export const API = axios.create({ baseURL: REACT_APP_BASE_URL, withCredentials: true });
@@ -54,5 +55,13 @@ export const GETALLQUESTIONS = (subCategoryId: string, params: GetAllSubcategory
 export const GETQUESTION = (subCategoryId: string, questionId: string) => API.get(`/question/${subCategoryId}/${questionId}`);
 // Update question
 export const UPDATEQUESTION = (data: TQuestionPayload, subCategoryId: string, questionId: string) => API.patch(`/question/${subCategoryId}/${questionId}`, data);
-// Get registered customers
-export const GETREGISTEREDCUSTOMERS = () => API.get("/user/get-registered-customers");
+// Add shift
+export const ADDSHIFT = (data: TShiftPayload) => API.post("/shift", data);
+// Get all shifts
+export const GETALLSHIFTS = () => API.get("/shift");
+// Get shift
+export const GETSHIFT = (shiftId: string) => API.get(`/shift/${shiftId}`);
+// Update shift
+export const UPDATESHIFT = (shiftId: string, data: TShiftPayload) => API.patch(`/shift/${shiftId}`, data);
+// Delete shift
+export const DELETESHIFT = (shiftId: string) => API.delete(`/shift/${shiftId}`);
