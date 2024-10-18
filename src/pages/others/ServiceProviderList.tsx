@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import PageTitle from "../../components/PageTitle";
 import $ from "jquery";
 import axios from "axios";
@@ -9,17 +9,12 @@ import "datatables.net-buttons-bs5";
 import "datatables.net-buttons/js/buttons.html5";
 import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
 import { REACT_APP_BASE_URL } from "../../config/app.config";
-
-// Debounce function
-const debounce = (func: Function, delay: number) => {
-    let timeoutId: NodeJS.Timeout;
-    return (...args: any[]) => {
-        if (timeoutId) clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-            func(...args);
-        }, delay);
-    };
-};
+import { debounce } from "lodash";
+import { showToast } from "../../utils/Toast";
+import ServiceProviderDetailsModal from "../../components/core/serviceproviderlist/ServiceProviderDetailsModal";
+import { AppDispatch } from "../../store/Store";
+import { useDispatch } from "react-redux";
+import { getUserDetailsRequest } from "../../store/reducers/UserReducers";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -27,9 +22,11 @@ const breadcrumbs = [
 ];
 
 const ServiceProviderList = (): JSX.Element => {
+    const dispatch: AppDispatch = useDispatch();
+
     const handleActionClick = useCallback((id: string) => {
-        alert(`Button clicked for user with ID: ${id}`);
-    }, []);
+        dispatch(getUserDetailsRequest({ userId: id }));
+    }, [dispatch]);
 
     useEffect(() => {
         const table = $('#datatable-buttons').DataTable({
@@ -37,7 +34,7 @@ const ServiceProviderList = (): JSX.Element => {
             fixedHeader: true,
             fixedColumns: true,
             select: true,
-            dom: '<"top d-flex justify-content-between align-items-center"lBf>rt<"bottom"ip>', // Layout updated for custom control placement
+            dom: '<"top d-flex justify-content-between align-items-center"lBf>rt<"bottom"ip>',
             buttons: [
                 {
                     extend: 'csvHtml5',
@@ -64,13 +61,13 @@ const ServiceProviderList = (): JSX.Element => {
 
                     const serviceProviderData = response.data.data.serviceProviders.map((item: any) => [
                         `${item.firstName} ${item.lastName}`,
-                        item.email,
-                        item.phone,
+                        item.email || 'N/A',
+                        item.phone || 'N/A',
                         item.additionalInfo?.[0]?.companyName || 'N/A',
-                        item.userType,
-                        new Date(item.createdAt).toLocaleDateString(),
+                        item.userType || 'N/A',
+                        new Date(item.createdAt).toLocaleDateString() || 'N/A',
                         item.isVerified ? "Verified" : "Unverified",
-                        item._id // ID for action buttons
+                        item._id
                     ]);
 
                     const totalRecords = response.data.data.pagination.total;
@@ -107,7 +104,7 @@ const ServiceProviderList = (): JSX.Element => {
                     title: "Action",
                     render: (data: any, type: any, row: any) => {
                         return `
-                            <button class="btn btn-primary btn-sm action-button" data-id="${row[7]}">
+                            <button data-bs-toggle="modal" data-bs-target="#serviceproviderdetailsmodal" class="btn btn-primary btn-sm action-button" data-id="${row[7]}">
                                 View Details
                             </button>
                         `;
@@ -116,63 +113,61 @@ const ServiceProviderList = (): JSX.Element => {
             ],
         });
 
-        // Debounced search function
         const debouncedSearch = debounce((value: string) => {
             table.search(value).draw();
-        }, 600); // 600ms delay
+        }, 600);
 
-        // Attach search input event handler
         const searchInput = $('#datatable-buttons_filter input');
 
+        searchInput.off('input');
         searchInput.on('input', function () {
             const searchValue = $(this).val();
-            debouncedSearch(searchValue as string);
+            if (searchValue !== null) {
+                debouncedSearch(searchValue as string);
+            }
         });
 
-        // Toggle verification status
         $('#datatable-buttons').on('click', '.toggle-verification', async function () {
             const button = $(this);
             const userId = button.data("id");
             const isVerified = button.data("verified");
 
             try {
-                // Send a request to update verification status
-                await axios.patch(`${REACT_APP_BASE_URL}/user/toggle-verification/${userId}`, {
+                const resp = await axios.patch(`${REACT_APP_BASE_URL}/user/verify/${userId}`, {
                     isVerified: !isVerified
                 }, { withCredentials: true });
+                showToast({ message: resp?.data?.message, type: 'success', durationTime: 3500, position: "top-center" });
 
-                // Update button text and style based on new status
                 button.toggleClass('btn-success btn-danger').text(isVerified ? 'Unverified' : 'Verified');
-                button.data("verified", !isVerified); // Update the button data attribute
+                button.data("verified", !isVerified);
             } catch (error) {
                 console.error('Error toggling verification:', error);
             }
         });
 
-        // Event delegation for dynamic elements (action buttons)
         $('#datatable-buttons tbody').on('click', '.action-button', function () {
             const id = $(this).data('id');
-            handleActionClick(id);  // Call the handleActionClick function
+            handleActionClick(id);
         });
 
         // Clean up the search input event listener and DataTable on unmount
         return () => {
-            searchInput.off('input'); // Clean up the input event listener
-            $('#datatable-buttons tbody').off('click', '.action-button'); // Remove the delegated event listener
-            table.destroy(); // Clean up the DataTable instance
+            searchInput.off('input');
+            $('#datatable-buttons tbody').off('click', '.action-button');
+            table.destroy();
         };
     }, [handleActionClick]);
 
     return (
         <>
-            {/* PageTitle section */}
             <PageTitle pageName="Service Provider List" breadcrumbs={breadcrumbs} />
+
+            <ServiceProviderDetailsModal />
 
             <div className="row">
                 <div className="col-12">
                     <div className="card">
                         <div className="card-body">
-                            {/* DataTable */}
                             <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100">
                                 <thead>
                                     <tr>
@@ -187,7 +182,6 @@ const ServiceProviderList = (): JSX.Element => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/* Table body will be populated by DataTables */}
                                 </tbody>
                             </table>
                         </div>

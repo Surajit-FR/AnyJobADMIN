@@ -1,3 +1,5 @@
+import { AdditionalInfo, UserAddress } from "./userTypes";
+
 export type TCredentials = {
     email: string,
     password: string,
@@ -11,19 +13,18 @@ export type TRegisterCredentials = TCredentials & {
 };
 
 export type User = {
-    _id: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    phone: string,
-    avatar: string,
-    coverImage: string,
-    userType: string,
-    isVerified: boolean,
-    isDeleted: boolean,
-    createdAt: string,
-    updatedAt: string,
-    __v: number,
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    avatar: string;
+    isVerified: boolean;
+    userType: string;
+    createdAt: string;
+    updatedAt: string;
+    additionalInfo: Array<AdditionalInfo>;
+    userAddress: Array<UserAddress>;
 };
 
 export type UserData = {

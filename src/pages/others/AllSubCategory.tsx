@@ -124,7 +124,7 @@ const AllSubCategory = (): JSX.Element => {
                                                     />
                                                 ))}
                                             </div>
-                                            <div className="text-end">
+                                            <div className="text-start mx-1">
                                                 <button
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#subcatupdate-centermodal"

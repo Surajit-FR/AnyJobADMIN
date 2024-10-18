@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import PageTitle from "../../components/PageTitle";
 import $ from "jquery";
 import axios from "axios";
@@ -7,17 +7,11 @@ import "datatables.net-bs5";
 import "datatables.net-responsive";
 import "datatables.net-buttons-bs5";
 import { REACT_APP_BASE_URL } from "../../config/app.config";
-
-// Debounce function
-const debounce = (func: Function, delay: number) => {
-    let timeoutId: NodeJS.Timeout;
-    return (...args: any[]) => {
-        if (timeoutId) clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-            func(...args);
-        }, delay);
-    };
-};
+import { debounce } from "lodash";
+import CustomerDetailsModal from "../../components/core/customerlist/CustomerDetailsModal";
+import { AppDispatch } from "../../store/Store";
+import { useDispatch } from "react-redux";
+import { getUserDetailsRequest } from "../../store/reducers/UserReducers";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -25,9 +19,11 @@ const breadcrumbs = [
 ];
 
 const RegisteredCustomerList = (): JSX.Element => {
+    const dispatch: AppDispatch = useDispatch();
+
     const handleActionClick = useCallback((id: string) => {
-        alert(`Button clicked for user with ID: ${id}`);
-    }, []);
+        dispatch(getUserDetailsRequest({ userId: id }));
+    }, [dispatch]);
 
     useEffect(() => {
         const table = $('#datatable-buttons').DataTable({
@@ -82,7 +78,7 @@ const RegisteredCustomerList = (): JSX.Element => {
                     title: "Action",
                     render: (data: any, type: any, row: any) => {
                         return `
-                            <button class="btn btn-primary btn-sm action-button" data-id="${row[4]}">
+                            <button data-bs-toggle="modal" data-bs-target="#customerdetailsmodal" class="btn btn-primary btn-sm action-button" data-id="${row[4]}">
                                 View Details
                             </button>
                         `;
@@ -91,36 +87,35 @@ const RegisteredCustomerList = (): JSX.Element => {
             ],
         });
 
-        // Debounced search function
         const debouncedSearch = debounce((value: string) => {
             table.search(value).draw();
-        }, 600); // 600ms delay
+        }, 600);
 
-        // Attach search input event handler
         const searchInput = $('#datatable-buttons_filter input');
 
         searchInput.on('input', function () {
             const searchValue = $(this).val();
-            debouncedSearch(searchValue);
+            debouncedSearch(searchValue as string);
         });
 
-        // Event delegation for dynamic elements (action buttons)
         $('#datatable-buttons tbody').on('click', '.action-button', function () {
             const id = $(this).data('id');
-            handleActionClick(id);  // Call the handleActionClick function
+            handleActionClick(id);
         });
 
-        // Clean up the search input event listener and DataTable on unmount
         return () => {
-            searchInput.off('input'); // Clean up the input event listener
-            $('#datatable-buttons tbody').off('click', '.action-button'); // Remove the delegated event listener
-            table.destroy(); // Clean up the DataTable instance
+            searchInput.off('input');
+            $('#datatable-buttons tbody').off('click', '.action-button');
+            table.destroy();
         };
     }, [handleActionClick]);
 
     return (
         <>
             <PageTitle pageName="Registered Customer List" breadcrumbs={breadcrumbs} />
+
+            <CustomerDetailsModal />
+
             <div className="row">
                 <div className="col-12">
                     <div className="card">
@@ -136,7 +131,6 @@ const RegisteredCustomerList = (): JSX.Element => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/* Table body will be populated by DataTables */}
                                 </tbody>
                             </table>
                         </div>

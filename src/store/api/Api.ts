@@ -65,3 +65,5 @@ export const GETSHIFT = (shiftId: string) => API.get(`/shift/${shiftId}`);
 export const UPDATESHIFT = (shiftId: string, data: TShiftPayload) => API.patch(`/shift/${shiftId}`, data);
 // Delete shift
 export const DELETESHIFT = (shiftId: string) => API.delete(`/shift/${shiftId}`);
+// Get user details
+export const USERDETAILS = (userId: string) => API.get(`/user/${userId}`);

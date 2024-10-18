@@ -1,4 +1,4 @@
-import { UserData } from "./authTypes";
+import { User, UserData } from "./authTypes";
 import { TCategory, TCategoryAPIResponse, TCategoryData } from "./categoryTypes";
 import { TQuestion } from "./questionTypes";
 import { TShift } from "./shiftTypes";
@@ -33,6 +33,7 @@ export type DataState = {
     singleQuestionData?: Array<TQuestion>,
     shiftData?: Array<TShift>,
     singleShiftData?: Partial<TShift>,
+    userData?: Partial<User>,
     error: string | null,
     type: string,
 };
