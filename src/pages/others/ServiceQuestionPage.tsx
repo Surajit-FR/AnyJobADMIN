@@ -7,7 +7,7 @@ import { TCategory } from "../../../types/categoryTypes";
 import { AppDispatch, RootState } from "../../store/Store";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategoryRequest } from "../../store/reducers/CategoryReducers";
-import { TAddQuestionPayload } from "../../../types/questionTypes";
+import { TQuestionPayload } from "../../../types/questionTypes";
 import { addQuestionRequest } from "../../store/reducers/QuestionReducers";
 
 const breadcrumbs = [
@@ -20,7 +20,7 @@ const ServiceQuestionPage = (): JSX.Element => {
     const dispatch: AppDispatch = useDispatch();
     const [categoryStateData, setCategoryStateData] = useState<Array<TCategory>>();
 
-    const { register, handleSubmit, control, setValue, watch, reset } = useForm<TAddQuestionPayload>({
+    const { register, handleSubmit, control, setValue, watch, reset } = useForm<TQuestionPayload>({
         defaultValues: {
             categoryId: "",
             questionArray: []
@@ -33,7 +33,7 @@ const ServiceQuestionPage = (): JSX.Element => {
         name: "questionArray"
     });
 
-    const handleFormSubmit = (data: TAddQuestionPayload) => {
+    const handleFormSubmit = (data: TQuestionPayload) => {
         if (!data.categoryId) {
             alert("Please select a category.");
             return;

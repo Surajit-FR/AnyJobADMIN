@@ -10,14 +10,13 @@ const UpdateQuestionsModal = (): JSX.Element => {
     const { singleQuestionData } = useSelector((state: RootState) => state.questionSlice);
     const dispatch: AppDispatch = useDispatch();
 
-    const { register, control, handleSubmit, setValue, watch, reset } = useForm<TQuestionPayload>({
+    const { register, handleSubmit, control, setValue, watch, reset } = useForm<TQuestionPayload>({
         defaultValues: {
             questionArray: [{ question: "", options: {}, derivedQuestions: [] }]
         }
     });
 
-    // UseFieldArray hook to manage dynamic questions array
-    const { fields: questions, append, remove } = useFieldArray({
+    const { fields: questions, remove } = useFieldArray({
         control,
         name: "questionArray"
     });
@@ -25,8 +24,9 @@ const UpdateQuestionsModal = (): JSX.Element => {
     // Prefill the form with existing questions when the data changes
     useEffect(() => {
         if (singleQuestionData?.questions) {
+            // Reset form with existing question data
             reset({
-                questionArray: singleQuestionData.questions.map((q: any) => ({
+                questionArray: singleQuestionData?.questions?.map((q: any) => ({
                     question: q.question || "",
                     options: q.options || {}, // Prepopulate options
                     derivedQuestions: q.derivedQuestions || [] // Prepopulate derivedQuestions
@@ -38,15 +38,12 @@ const UpdateQuestionsModal = (): JSX.Element => {
     // Handle form submission for updating questions
     const handleFormSubmit = (data: TQuestionPayload) => {
         // Transform the form data to match the backend structure
-        const transformedData = data.questionArray.map((question: any) => {
-            // No need for subCategoryId here; just return the necessary fields
+        const transformedData = data?.questionArray?.map((question: any) => {
             const { _id, createdAt, updatedAt, ...restOfQuestion } = question;
 
             const transformedDerivedQuestions = restOfQuestion.derivedQuestions?.map((derivedQuestion: any) => {
-                const { _id, derivedQuestions, ...restOfDerivedQuestion } = derivedQuestion;
-                return {
-                    ...restOfDerivedQuestion
-                };
+                const { _id, ...restOfDerivedQuestion } = derivedQuestion;
+                return restOfDerivedQuestion;
             });
 
             return {
@@ -54,18 +51,14 @@ const UpdateQuestionsModal = (): JSX.Element => {
                 derivedQuestions: transformedDerivedQuestions
             };
         });
-        console.log({
-            data: transformedData[0],
+
+        dispatch(updateQuestionRequest({
+            data: transformedData?.[0],
             questionId: singleQuestionData?.questions?.[0]?._id,
             categoryId: singleQuestionData?._id,
-        });
-
-        // dispatch(updateQuestionRequest({
-        //     data: transformedData[0], 
-        //     questionId: singleQuestionData?.questions?.[0]?._id,
-        //     categoryId: singleQuestionData?._id,
-        // }));
+        }));
     };
+
 
     return (
         <>

@@ -17,12 +17,10 @@ export type TQuestion = {
     _id?: string;
 };
 
-export type TAddQuestionPayload = {
+export type TQuestionPayload = {
     categoryId: string;
     questionArray?: Array<TQuestion>;
 };
-
-export type TQuestionPayload = any;
 
 export type QuestionRespone = {
     _id: string;

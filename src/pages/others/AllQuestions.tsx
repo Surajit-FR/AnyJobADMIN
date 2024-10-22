@@ -62,7 +62,7 @@ const AllQuestions = (): JSX.Element => {
                                                 data-bs-target={`#collapse${index}`}
                                                 aria-expanded="false"
                                                 aria-controls={`collapse${index}`}
-                                                onClick={() => dispatch(getAllQuestionRequest({ categoryId: selectedCategoryID || category?._id }))}
+                                                onClick={() => dispatch(getAllQuestionRequest({ categoryId: selectedCategoryID || undefined }))}
                                             >
                                                 {category?.name}
                                             </button>

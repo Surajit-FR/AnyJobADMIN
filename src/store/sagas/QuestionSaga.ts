@@ -64,16 +64,15 @@ export function* getQuestionSaga({ payload, type }: { payload: { categoryId: str
 };
 
 // updateQuestionSaga generator function
-export function* updateQuestionSaga({ payload, type }: { payload: { data: TQuestionPayload, categoryId: string, subCategoryId: string, questionId: string }, type: string }): SagaGenerator<{ data: ApiResponse<TQuestion> }> {
+export function* updateQuestionSaga({ payload, type }: { payload: { data: TQuestionPayload, categoryId: string, questionId: string }, type: string }): SagaGenerator<{ data: ApiResponse<TQuestion> }> {
     try {
-        const resp = yield call(UPDATEQUESTION, payload.data, payload.subCategoryId, payload.questionId);
+        const resp = yield call(UPDATEQUESTION, payload.data, payload?.categoryId, payload?.questionId);
         const result: ApiResponse<TQuestion> = resp?.data;
         if (result?.success) {
             yield put(updateQuestionSuccess(result));
             showToast({ message: result?.message || 'Question updated successfully.', type: 'success', durationTime: 3500, position: "top-center" });
             yield put(getAllQuestionRequest({
-                subCategoryId: payload?.subCategoryId,
-                categoryId: payload?.categoryId || undefined,
+                categoryId: payload?.data?.categoryId || undefined,
             }));
         }
     } catch (error: any) {

@@ -41,7 +41,7 @@ export const GETALLQUESTIONS = (params: { categoryId?: string }) => {
 // Get question
 export const GETQUESTION = (categoryId: string, questionId: string) => API.get(`/question/q/${categoryId}/${questionId}`);
 // Update question
-export const UPDATEQUESTION = (data: TQuestionPayload, subCategoryId: string, questionId: string) => API.patch(`/question/${subCategoryId}/${questionId}`, data);
+export const UPDATEQUESTION = (data: TQuestionPayload, categoryId: string, questionId: string) => API.patch(`/question/q/${categoryId}/${questionId}`, data);
 // Add shift
 export const ADDSHIFT = (data: TShiftPayload) => API.post("/shift", data);
 // Get all shifts

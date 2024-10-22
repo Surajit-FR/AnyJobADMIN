@@ -1,13 +1,13 @@
 import { UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
-import { TAddQuestionPayload } from "../../../../types/questionTypes";
+import { TQuestionPayload } from "../../../../types/questionTypes";
 import { useState } from "react";
 
 type DerivedQuestionProps = {
     qIndex: number;
     dIndex: number;
-    setValue: UseFormSetValue<TAddQuestionPayload>;
-    watch: UseFormWatch<TAddQuestionPayload>;
-    register: UseFormRegister<TAddQuestionPayload>;
+    setValue: UseFormSetValue<TQuestionPayload>;
+    watch: UseFormWatch<TQuestionPayload>;
+    register: UseFormRegister<TQuestionPayload>;
 }
 
 const DerivedQuestionComponent = ({ qIndex, dIndex, setValue, watch, register }: DerivedQuestionProps) => {
