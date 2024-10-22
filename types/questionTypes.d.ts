@@ -1,18 +1,38 @@
 import { TCategory } from "./categoryTypes";
-import { DerivedQuestion, Question, TSubCategory } from "./subCategoryTypes";
+
+export type DerivedQuestion = {
+    option: string;
+    question: string;
+    options: { [key: string]: string };
+    derivedQuestions?: Array<Record<string, unknown>>;
+    _id?: string;
+};
+
+export type TQuestion = {
+    question: string;
+    options: { [key: string]: string };
+    derivedQuestions?: Array<DerivedQuestion>;
+    createdAt?: string;
+    updatedAt?: string;
+    _id?: string;
+};
+
+export type TAddQuestionPayload = {
+    categoryId: string;
+    questionArray?: Array<TQuestion>;
+};
 
 export type TQuestionPayload = any;
 
-export type TQuestion = {
+export type QuestionRespone = {
     _id: string;
-    categoryId: TCategory;
-    subCategoryId: TSubCategory;
-    question: string;
-    options: Record<string, string>;
-    derivedQuestions: Array<DerivedQuestion>;
-};
+    name: string;
+    categoryImage: string;
+    owner: string;
+    questions: Array<TQuestion>;
+}
 
-
+// API response structure
 export type TQuestionAPIResponse = {
-    data: Array<TQuestion>;
+    data: Array<QuestionRespone>;
 };

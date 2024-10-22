@@ -8,7 +8,6 @@ import { updateQuestionRequest } from "../../../store/reducers/QuestionReducers"
 
 const UpdateQuestionsModal = (): JSX.Element => {
     const { singleQuestionData } = useSelector((state: RootState) => state.questionSlice);
-    const { singleSubCategoryData } = useSelector((state: RootState) => state.subCategorySlice);
     const dispatch: AppDispatch = useDispatch();
 
     const { register, control, handleSubmit, setValue, watch, reset } = useForm<TQuestionPayload>({
@@ -18,33 +17,35 @@ const UpdateQuestionsModal = (): JSX.Element => {
     });
 
     // UseFieldArray hook to manage dynamic questions array
-    const { remove } = useFieldArray({
+    const { fields: questions, append, remove } = useFieldArray({
         control,
         name: "questionArray"
     });
 
     // Prefill the form with existing questions when the data changes
     useEffect(() => {
-        if (singleQuestionData) {
+        if (singleQuestionData?.questions) {
             reset({
-                questionArray: singleQuestionData ?? [] // Ensure questionArray is always an array
+                questionArray: singleQuestionData.questions.map((q: any) => ({
+                    question: q.question || "",
+                    options: q.options || {}, // Prepopulate options
+                    derivedQuestions: q.derivedQuestions || [] // Prepopulate derivedQuestions
+                }))
             });
         }
     }, [singleQuestionData, reset]);
 
     // Handle form submission for updating questions
     const handleFormSubmit = (data: TQuestionPayload) => {
-        // Transforming the form data to match the backend structure
+        // Transform the form data to match the backend structure
         const transformedData = data.questionArray.map((question: any) => {
-            // Remove unnecessary fields and add subCategoryId to derivedQuestions
-            const { _id, createdAt, updatedAt, categoryId, subCategoryId, ...restOfQuestion } = question;
+            // No need for subCategoryId here; just return the necessary fields
+            const { _id, createdAt, updatedAt, ...restOfQuestion } = question;
 
-            // Transform the derivedQuestions
             const transformedDerivedQuestions = restOfQuestion.derivedQuestions?.map((derivedQuestion: any) => {
                 const { _id, derivedQuestions, ...restOfDerivedQuestion } = derivedQuestion;
                 return {
-                    ...restOfDerivedQuestion,
-                    subCategoryId: subCategoryId._id // Add the subCategoryId to derived questions
+                    ...restOfDerivedQuestion
                 };
             });
 
@@ -53,15 +54,18 @@ const UpdateQuestionsModal = (): JSX.Element => {
                 derivedQuestions: transformedDerivedQuestions
             };
         });
-        const _data = transformedData[0];
+        console.log({
+            data: transformedData[0],
+            questionId: singleQuestionData?.questions?.[0]?._id,
+            categoryId: singleQuestionData?._id,
+        });
 
-        dispatch(updateQuestionRequest({
-            data: _data,
-            subCategoryId: singleSubCategoryData?._id,
-            questionId: singleQuestionData && singleQuestionData[0]?._id
-        }));
+        // dispatch(updateQuestionRequest({
+        //     data: transformedData[0], 
+        //     questionId: singleQuestionData?.questions?.[0]?._id,
+        //     categoryId: singleQuestionData?._id,
+        // }));
     };
-
 
     return (
         <>
@@ -74,9 +78,10 @@ const UpdateQuestionsModal = (): JSX.Element => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit(handleFormSubmit)} className="px-3 py-2">
-                                {singleQuestionData?.map((question, qIndex) => (
+                                {/* Render all questions from the form state */}
+                                {questions?.map((question, qIndex) => (
                                     <Question
-                                        key={question._id}
+                                        key={question.id}
                                         question={question}
                                         qIndex={qIndex}
                                         remove={remove}

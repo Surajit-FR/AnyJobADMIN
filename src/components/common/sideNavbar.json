@@ -61,9 +61,9 @@
                 "items": []
             },
             {
-                "to": "/manage-service-sub-category",
+                "to": "/manage-service-questions",
                 "icon": "ri-grid-fill",
-                "label": "Sub Category",
+                "label": "Service Questions",
                 "isSubmenu": false,
                 "items": []
             },

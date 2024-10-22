@@ -1,31 +1,27 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import PageTitle from "../../components/PageTitle";
-import FileUpload from "../../components/core/subcategory/FileUpload";
-import Question from "../../components/core/subcategory/Question";
+import Question from "../../components/core/questions/Question";
 import { Link } from "react-router-dom";
 import { TCategory } from "../../../types/categoryTypes";
 import { AppDispatch, RootState } from "../../store/Store";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategoryRequest } from "../../store/reducers/CategoryReducers";
-import { TSubCategoryPayload } from "../../../types/subCategoryTypes";
-import { addSubCategoryRequest } from "../../store/reducers/SubCategoryReducers";
+import { TAddQuestionPayload } from "../../../types/questionTypes";
+import { addQuestionRequest } from "../../store/reducers/QuestionReducers";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
-    { label: "Sub Category" }
+    { label: "Service Questions" }
 ];
 
-const SubCategoryPage = (): JSX.Element => {
+const ServiceQuestionPage = (): JSX.Element => {
     const { categoryData } = useSelector((state: RootState) => state.categorySlice);
     const dispatch: AppDispatch = useDispatch();
     const [categoryStateData, setCategoryStateData] = useState<Array<TCategory>>();
 
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const { register, handleSubmit, control, setValue, watch, reset } = useForm<TSubCategoryPayload>({
+    const { register, handleSubmit, control, setValue, watch, reset } = useForm<TAddQuestionPayload>({
         defaultValues: {
-            name: "",
-            subCategoryImage: null,
             categoryId: "",
             questionArray: []
             // questionArray: [{ question: "", options: {}, derivedQuestions: [] }]
@@ -37,24 +33,12 @@ const SubCategoryPage = (): JSX.Element => {
         name: "questionArray"
     });
 
-    const handleFormSubmit = (data: TSubCategoryPayload) => {
+    const handleFormSubmit = (data: TAddQuestionPayload) => {
         if (!data.categoryId) {
             alert("Please select a category.");
             return;
-        }
-
-        // Create a new FormData object
-        const formData = new FormData();
-
-        formData.append("name", data.name);
-        formData.append("categoryId", data.categoryId);
-        // Append the image file (if exists)
-        if (data.subCategoryImage instanceof File) {
-            formData.append("subCategoryImage", data.subCategoryImage);
         };
-        formData.append("questionArray", JSON.stringify(data.questionArray));
-
-        dispatch(addSubCategoryRequest({ data: formData, reset }));
+        dispatch(addQuestionRequest({ data, reset }));
     };
 
     useEffect(() => {
@@ -68,14 +52,14 @@ const SubCategoryPage = (): JSX.Element => {
 
     return (
         <>
-            <PageTitle pageName="Sub Category" breadcrumbs={breadcrumbs} />
+            <PageTitle pageName="Service Questions" breadcrumbs={breadcrumbs} />
             <div className="row">
                 <div className="col-lg-10">
                     <div className="card">
                         <div className="card-body">
                             <div className="d-flex justify-content-between">
-                                <h4 className="card-title">Create Sub Category</h4>
-                                <Link className="btn btn-dark" to="/all-sub-category">All Sub Category</Link>
+                                <h4 className="card-title">Create Question</h4>
+                                <Link className="btn btn-dark" to="/all-sub-category">All Questions</Link>
                             </div>
                             <hr />
 
@@ -99,30 +83,13 @@ const SubCategoryPage = (): JSX.Element => {
                                                 }
                                             </select>
                                         </div>
-
-                                        <div className="form-group mb-3">
-                                            <label className="form-label" htmlFor="subCategoryName">Sub Category Name</label>
-                                            <input
-                                                type="text"
-                                                id="subCategoryName"
-                                                className="form-control"
-                                                placeholder="Enter Sub Category Name"
-                                                {...register("name")}
-                                            />
-                                        </div>
-
-                                        <FileUpload
-                                            fileInputRef={fileInputRef}
-                                            watch={watch}
-                                            setValue={setValue}
-                                        />
                                     </div>
 
                                     <div className="col-lg-8" style={{ marginTop: "39px" }}>
                                         <button type="button" className="btn btn-success mb-2" onClick={() => append({ question: "", options: {}, derivedQuestions: [] })}>
                                             Add Question
                                         </button>
-                                        {questions.map((question, qIndex) => (
+                                        {questions?.map((question, qIndex) => (
                                             <Question
                                                 key={question.id}
                                                 question={question}
@@ -136,7 +103,7 @@ const SubCategoryPage = (): JSX.Element => {
                                         ))}
                                     </div>
                                 </div>
-                                <button type="submit" className="btn btn-primary btn-lg">Create Sub Category</button>
+                                <button type="submit" className="btn btn-primary btn-lg">Add Questions</button>
                             </form>
                         </div>
                     </div>
@@ -146,4 +113,4 @@ const SubCategoryPage = (): JSX.Element => {
     );
 };
 
-export default SubCategoryPage;
+export default ServiceQuestionPage;

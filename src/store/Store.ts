@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import AuthSlice from "./reducers/AuthReducers";
 import CategorySlice from "./reducers/CategoryReducers";
-import SubCategorySlice from "./reducers/SubCategoryReducers";
 import QuestionSlice from "./reducers/QuestionReducers";
 import ShiftSlice from "./reducers/ShiftReducers";
 import UserSlice from "./reducers/UserReducers";
@@ -15,7 +14,6 @@ export const store = configureStore({
     reducer: {
         authSlice: AuthSlice,
         categorySlice: CategorySlice,
-        subCategorySlice: SubCategorySlice,
         questionSlice: QuestionSlice,
         shiftSlice: ShiftSlice,
         userSlice: UserSlice,

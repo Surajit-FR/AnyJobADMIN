@@ -8,10 +8,10 @@ import ServiceProviderList from '../pages/others/ServiceProviderList';
 import ManageRole from '../pages/others/ManageRole';
 import ManageUser from '../pages/others/ManageUser';
 import CategoryPage from '../pages/others/CategoryPage';
-import SubCategoryPage from '../pages/others/SubCategoryPage';
+import ServiceQuestionPage from '../pages/others/ServiceQuestionPage';
 import ManageQue from '../pages/others/ManageQue';
 import IPAddressLog from '../pages/others/IPAddressLog';
-import AllSubCategory from '../pages/others/AllSubCategory';
+import AllSubCategory from '../pages/others/AllQuestions';
 import ManageShiftPage from '../pages/others/ManageShiftPage';
 
 const AllRoutes = (): JSX.Element => {
@@ -26,7 +26,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/service-provider-list' element={<ServiceProviderList />} />
                 <Route path='/service-request-list' element={<ServiceRequestList />} />
                 <Route path='/manage-service-category' element={<CategoryPage />} />
-                <Route path='/manage-service-sub-category' element={<SubCategoryPage />} />
+                <Route path='/manage-service-questions' element={<ServiceQuestionPage />} />
                 <Route path='/all-sub-category' element={<AllSubCategory />} />
                 <Route path='/manage-service-shift' element={<ManageShiftPage />} />
                 <Route path='/manage-service-request-que' element={<ManageQue />} />

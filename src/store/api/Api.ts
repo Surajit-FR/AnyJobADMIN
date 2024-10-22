@@ -2,7 +2,6 @@ import axios from "axios";
 import { REACT_APP_BASE_URL } from "../../config/app.config";
 import { TLoginCredentials } from "../../../types/authTypes";
 import { TCategoryPayload } from "../../../types/categoryTypes";
-import { GetAllSubcategoryParams, TSubCategoryPayload } from "../../../types/subCategoryTypes";
 import { setupInterceptors } from "./interceptor";
 import { TQuestionPayload } from "../../../types/questionTypes";
 import { TShiftPayload } from "../../../types/shiftTypes";
@@ -28,31 +27,19 @@ export const DELETECATEGORY = (categoryId: string | undefined) => API.delete(`/c
 export const GETCATEGORY = (categoryId: string | undefined) => API.get(`/category/c/${categoryId}`);
 // Update Category
 export const UPDATECATEGORY = (data: TCategoryPayload, categoryId: string | undefined) => API.put(`/category/c/${categoryId}`, data);
-// Add Sub Category
-export const ADDSUBCATEGORY = (data: TSubCategoryPayload) => API.post("/subcategory", data);
-// Get All Sub Category
-export const GETALLSUBCATEGORY = (params: GetAllSubcategoryParams) => {
-    const queryString = new URLSearchParams(params).toString();
-    return API.get(`/subcategory?${queryString}`)
-};
-// Get Sub Category
-export const GETSUBCATEGORY = (SubCategoryId: string | undefined) => API.get(`/subcategory/c/${SubCategoryId}`);
-// Update Sub Category
-export const UPDATESUBCATEGORY = (data: TSubCategoryPayload, SubCategoryId: string | undefined) => API.patch(`/subcategory/c/${SubCategoryId}`, data);
-// Delete Sub Category
-export const DELETESUBCATEGORY = (SubCategoryId: string | undefined) => API.delete(`/subcategory/c/${SubCategoryId}`);
 // Get All questions
-export const GETALLQUESTIONS = (subCategoryId: string, params: GetAllSubcategoryParams) => {
+export const ADDQUESTIONS = (data: any) => API.post("/question", data);
+// Get All questions
+export const GETALLQUESTIONS = (params: { categoryId?: string }) => {
     const queryString = new URLSearchParams();
-
     // Add categoryId only if it exists
     if (params.categoryId) {
         queryString.append('categoryId', params.categoryId);
     }
-    return API.get(`/question/${subCategoryId}?${queryString.toString()}`);
+    return API.get(`/question?${queryString.toString()}`);
 };
 // Get question
-export const GETQUESTION = (subCategoryId: string, questionId: string) => API.get(`/question/${subCategoryId}/${questionId}`);
+export const GETQUESTION = (categoryId: string, questionId: string) => API.get(`/question/q/${categoryId}/${questionId}`);
 // Update question
 export const UPDATEQUESTION = (data: TQuestionPayload, subCategoryId: string, questionId: string) => API.patch(`/question/${subCategoryId}/${questionId}`, data);
 // Add shift

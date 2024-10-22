@@ -3,7 +3,7 @@ import { DataState } from "../../../types/common";
 
 const initialState: DataState = {
     questionData: [],
-    singleQuestionData: [],
+    singleQuestionData: {},
     error: null,
     type: ''
 };
@@ -12,6 +12,18 @@ const QuestionSlice = createSlice({
     name: "questionSlice",
     initialState,
     reducers: {
+        // Add question
+        addQuestionRequest: (state, { payload, type }) => {
+            state.type = type;
+        },
+        addQuestionSuccess: (state, { payload, type }) => {
+            state.type = type;
+        },
+        addQuestionFailure: (state, { payload, type }) => {
+            state.type = type;
+            state.error = payload;
+        },
+
         // Get all question
         getAllQuestionRequest: (state, { payload, type }) => {
             state.type = type;
@@ -53,6 +65,10 @@ const QuestionSlice = createSlice({
 });
 
 export const {
+    addQuestionRequest,
+    addQuestionSuccess,
+    addQuestionFailure,
+
     getAllQuestionRequest,
     getAllQuestionSuccess,
     getAllQuestionFailure,

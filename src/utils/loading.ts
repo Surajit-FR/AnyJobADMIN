@@ -13,11 +13,6 @@ const loadingActions = [
     'getAllQuestionRequest',
     'getQuestionRequest',
     'updateQuestionRequest',
-    'addSubCategoryRequest',
-    'getSubCategoryRequest',
-    'getAllSubCategoryRequest',
-    'updateSubCategoryRequest',
-    'deleteSubCategoryRequest',
 ];
 
 export const isLoading = (slice: SliceState, actions: string[]): boolean => {

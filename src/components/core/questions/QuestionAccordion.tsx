@@ -3,38 +3,39 @@ import { DerivedQuestion } from "../../../../types/subCategoryTypes";
 import { getQuestionRequest } from "../../../store/reducers/QuestionReducers";
 import { AppDispatch } from "../../../store/Store";
 import { useDispatch } from "react-redux";
-import { getSubCategoryRequest } from "../../../store/reducers/SubCategoryReducers";
 
 type QuestionProps = {
     categoryId: string | undefined;
-    subCategoryId: string | undefined;
     questionId: string | undefined;
     question: string;
     options: { [key: string]: string };
     derivedQuestions?: Array<DerivedQuestion>;
     isDerived?: boolean; // New prop to track if it's a derived question
-}
+};
 
 const sanitizeId = (id: string) => {
-    return id
-        .replace(/[^a-zA-Z0-9]/g, '-')
-        .toLowerCase();
-}
+    return id.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+};
 
-const QuestionAccordion = ({ categoryId, subCategoryId, questionId, question, options, derivedQuestions = [], isDerived = false }: QuestionProps) => {
+const QuestionAccordion = ({
+    categoryId,
+    questionId,
+    question,
+    options,
+    derivedQuestions = [],
+    isDerived = false
+}: QuestionProps) => {
     const sanitizedQuestionId = sanitizeId(question);
     const [isOpen, setIsOpen] = useState(false);
     const dispatch: AppDispatch = useDispatch();
 
     const handleEditQuestion = () => {
-        dispatch(getQuestionRequest({ categoryId: categoryId, subCategoryId: subCategoryId, questionId: questionId }))
-        dispatch(getSubCategoryRequest({ SubCategoryId: subCategoryId }))
+        dispatch(getQuestionRequest({ categoryId, questionId }));
     };
 
     const toggleAccordion = () => {
         setIsOpen((prev) => !prev); // Toggle the open state
     };
-
 
     return (
         <>
@@ -63,7 +64,8 @@ const QuestionAccordion = ({ categoryId, subCategoryId, questionId, question, op
                                     data-bs-toggle="modal"
                                     data-bs-target="#questionupdate-centermodal"
                                     className="btn btn-sm btn-soft-secondary"
-                                    onClick={handleEditQuestion}>
+                                    onClick={handleEditQuestion}
+                                >
                                     <i className="ri-edit-fill"></i>
                                 </button>
                             </div>
@@ -72,23 +74,25 @@ const QuestionAccordion = ({ categoryId, subCategoryId, questionId, question, op
                             {Object.entries(options).map(([key, value]) => (
                                 <li key={key}>
                                     {value}
-                                    {derivedQuestions.length > 0 && (
-                                        derivedQuestions.map((dq) => (
-                                            <QuestionAccordion
-                                                key={dq.option}
-                                                categoryId={categoryId}
-                                                subCategoryId={subCategoryId}
-                                                questionId={dq._id}
-                                                question={dq.question}
-                                                options={dq.options}
-                                                derivedQuestions={dq.derivedQuestions as Array<DerivedQuestion>}
-                                                isDerived={true} // Pass isDerived as true for nested accordions
-                                            />
-                                        ))
-                                    )}
                                 </li>
                             ))}
                         </ul>
+                        {derivedQuestions?.length > 0 && (
+                            <div>
+                                <h5>Derived Questions:</h5>
+                                {derivedQuestions?.map((dq) => (
+                                    <QuestionAccordion
+                                        key={dq?._id}
+                                        categoryId={categoryId}
+                                        questionId={dq?._id}
+                                        question={dq?.question}
+                                        options={dq?.options}
+                                        derivedQuestions={dq?.derivedQuestions as Array<DerivedQuestion>} // Pass down derived questions
+                                        isDerived={true} // Mark as derived
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
