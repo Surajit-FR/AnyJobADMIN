@@ -10,7 +10,8 @@ type QuestionProps = {
     question: string;
     options: { [key: string]: string };
     derivedQuestions?: Array<DerivedQuestion>;
-    isDerived?: boolean; // New prop to track if it's a derived question
+    isDerived?: boolean;
+    setItemID: (id: string) => void;
 };
 
 const sanitizeId = (id: string) => {
@@ -23,7 +24,8 @@ const QuestionAccordion = ({
     question,
     options,
     derivedQuestions = [],
-    isDerived = false
+    isDerived = false,
+    setItemID,
 }: QuestionProps) => {
     const sanitizedQuestionId = sanitizeId(question);
     const [isOpen, setIsOpen] = useState(false);
@@ -63,10 +65,18 @@ const QuestionAccordion = ({
                                 <button
                                     data-bs-toggle="modal"
                                     data-bs-target="#questionupdate-centermodal"
-                                    className="btn btn-sm btn-soft-secondary"
+                                    className="btn btn-sm btn-soft-secondary me-2"
                                     onClick={handleEditQuestion}
                                 >
                                     <i className="ri-edit-fill"></i>
+                                </button>
+                                <button
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#delete-question-alert-modal"
+                                    className="btn btn-sm btn-soft-danger"
+                                    onClick={() => setItemID(questionId ?? "")}
+                                >
+                                    <i className="ri-delete-bin-line"></i>
                                 </button>
                             </div>
                         )}
@@ -89,6 +99,7 @@ const QuestionAccordion = ({
                                         options={dq?.options}
                                         derivedQuestions={dq?.derivedQuestions as Array<DerivedQuestion>} // Pass down derived questions
                                         isDerived={true} // Mark as derived
+                                        setItemID={setItemID}
                                     />
                                 ))}
                             </div>

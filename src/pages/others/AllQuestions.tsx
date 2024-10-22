@@ -7,6 +7,7 @@ import { getAllCategoryRequest } from "../../store/reducers/CategoryReducers";
 import { getAllQuestionRequest } from "../../store/reducers/QuestionReducers";
 import QuestionAccordion from "../../components/core/questions/QuestionAccordion";
 import UpdateQuestionsModal from "../../components/core/questions/UpdateQuestionsModal";
+import ConfirmationModal from "../../components/ConfirmationModal";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -20,9 +21,14 @@ const AllQuestions = (): JSX.Element => {
 
     const dispatch: AppDispatch = useDispatch();
     const [selectedCategoryID, setSelectedCategoryID] = useState<string>("");
+    const [itemId, setItemID] = useState<string>("");
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategoryID(event.target.value);
+    };
+
+    const handleDelete = () => {
+        console.log(itemId);
     };
 
     useEffect(() => {
@@ -38,6 +44,11 @@ const AllQuestions = (): JSX.Element => {
 
     return (
         <>
+            <ConfirmationModal
+                modalId="delete-question-alert-modal"
+                modalText={"Want To Delete The Question?"}
+                onDelete={handleDelete}
+            />
 
             {/* UpdateQuestionsModal */}
             <UpdateQuestionsModal />
@@ -82,6 +93,7 @@ const AllQuestions = (): JSX.Element => {
                                                         question={question?.question}
                                                         options={question?.options}
                                                         derivedQuestions={question?.derivedQuestions}
+                                                        setItemID={setItemID}
                                                     />
                                                 ))}
                                             </div>
