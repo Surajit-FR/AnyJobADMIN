@@ -28,7 +28,7 @@ const AllQuestions = (): JSX.Element => {
     };
 
     const handleDelete = () => {
-        dispatch(deleteQuestionRequest({ questionId: itemId, categoryId: selectedCategoryID }))
+        dispatch(deleteQuestionRequest({ questionId: itemId, categoryId: selectedCategoryID }));
     };
 
     useEffect(() => {
@@ -41,7 +41,6 @@ const AllQuestions = (): JSX.Element => {
         }));
     }, [dispatch, selectedCategoryID]);
 
-
     return (
         <>
             <ConfirmationModal
@@ -50,7 +49,6 @@ const AllQuestions = (): JSX.Element => {
                 onDelete={handleDelete}
             />
 
-            {/* UpdateQuestionsModal */}
             <UpdateQuestionsModal />
 
             <PageTitle pageName="All Questions" breadcrumbs={breadcrumbs} />
@@ -59,7 +57,7 @@ const AllQuestions = (): JSX.Element => {
                 <div className="col-xl-6">
                     <div className="card">
                         <div className="card-body">
-                            <h4 className="header-title">Category List With Their Coresponding Questions</h4>
+                            <h4 className="header-title">Category List With Their Corresponding Questions</h4>
                             <p className="text-muted fs-14 mb-3">Click the categories below to expand/collapse the content.</p>
 
                             <div className="accordion" id="accordionExample">
@@ -82,7 +80,6 @@ const AllQuestions = (): JSX.Element => {
                                             id={`collapse${index}`}
                                             className="accordion-collapse collapse"
                                             aria-labelledby={`heading${index}`}
-                                            data-bs-parent="#accordionExample"
                                         >
                                             <div className="accordion-body">
                                                 {category?.questions?.map((question: any) => (

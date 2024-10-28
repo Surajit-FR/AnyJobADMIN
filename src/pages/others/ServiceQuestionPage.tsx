@@ -59,7 +59,7 @@ const ServiceQuestionPage = (): JSX.Element => {
                         <div className="card-body">
                             <div className="d-flex justify-content-between">
                                 <h4 className="card-title">Create Question</h4>
-                                <Link className="btn btn-dark" to="/all-sub-category">All Questions</Link>
+                                <Link className="btn btn-dark" to="/all-service-questions">All Questions</Link>
                             </div>
                             <hr />
 

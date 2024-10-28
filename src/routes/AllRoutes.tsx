@@ -11,7 +11,7 @@ import CategoryPage from '../pages/others/CategoryPage';
 import ServiceQuestionPage from '../pages/others/ServiceQuestionPage';
 import ManageQue from '../pages/others/ManageQue';
 import IPAddressLog from '../pages/others/IPAddressLog';
-import AllSubCategory from '../pages/others/AllQuestions';
+import AllQuestions from '../pages/others/AllQuestions';
 import ManageShiftPage from '../pages/others/ManageShiftPage';
 import ServiceProviderDetails from '../components/core/serviceproviderlist/ServiceProviderDetails';
 
@@ -29,7 +29,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/service-request-list' element={<ServiceRequestList />} />
                 <Route path='/manage-service-category' element={<CategoryPage />} />
                 <Route path='/manage-service-questions' element={<ServiceQuestionPage />} />
-                <Route path='/all-sub-category' element={<AllSubCategory />} />
+                <Route path='/all-service-questions' element={<AllQuestions />} />
                 <Route path='/manage-service-shift' element={<ManageShiftPage />} />
                 <Route path='/manage-service-request-que' element={<ManageQue />} />
                 <Route path='/sale-sheet' element={<SaleSheet />} />
