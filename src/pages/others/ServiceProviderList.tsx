@@ -1,4 +1,5 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import $ from "jquery";
 import axios from "axios";
@@ -10,11 +11,6 @@ import "datatables.net-buttons/js/buttons.html5";
 import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
 import { REACT_APP_BASE_URL } from "../../config/app.config";
 import { debounce } from "lodash";
-import { showToast } from "../../utils/Toast";
-import ServiceProviderDetailsModal from "../../components/core/serviceproviderlist/ServiceProviderDetailsModal";
-import { AppDispatch } from "../../store/Store";
-import { useDispatch } from "react-redux";
-import { getUserDetailsRequest } from "../../store/reducers/UserReducers";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -22,11 +18,7 @@ const breadcrumbs = [
 ];
 
 const ServiceProviderList = (): JSX.Element => {
-    const dispatch: AppDispatch = useDispatch();
-
-    const handleActionClick = useCallback((id: string) => {
-        dispatch(getUserDetailsRequest({ userId: id }));
-    }, [dispatch]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const table = $('#datatable-buttons').DataTable({
@@ -66,7 +58,7 @@ const ServiceProviderList = (): JSX.Element => {
                         item.additionalInfo?.[0]?.companyName || 'N/A',
                         item.userType || 'N/A',
                         new Date(item.createdAt).toLocaleDateString() || 'N/A',
-                        item.isVerified ? "Verified" : "Unverified",
+                        item.isVerified ? "Verified" : "Unverified",  // Verification status
                         item._id
                     ]);
 
@@ -93,20 +85,16 @@ const ServiceProviderList = (): JSX.Element => {
                     title: "Verification",
                     render: (data: any, type: any, row: any) => {
                         const isVerified = row[6] === "Verified";
-                        return `
-                            <button class="btn btn-sm ${isVerified ? 'btn-success' : 'btn-danger'} toggle-verification" data-id="${row[7]}" data-verified="${isVerified}">
-                                ${isVerified ? 'Verified' : 'Unverified'}
-                            </button>
-                        `;
+                        return `<strong class="${isVerified ? 'text-success' : 'text-danger'}">${row[6]}</strong>`;
                     }
                 },
                 {
                     title: "Action",
                     render: (data: any, type: any, row: any) => {
                         return `
-                            <button data-bs-toggle="modal" data-bs-target="#serviceproviderdetailsmodal" class="btn btn-primary btn-sm action-button" data-id="${row[7]}">
+                            <a href="#" class="btn btn-primary btn-sm action-button" data-id="${row[7]}">
                                 View Details
-                            </button>
+                            </a>
                         `;
                     }
                 }
@@ -127,27 +115,10 @@ const ServiceProviderList = (): JSX.Element => {
             }
         });
 
-        $('#datatable-buttons').on('click', '.toggle-verification', async function () {
-            const button = $(this);
-            const userId = button.data("id");
-            const isVerified = button.data("verified");
-
-            try {
-                const resp = await axios.patch(`${REACT_APP_BASE_URL}/user/verify/${userId}`, {
-                    isVerified: !isVerified
-                }, { withCredentials: true });
-                showToast({ message: resp?.data?.message, type: 'success', durationTime: 3500, position: "top-center" });
-
-                button.toggleClass('btn-success btn-danger').text(isVerified ? 'Unverified' : 'Verified');
-                button.data("verified", !isVerified);
-            } catch (error) {
-                console.error('Error toggling verification:', error);
-            }
-        });
-
-        $('#datatable-buttons tbody').on('click', '.action-button', function () {
+        $('#datatable-buttons tbody').on('click', '.action-button', function (event) {
+            event.preventDefault();
             const id = $(this).data('id');
-            handleActionClick(id);
+            navigate(`/service-provider-details/${id}`);
         });
 
         // Clean up the search input event listener and DataTable on unmount
@@ -156,13 +127,11 @@ const ServiceProviderList = (): JSX.Element => {
             $('#datatable-buttons tbody').off('click', '.action-button');
             table.destroy();
         };
-    }, [handleActionClick]);
+    }, [navigate]);
 
     return (
         <>
             <PageTitle pageName="Service Provider List" breadcrumbs={breadcrumbs} />
-
-            <ServiceProviderDetailsModal />
 
             <div className="row">
                 <div className="col-12">

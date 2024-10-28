@@ -56,3 +56,5 @@ export const UPDATESHIFT = (shiftId: string, data: TShiftPayload) => API.patch(`
 export const DELETESHIFT = (shiftId: string) => API.delete(`/shift/${shiftId}`);
 // Get user details
 export const USERDETAILS = (userId: string) => API.get(`/user/${userId}`);
+// Verify service provider
+export const VERIFYSERVICEPROVEIDER = (userId: string, isVerified: boolean) => API.patch(`/user/verify/${userId}`, { isVerified });

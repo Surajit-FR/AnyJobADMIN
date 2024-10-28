@@ -23,6 +23,17 @@ const UserSlice = createSlice({
             state.type = type;
             state.error = payload;
         },
+
+        verifyServiceProviderUserDetailsRequest: (state, { payload, type }) => {
+            state.type = type;
+        },
+        verifyServiceProviderUserDetailsSuccess: (state, { payload, type }) => {
+            state.type = type;
+        },
+        verifyServiceProviderUserDetailsFailure: (state, { payload, type }) => {
+            state.type = type;
+            state.error = payload;
+        },
     }
 });
 
@@ -30,6 +41,10 @@ export const {
     getUserDetailsRequest,
     getUserDetailsSuccess,
     getUserDetailsFailure,
+
+    verifyServiceProviderUserDetailsRequest,
+    verifyServiceProviderUserDetailsSuccess,
+    verifyServiceProviderUserDetailsFailure,
 } = UserSlice.actions;
 
 export default UserSlice.reducer;

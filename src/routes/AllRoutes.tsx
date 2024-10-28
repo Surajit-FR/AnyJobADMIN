@@ -13,6 +13,7 @@ import ManageQue from '../pages/others/ManageQue';
 import IPAddressLog from '../pages/others/IPAddressLog';
 import AllSubCategory from '../pages/others/AllQuestions';
 import ManageShiftPage from '../pages/others/ManageShiftPage';
+import ServiceProviderDetails from '../components/core/serviceproviderlist/ServiceProviderDetails';
 
 const AllRoutes = (): JSX.Element => {
     return (
@@ -24,6 +25,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/manage-user' element={<ManageUser />} />
                 <Route path='/registered-customer-list' element={<RegisteredCustomerList />} />
                 <Route path='/service-provider-list' element={<ServiceProviderList />} />
+                <Route path='/service-provider-details/:service_providerId' element={<ServiceProviderDetails />} />
                 <Route path='/service-request-list' element={<ServiceRequestList />} />
                 <Route path='/manage-service-category' element={<CategoryPage />} />
                 <Route path='/manage-service-questions' element={<ServiceQuestionPage />} />
