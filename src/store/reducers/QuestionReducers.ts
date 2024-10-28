@@ -61,6 +61,18 @@ const QuestionSlice = createSlice({
             state.type = type;
             state.error = payload;
         },
+
+        // Delete question
+        deleteQuestionRequest: (state, { payload, type }) => {
+            state.type = type;
+        },
+        deleteQuestionSuccess: (state, { payload, type }) => {
+            state.type = type;
+        },
+        deleteQuestionFailure: (state, { payload, type }) => {
+            state.type = type;
+            state.error = payload;
+        },
     }
 });
 
@@ -80,6 +92,10 @@ export const {
     updateQuestionRequest,
     updateQuestionSuccess,
     updateQuestionFailure,
+
+    deleteQuestionRequest,
+    deleteQuestionSuccess,
+    deleteQuestionFailure,
 } = QuestionSlice.actions;
 
 export default QuestionSlice.reducer;

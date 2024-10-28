@@ -3,6 +3,7 @@ import { ApiResponse, SagaGenerator } from "../../../types/common";
 import { QuestionRespone, TQuestion, TQuestionAPIResponse, TQuestionPayload } from "../../../types/questionTypes";
 import {
     ADDQUESTIONS,
+    DELETEQUESTION,
     GETALLQUESTIONS,
     GETQUESTION,
     UPDATEQUESTION
@@ -10,6 +11,8 @@ import {
 import {
     addQuestionFailure,
     addQuestionSuccess,
+    deleteQuestionFailure,
+    deleteQuestionSuccess,
     getAllQuestionFailure,
     getAllQuestionRequest,
     getAllQuestionSuccess,
@@ -81,6 +84,23 @@ export function* updateQuestionSaga({ payload, type }: { payload: { data: TQuest
     }
 };
 
+// deleteQuestionSaga generator function
+export function* deleteQuestionSaga({ payload, type }: { payload: { data: TQuestionPayload, questionId: string }, type: string }): SagaGenerator<{ data: ApiResponse<null> }> {
+    try {
+        const resp = yield call(DELETEQUESTION, payload?.questionId);
+        const result: ApiResponse<null> = resp?.data;
+        if (result?.success) {
+            yield put(deleteQuestionSuccess(result));
+            showToast({ message: result?.message || 'Question deleted successfully.', type: 'success', durationTime: 3500, position: "top-center" });
+            yield put(getAllQuestionRequest({
+                categoryId: payload?.data?.categoryId || undefined,
+            }));
+        }
+    } catch (error: any) {
+        showToast({ message: error?.response?.data?.message, type: 'error', durationTime: 3500, position: "top-center" });
+        yield put(deleteQuestionFailure(error?.response?.data?.message));
+    }
+};
 
 // Watcher generator function
 export default function* watchQuestion() {
@@ -88,4 +108,5 @@ export default function* watchQuestion() {
     yield takeLatest('questionSlice/getAllQuestionRequest', getAllQuestionSaga);
     yield takeLatest('questionSlice/getQuestionRequest', getQuestionSaga);
     yield takeLatest('questionSlice/updateQuestionRequest', updateQuestionSaga);
+    yield takeLatest('questionSlice/deleteQuestionRequest', deleteQuestionSaga);
 };

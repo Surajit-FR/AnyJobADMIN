@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/Store";
 import { TCategory } from "../../../types/categoryTypes";
 import { getAllCategoryRequest } from "../../store/reducers/CategoryReducers";
-import { getAllQuestionRequest } from "../../store/reducers/QuestionReducers";
+import { deleteQuestionRequest, getAllQuestionRequest } from "../../store/reducers/QuestionReducers";
 import QuestionAccordion from "../../components/core/questions/QuestionAccordion";
 import UpdateQuestionsModal from "../../components/core/questions/UpdateQuestionsModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
@@ -28,7 +28,7 @@ const AllQuestions = (): JSX.Element => {
     };
 
     const handleDelete = () => {
-        console.log(itemId);
+        dispatch(deleteQuestionRequest({ questionId: itemId, categoryId: selectedCategoryID }))
     };
 
     useEffect(() => {

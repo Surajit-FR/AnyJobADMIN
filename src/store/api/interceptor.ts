@@ -1,6 +1,5 @@
 import { API } from "./Api";
 
-// Flag to control token refresh attempts
 let isRefreshing = false;
 let refreshSubscribers: ((token: string) => void)[] = [];
 
@@ -19,7 +18,15 @@ const addRefreshSubscriber = (callback: (token: string) => void) => {
 export const setupInterceptors = () => {
     API.interceptors.request.use(
         (config) => {
-            // Automatically add token from cookies or storage if needed
+            // Check if cookies have been cleared; if so, get tokens from localStorage
+            const accessToken = document.cookie.includes("accessToken")
+                ? undefined
+                : localStorage.getItem("accessToken");
+
+            // Set Authorization header if accessToken is available from cookies or localStorage
+            if (accessToken) {
+                config.headers.Authorization = `Bearer ${accessToken}`;
+            }
             return config;
         },
         (error) => Promise.reject(error)
@@ -35,7 +42,7 @@ export const setupInterceptors = () => {
             if (response?.status === 401 && !originalRequest._retry) {
                 const errorMessage = response.data?.message || '';
 
-                if (errorMessage === "jwt expired") {
+                if (errorMessage === "jwt expired" || errorMessage === "Unauthorized request") {
                     // Token has expired, we need to refresh
                     if (isRefreshing) {
                         // Queue the request if token is already being refreshed
@@ -52,11 +59,26 @@ export const setupInterceptors = () => {
                     isRefreshing = true;
 
                     try {
-                        // Call the refresh token API (assuming refresh token is sent via cookies)
-                        const refreshResponse = await API.post("/auth/refresh-token");
-                        const { accessToken } = refreshResponse.data.data;
+                        // Check for refresh token in cookies or localStorage as a fallback
+                        const refreshToken = document.cookie.includes("refreshToken")
+                            ? undefined
+                            : localStorage.getItem("refreshToken");
+
+                        if (!refreshToken) {
+                            throw new Error("No refresh token available");
+                        }
+
+                        // Call the refresh token API
+                        const refreshResponse = await API.post("/auth/refresh-token", { refreshToken });
+                        const { accessToken, refreshToken: newRefreshToken } = refreshResponse.data.data;
 
                         if (accessToken) {
+                            // Store new tokens in localStorage if needed
+                            localStorage.setItem("accessToken", accessToken);
+                            if (newRefreshToken) {
+                                localStorage.setItem("refreshToken", newRefreshToken);
+                            }
+
                             // Notify all queued requests with the new token
                             onRefreshed(accessToken);
                             isRefreshing = false;
@@ -70,14 +92,14 @@ export const setupInterceptors = () => {
 
                         // If the refresh token has expired or is invalid
                         if (err.response?.data?.message === "Refresh token is expired or used") {
-                            window.localStorage.removeItem("accessToken");
-                            window.localStorage.removeItem("refreshToken");
+                            localStorage.removeItem("accessToken");
+                            localStorage.removeItem("refreshToken");
                         }
 
                         return Promise.reject(err);
                     }
                 }
-            };
+            }
             // Reject the error if it's not a token expiration issue
             return Promise.reject(error);
         }
