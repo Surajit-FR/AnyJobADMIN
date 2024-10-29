@@ -49,12 +49,13 @@ const RegisteredCustomerList = (): JSX.Element => {
                         withCredentials: true
                     });
 
+                    // Include the average rating in customerData
                     const customerData = response?.data?.data?.customers.map((item: any) => [
                         `${item.firstName} ${item.lastName}`,
                         item.email,
                         item.userType,
                         new Date(item.createdAt).toLocaleDateString(),
-                        item._id
+                        item.avgRating || "N/A"
                     ]);
 
                     const totalRecords = response.data.data.pagination.total;
@@ -74,16 +75,7 @@ const RegisteredCustomerList = (): JSX.Element => {
                 { title: "Email" },
                 { title: "User Type" },
                 { title: "Date Registered" },
-                {
-                    title: "Action",
-                    render: (data: any, type: any, row: any) => {
-                        return `
-                            <button data-bs-toggle="modal" data-bs-target="#customerdetailsmodal" class="btn btn-primary btn-sm action-button" data-id="${row[4]}">
-                                View Details
-                            </button>
-                        `;
-                    }
-                }
+                { title: "Avg. Rating" }
             ],
         });
 
@@ -98,14 +90,9 @@ const RegisteredCustomerList = (): JSX.Element => {
             debouncedSearch(searchValue as string);
         });
 
-        $('#datatable-buttons tbody').on('click', '.action-button', function () {
-            const id = $(this).data('id');
-            handleActionClick(id);
-        });
-
+        // Remove event listener for action button
         return () => {
             searchInput.off('input');
-            $('#datatable-buttons tbody').off('click', '.action-button');
             table.destroy();
         };
     }, [handleActionClick]);
@@ -127,7 +114,7 @@ const RegisteredCustomerList = (): JSX.Element => {
                                         <th>Email</th>
                                         <th>User Type</th>
                                         <th>Date Registered</th>
-                                        <th>Action</th>
+                                        <th>Avg. Rating</th>
                                     </tr>
                                 </thead>
                                 <tbody>

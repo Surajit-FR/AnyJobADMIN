@@ -56,9 +56,9 @@ const ServiceProviderList = (): JSX.Element => {
                         item.email || 'N/A',
                         item.phone || 'N/A',
                         item.additionalInfo?.[0]?.companyName || 'N/A',
-                        item.userType || 'N/A',
                         new Date(item.createdAt).toLocaleDateString() || 'N/A',
-                        item.isVerified ? "Verified" : "Unverified",  // Verification status
+                        item.isVerified ? "Verified" : "Unverified",
+                        item.avgRating ? item.avgRating.toFixed(1) : 'N/A',
                         item._id
                     ]);
 
@@ -79,15 +79,15 @@ const ServiceProviderList = (): JSX.Element => {
                 { title: "Email" },
                 { title: "Phone" },
                 { title: "Company" },
-                { title: "User Type" },
                 { title: "Date Registered" },
                 {
                     title: "Verification",
                     render: (data: any, type: any, row: any) => {
-                        const isVerified = row[6] === "Verified";
-                        return `<strong class="${isVerified ? 'text-success' : 'text-danger'}">${row[6]}</strong>`;
+                        const isVerified = row[5] === "Verified";
+                        return `<strong class="${isVerified ? 'text-success' : 'text-danger'}">${row[5]}</strong>`;
                     }
                 },
+                { title: "Avg. rating" },
                 {
                     title: "Action",
                     render: (data: any, type: any, row: any) => {
@@ -144,9 +144,9 @@ const ServiceProviderList = (): JSX.Element => {
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Company</th>
-                                        <th>User Type</th>
                                         <th>Date Registered</th>
                                         <th>Verification</th>
+                                        <th>Avg. rating</th> {/* Avg. rating column header */}
                                         <th>Action</th>
                                     </tr>
                                 </thead>
