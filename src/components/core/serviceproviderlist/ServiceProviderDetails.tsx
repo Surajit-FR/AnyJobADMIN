@@ -4,6 +4,7 @@ import PageTitle from "../../PageTitle";
 import { useEffect } from "react";
 import { getUserDetailsRequest, verifyServiceProviderUserDetailsRequest } from "../../../store/reducers/UserReducers";
 import { Link, useParams } from "react-router-dom";
+import ConfirmationModal from "../../ConfirmationModal";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -19,17 +20,23 @@ const ServiceProviderDetails = (): JSX.Element => {
     const { firstName, lastName, email, phone, isVerified, additionalInfo, userAddress } = userData || {};
     const additional = additionalInfo?.[0];
 
-    useEffect(() => {
-        dispatch(getUserDetailsRequest({ userId: service_providerId }));
-    }, [dispatch, service_providerId]);
-
     const handleVerifyClick = () => {
         dispatch(verifyServiceProviderUserDetailsRequest({ userId: service_providerId, isVerified: !isVerified }));
     };
 
+    useEffect(() => {
+        dispatch(getUserDetailsRequest({ userId: service_providerId }));
+    }, [dispatch, service_providerId]);
+
     return (
         <>
             <PageTitle pageName="Service Provider Details" breadcrumbs={breadcrumbs} />
+
+            <ConfirmationModal
+                modalId="verify-alert-modal"
+                modalText={`Want To ${!isVerified ? "Verify This Service Provider" : "Unverify This Service Provider"}?`}
+                onDelete={handleVerifyClick}
+            />
 
             <div className="card">
                 <div className="card-body">
@@ -137,8 +144,9 @@ const ServiceProviderDetails = (): JSX.Element => {
                     {/* Verify Button */}
                     <div className="mt-4 text-center">
                         <button
+                            data-bs-toggle="modal"
+                            data-bs-target="#verify-alert-modal"
                             className={isVerified ? "btn btn-danger" : "btn btn-success"}
-                            onClick={handleVerifyClick}
                         >
                             {!isVerified ? "Verify Service Provider" : "Unverify Service Provider"}
                         </button>
