@@ -55,7 +55,7 @@ const RegisteredCustomerList = (): JSX.Element => {
                         item.email,
                         item.userType,
                         new Date(item.createdAt).toLocaleDateString(),
-                        item.avgRating || "N/A"
+                        item.avgRating || "-- --"
                     ]);
 
                     const totalRecords = response.data.data.pagination.total;

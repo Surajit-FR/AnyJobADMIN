@@ -52,14 +52,15 @@ const ServiceProviderList = (): JSX.Element => {
                     });
 
                     const serviceProviderData = response.data.data.serviceProviders.map((item: any) => [
-                        `${item.firstName} ${item.lastName}`,
-                        item.email || 'N/A',
-                        item.phone || 'N/A',
-                        item.additionalInfo?.[0]?.companyName || 'N/A',
-                        new Date(item.createdAt).toLocaleDateString() || 'N/A',
-                        item.isVerified ? "Verified" : "Unverified",
-                        item.avgRating ? item.avgRating.toFixed(1) : 'N/A',
-                        item._id
+                        `${item?.firstName} ${item?.lastName}`,
+                        item?.email || '-- --',
+                        item?.phone || '-- --',
+                        item?.additionalInfo?.[0]?.companyName || '-- --',
+                        new Date(item?.createdAt).toLocaleDateString() || '-- --',
+                        item?.isVerified ? "Verified" : "Unverified",
+                        item?.avgRating ? item?.avgRating.toFixed(1) : '-- --',
+                        item?.fieldAgents?.length > 0 ? item?.fieldAgents?.length : '-- --',
+                        item?._id
                     ]);
 
                     const totalRecords = response.data.data.pagination.total;
@@ -89,10 +90,16 @@ const ServiceProviderList = (): JSX.Element => {
                 },
                 { title: "Avg. rating" },
                 {
+                    title: "Field Agents",
+                    render: (data: any, type: any, row: any) => {
+                        return row[7];
+                    }
+                },
+                {
                     title: "Action",
                     render: (data: any, type: any, row: any) => {
                         return `
-                            <a href="#" class="btn btn-primary btn-sm action-button" data-id="${row[7]}">
+                            <a href="#" class="btn btn-primary btn-sm action-button" data-id="${row[8]}">
                                 View Details
                             </a>
                         `;
@@ -146,7 +153,8 @@ const ServiceProviderList = (): JSX.Element => {
                                         <th>Company</th>
                                         <th>Date Registered</th>
                                         <th>Verification</th>
-                                        <th>Avg. rating</th> {/* Avg. rating column header */}
+                                        <th>Avg. rating</th>
+                                        <th>Field Agents</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
