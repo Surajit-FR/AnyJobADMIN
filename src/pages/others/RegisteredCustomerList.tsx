@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useEffect, useState } from "react";
 import PageTitle from "../../components/PageTitle";
 import $ from "jquery";
 import axios from "axios";
@@ -8,10 +8,10 @@ import "datatables.net-responsive";
 import "datatables.net-buttons-bs5";
 import { REACT_APP_BASE_URL } from "../../config/app.config";
 import { debounce } from "lodash";
-import CustomerDetailsModal from "../../components/core/customerlist/CustomerDetailsModal";
-import { AppDispatch } from "../../store/Store";
-import { useDispatch } from "react-redux";
-import { getUserDetailsRequest } from "../../store/reducers/UserReducers";
+// import { AppDispatch } from "../../store/Store";
+// import { useDispatch } from "react-redux";
+import ConfirmationModal from "../../components/ConfirmationModal";
+import { showToast } from "../../utils/Toast";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -19,11 +19,27 @@ const breadcrumbs = [
 ];
 
 const RegisteredCustomerList = (): JSX.Element => {
-    const dispatch: AppDispatch = useDispatch();
+    const [itemId, setItemID] = useState<string>("");
+    const [isBanned, setIsBanned] = useState<boolean>(false);
 
-    const handleActionClick = useCallback((id: string) => {
-        dispatch(getUserDetailsRequest({ userId: id }));
-    }, [dispatch]);
+    // const dispatch: AppDispatch = useDispatch();
+
+    const handleBanUnban = async (userId: string, isBanned: boolean) => {
+        if (userId) {
+            let isDeleted = isBanned ? false : true;
+            try {
+                const resp = await axios.patch(`${REACT_APP_BASE_URL}/user/u/${userId}`, { isDeleted }, { withCredentials: true });
+
+                if (resp?.data?.success) {
+                    console.log({ resp: resp?.data });
+                    $('#datatable-buttons').DataTable().ajax.reload();
+                    showToast({ message: resp?.data?.message, type: 'success', durationTime: 3500, position: "top-center" });
+                };
+            } catch (error) {
+                console.error(`Error while trying to ${isDeleted} user:`, error);
+            }
+        }
+    };
 
     useEffect(() => {
         const table = $('#datatable-buttons').DataTable({
@@ -49,13 +65,17 @@ const RegisteredCustomerList = (): JSX.Element => {
                         withCredentials: true
                     });
 
-                    // Include the average rating in customerData
                     const customerData = response?.data?.data?.customers.map((item: any) => [
-                        `${item.firstName} ${item.lastName}`,
-                        item.email,
-                        item.userType,
-                        new Date(item.createdAt).toLocaleDateString(),
-                        item.avgRating || "-- --"
+                        `${item?.firstName} ${item?.lastName}` || '-- --',
+                        item?.email || '-- --',
+                        item?.phone || '-- --',
+                        new Date(item?.createdAt).toLocaleDateString() || '-- --',
+                        item?.avgRating || "-- --",
+                        `<button class="btn btn-sm btn-${item?.isDeleted ? 'success' : 'danger'}" 
+                                 data-id="${item?._id}" 
+                                 data-banned="${item?.isDeleted}" 
+                                 data-bs-toggle="modal" 
+                                 data-bs-target="#ban-alert-modal">${item?.isDeleted ? 'Unban' : 'Ban'}</button>`
                     ]);
 
                     const totalRecords = response.data.data.pagination.total;
@@ -73,10 +93,19 @@ const RegisteredCustomerList = (): JSX.Element => {
             columns: [
                 { title: "Name" },
                 { title: "Email" },
-                { title: "User Type" },
+                { title: "Phone" },
                 { title: "Date Registered" },
-                { title: "Avg. Rating" }
+                { title: "Avg. Rating" },
+                { title: "Actions", orderable: false }
             ],
+        });
+
+        // Handle click event for action buttons
+        $('#datatable-buttons tbody').on('click', 'button', function () {
+            const userId = $(this).data('id');
+            const isBannedStatus = $(this).data('banned');
+            setItemID(userId);
+            setIsBanned(isBannedStatus);
         });
 
         const debouncedSearch = debounce((value: string) => {
@@ -90,18 +119,21 @@ const RegisteredCustomerList = (): JSX.Element => {
             debouncedSearch(searchValue as string);
         });
 
-        // Remove event listener for action button
         return () => {
             searchInput.off('input');
             table.destroy();
         };
-    }, [handleActionClick]);
+    }, []);
 
     return (
         <>
             <PageTitle pageName="Registered Customer List" breadcrumbs={breadcrumbs} />
 
-            <CustomerDetailsModal />
+            <ConfirmationModal
+                modalId="ban-alert-modal"
+                modalText={"Want To Ban The Customer?"}
+                onDelete={() => handleBanUnban(itemId, isBanned)}
+            />
 
             <div className="row">
                 <div className="col-12">
@@ -112,9 +144,10 @@ const RegisteredCustomerList = (): JSX.Element => {
                                     <tr>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>User Type</th>
+                                        <th>Phone</th>
                                         <th>Date Registered</th>
                                         <th>Avg. Rating</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
