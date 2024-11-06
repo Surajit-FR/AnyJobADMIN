@@ -49,26 +49,26 @@ const ListCategory = ({
                                                         <i className='ri-information-line'></i>
                                                     </Link> */}
 
-                                                        <Link to="#"
+                                                        <button
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#centermodal"
-                                                            className="btn btn-link text-muted btn-lg p-0 mx-2"
+                                                            className="btn btn-sm btn-soft-secondary mx-2"
                                                             onClick={() => dispatch(getCategoryRequest({ categoryId: category?._id }))}
                                                         >
                                                             <i className='ri-pencil-line'></i>
-                                                        </Link>
+                                                        </button>
 
-                                                        <Link to="#"
+                                                        <button
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#delete-alert-modal"
-                                                            className="btn btn-link text-danger btn-lg p-0"
+                                                            className="btn btn-sm btn-soft-danger"
                                                             onClick={() => {
                                                                 setItemID(category?._id)
                                                                 setItemName(category?.name)
                                                             }}
                                                         >
                                                             <i className='ri-delete-bin-line'></i>
-                                                        </Link>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             )

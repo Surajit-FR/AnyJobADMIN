@@ -71,7 +71,7 @@ const RegisteredCustomerList = (): JSX.Element => {
                         item?.phone || '-- --',
                         new Date(item?.createdAt).toLocaleDateString() || '-- --',
                         item?.avgRating || "-- --",
-                        `<button class="btn btn-sm btn-${item?.isDeleted ? 'success' : 'danger'}" 
+                        `<button class="btn btn-sm btn-soft-${item?.isDeleted ? 'success' : 'danger'}" 
                                  data-id="${item?._id}" 
                                  data-banned="${item?.isDeleted}" 
                                  data-bs-toggle="modal" 
