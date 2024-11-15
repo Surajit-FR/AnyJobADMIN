@@ -13,6 +13,7 @@ import PreLoader from "../../components/PreLoader";
 type LoginFormData = {
     email: string;
     password: string;
+    isAdminPanel: boolean;
 };
 
 const Login = (): JSX.Element => {
@@ -26,7 +27,7 @@ const Login = (): JSX.Element => {
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
 
     const onSubmit = (data: LoginFormData): void => {
-        dispatch(AuthLoginRequest({ data, navigate }));
+        dispatch(AuthLoginRequest({ data: { ...data, isAdminPanel: true }, navigate }));
     };
 
     return (
