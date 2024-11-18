@@ -75,9 +75,9 @@
                 "items": []
             },
             {
-                "to": "/manage-service-request-que",
+                "to": "/manage-service-request-queue",
                 "icon": " ri-stack-fill",
-                "label": "Manage Que",
+                "label": "Manage Queue",
                 "isSubmenu": false,
                 "items": []
             },

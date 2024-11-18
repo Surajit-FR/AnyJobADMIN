@@ -9,7 +9,7 @@ import ManageRole from '../pages/others/ManageRole';
 import ManageUser from '../pages/others/ManageUser';
 import CategoryPage from '../pages/others/CategoryPage';
 import ServiceQuestionPage from '../pages/others/ServiceQuestionPage';
-import ManageQue from '../pages/others/ManageQue';
+import ManageQueue from '../pages/others/ManageQueue';
 import IPAddressLog from '../pages/others/IPAddressLog';
 import AllQuestions from '../pages/others/AllQuestions';
 import ManageShiftPage from '../pages/others/ManageShiftPage';
@@ -31,7 +31,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/manage-service-questions' element={<ServiceQuestionPage />} />
                 <Route path='/all-service-questions' element={<AllQuestions />} />
                 <Route path='/manage-service-shift' element={<ManageShiftPage />} />
-                <Route path='/manage-service-request-que' element={<ManageQue />} />
+                <Route path='/manage-service-request-queue' element={<ManageQueue />} />
                 <Route path='/sale-sheet' element={<SaleSheet />} />
                 <Route path='/system-ip-logs' element={<IPAddressLog />} />
             </Routes>
