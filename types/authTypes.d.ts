@@ -3,7 +3,7 @@ import { AdditionalInfo, UserAddress } from "./userTypes";
 export type TCredentials = {
     email: string,
     password: string,
-    userType: Array<string>,
+    userType?: Array<string>,
 };
 
 export type TLoginCredentials = TCredentials & {};
