@@ -75,13 +75,6 @@
                 "items": []
             },
             {
-                "to": "/manage-service-request-queue",
-                "icon": " ri-stack-fill",
-                "label": "Manage Queue",
-                "isSubmenu": false,
-                "items": []
-            },
-            {
                 "to": "/sale-sheet",
                 "icon": "ri-file-copy-2-fill",
                 "label": "Sale Sheet",
