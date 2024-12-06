@@ -1,6 +1,7 @@
 import { User, UserData } from "./authTypes";
 import { TCategory, TCategoryAPIResponse, TCategoryData } from "./categoryTypes";
 import { QuestionRespone, TQuestion } from "./questionTypes";
+import { ServiceRequest } from "./services";
 import { TShift } from "./shiftTypes";
 
 export type DefaultSettings = {
@@ -31,6 +32,7 @@ export type DataState = {
     shiftData?: Array<TShift>,
     singleShiftData?: Partial<TShift>,
     userData?: Partial<User>,
+    singleServiceData?: Partial<ServiceRequest>,
     error: string | null,
     type: string,
 };

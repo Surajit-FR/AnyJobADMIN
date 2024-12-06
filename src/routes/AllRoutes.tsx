@@ -14,6 +14,7 @@ import IPAddressLog from '../pages/others/IPAddressLog';
 import AllQuestions from '../pages/others/AllQuestions';
 import ManageShiftPage from '../pages/others/ManageShiftPage';
 import ServiceProviderDetails from '../components/core/serviceproviderlist/ServiceProviderDetails';
+import ServiceRequestDetails from '../components/core/servicerequestlist/ServiceRequestDetails';
 
 const AllRoutes = (): JSX.Element => {
     return (
@@ -27,6 +28,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/service-provider-list' element={<ServiceProviderList />} />
                 <Route path='/service-provider-details/:service_providerId' element={<ServiceProviderDetails />} />
                 <Route path='/service-request-list' element={<ServiceRequestList />} />
+                <Route path='/service-request-details/:service_requestId' element={<ServiceRequestDetails />} />
                 <Route path='/manage-service-category' element={<CategoryPage />} />
                 <Route path='/manage-service-questions' element={<ServiceQuestionPage />} />
                 <Route path='/all-service-questions' element={<AllQuestions />} />

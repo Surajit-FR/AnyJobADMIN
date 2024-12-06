@@ -58,3 +58,5 @@ export const DELETESHIFT = (shiftId: string) => API.delete(`/shift/${shiftId}`);
 export const USERDETAILS = (userId: string) => API.get(`/user/u/${userId}`);
 // Verify service provider
 export const VERIFYSERVICEPROVEIDER = (userId: string, isVerified: boolean) => API.patch(`/user/verify/${userId}`, { isVerified });
+// Fetch service req details
+export const FETCHSERVICEREQDETAILS = (serviceId: string) => API.get(`/service/c/${serviceId}`);

@@ -1,8 +1,6 @@
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
-import { AppDispatch } from "../../store/Store";
-import { useCallback, useEffect } from "react";
-import { getUserDetailsRequest } from "../../store/reducers/UserReducers";
+import { useEffect } from "react";
 import { REACT_APP_BASE_URL } from "../../config/app.config";
 import $ from "jquery";
 import axios from "axios";
@@ -20,13 +18,13 @@ const breadcrumbs = [
 ];
 
 const ServiceRequestList = (): JSX.Element => {
-    const dispatch: AppDispatch = useDispatch();
-
-    const handleActionClick = useCallback((id: string) => {
-        dispatch(getUserDetailsRequest({ userId: id }));
-    }, [dispatch]);
+    const navigate = useNavigate();
 
     useEffect(() => {
+        const handleViewDetails = (id: string) => {
+            navigate(`/service-request-details/${id}`);
+        };
+
         const table = $('#datatable-buttons').DataTable({
             responsive: true,
             fixedHeader: true,
@@ -66,6 +64,7 @@ const ServiceRequestList = (): JSX.Element => {
                         item.isApproved,
                         `$${item.tipAmount}`,
                         `$${item.incentiveAmount}`,
+                        `<button class="btn btn-primary btn-sm view-details" data-id="${item._id}">View Details</button>`
                     ]);
 
                     const totalRecords = response.data.data.pagination.total;
@@ -89,7 +88,14 @@ const ServiceRequestList = (): JSX.Element => {
                 { title: "Approval Status" },
                 { title: "Tip Amount" },
                 { title: "Incentive Amount" },
+                { title: "Actions" },
             ],
+        });
+
+        // Handle button clicks
+        $('#datatable-buttons').on('click', '.view-details', function () {
+            const id = $(this).data('id');
+            handleViewDetails(id);
         });
 
         const debouncedSearch = debounce((value: string) => {
@@ -105,9 +111,10 @@ const ServiceRequestList = (): JSX.Element => {
 
         return () => {
             searchInput.off('input');
+            $('#datatable-buttons').off('click', '.view-details');
             table.destroy();
         };
-    }, [handleActionClick]);
+    }, [navigate]);
 
     return (
         <>
@@ -128,6 +135,7 @@ const ServiceRequestList = (): JSX.Element => {
                                         <th>Approval Status</th>
                                         <th>Tip Amount</th>
                                         <th>Incentive Amount</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>

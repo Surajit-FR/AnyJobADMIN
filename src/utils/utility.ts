@@ -60,3 +60,23 @@ export const loadSettingsFromSessionStorage = (): void => {
         document.documentElement.className = classes;
     }
 };
+
+// Function for formatReadableDateTime
+export const formatReadableDateTime = (isoTimestamp: string, locale: string = "en-US", options: Intl.DateTimeFormatOptions = {}): string => {
+    // Default options for date and time formatting
+    const defaultOptions: Intl.DateTimeFormatOptions = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: true // 12-hour clock format
+    };
+
+    // Merge user-provided options with defaults
+    const formatOptions: Intl.DateTimeFormatOptions = { ...defaultOptions, ...options };
+
+    // Format the date
+    return new Intl.DateTimeFormat(locale, formatOptions).format(new Date(isoTimestamp));
+}
