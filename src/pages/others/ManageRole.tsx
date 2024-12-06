@@ -10,6 +10,14 @@ const ManageRole = (): JSX.Element => {
         <>
             {/* PageTitle section */}
             <PageTitle pageName="Manage Role" breadcrumbs={breadcrumbs} />
+
+            <div className="card">
+                <div className="card-body">
+                    <div className="row">
+                        <h4 className="text-center">Work In Progress....</h4>
+                    </div>
+                </div>
+            </div>
         </>
     );
 };
