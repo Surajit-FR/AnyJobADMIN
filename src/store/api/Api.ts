@@ -5,6 +5,7 @@ import { TCategoryPayload } from "../../../types/categoryTypes";
 import { setupInterceptors } from "./interceptor";
 import { TQuestionPayload } from "../../../types/questionTypes";
 import { TShiftPayload } from "../../../types/shiftTypes";
+import { AddAdminUserFormData } from "../../components/core/AddAdminUser";
 
 // Create axios instance
 export const API = axios.create({ baseURL: REACT_APP_BASE_URL, withCredentials: true });
@@ -16,7 +17,8 @@ setupInterceptors();
 export const LOGIN = (data: TLoginCredentials) => API.post("/auth/signin", data);
 // Logout
 export const LOGOUT = () => API.post("/auth/logout");
-
+// Add admin user
+export const ADDADMINUSER = (data: AddAdminUserFormData) => API.post("/auth/add-admin-user", data);
 // Add Category
 export const ADDCATEGORY = (data: TCategoryPayload) => API.post("/category", data);
 // Get All Category

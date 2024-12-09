@@ -34,6 +34,18 @@ const UserSlice = createSlice({
             state.type = type;
             state.error = payload;
         },
+
+        // Add admin user
+        AddAdminUserRequest: (state, { payload, type }) => {
+            state.type = type;
+        },
+        AddAdminUserSuccess: (state, { payload, type }) => {
+            state.type = type;
+        },
+        AddAdminUserFailure: (state, { payload, type }) => {
+            state.type = type;
+            state.error = payload;
+        },
     }
 });
 
@@ -45,6 +57,10 @@ export const {
     verifyServiceProviderUserDetailsRequest,
     verifyServiceProviderUserDetailsSuccess,
     verifyServiceProviderUserDetailsFailure,
+
+    AddAdminUserRequest,
+    AddAdminUserSuccess,
+    AddAdminUserFailure,
 } = UserSlice.actions;
 
 export default UserSlice.reducer;
