@@ -131,7 +131,7 @@ const RegisteredCustomerList = (): JSX.Element => {
 
             <ConfirmationModal
                 modalId="ban-alert-modal"
-                modalText={"Want To Ban The Customer?"}
+                modalText={`Want To ${isBanned ? "Unban" : "Ban"} The Customer?`}
                 onDelete={() => handleBanUnban(itemId, isBanned)}
             />
 
