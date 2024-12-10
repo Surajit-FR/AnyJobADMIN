@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store/Store";
 import PageTitle from "../../PageTitle";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUserDetailsRequest, verifyServiceProviderUserDetailsRequest } from "../../../store/reducers/UserReducers";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ConfirmationModal from "../../ConfirmationModal";
+import ImagePreviewModal from "./ImagePreviewModal";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -20,8 +21,18 @@ const ServiceProviderDetails = (): JSX.Element => {
     const { firstName, lastName, email, phone, isVerified, additionalInfo, userAddress } = userData || {};
     const additional = additionalInfo?.[0];
 
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
     const handleVerifyClick = () => {
         dispatch(verifyServiceProviderUserDetailsRequest({ userId: service_providerId, isVerified: !isVerified }));
+    };
+
+    const handleImageClick = (imageUrl: string) => {
+        setSelectedImage(imageUrl);
+    };
+
+    const handleModalClose = () => {
+        setSelectedImage(null);
     };
 
     useEffect(() => {
@@ -47,7 +58,7 @@ const ServiceProviderDetails = (): JSX.Element => {
                             <div>
                                 <strong>Name:</strong> {firstName} {lastName} {isVerified ? <span className="text-success">(Verified)</span> : <span className="text-danger">(Unverified)</span>}
                             </div>
-                            <div><strong>DOB:</strong> {new Date(additional?.DOB ?? "").toLocaleDateString()}</div>
+                            <div><strong>DOB:</strong> {new Date(userData?.dob ?? "").toLocaleDateString()}</div>
                             <div><strong>Email:</strong> {email}</div>
                             <div><strong>Phone:</strong> {phone}</div>
                             <div><strong>Driver License:</strong> {additional?.driverLicense ?? ""}</div>
@@ -93,44 +104,68 @@ const ServiceProviderDetails = (): JSX.Element => {
                             <div className="row">
                                 {additional ? (
                                     <>
-                                        {additional?.driverLicenseImage && (
-                                            <div className="col-md-2 mb-3">
-                                                <strong>Driver License Image:</strong>
-                                                <Link to={additional?.driverLicenseImage} target="_blank" rel="noopener noreferrer">
-                                                    <img src={additional?.driverLicenseImage} alt="Driver License" className="img-fluid mt-1" />
-                                                </Link>
+                                        {additional?.driverLicenseImages?.map((imageUrl: string, index: number) => (
+                                            <div className="col-md-2 mb-3" key={`driver-${index}`}>
+                                                <strong>Driver License Image({index + 1}):</strong>
+                                                <img
+                                                    src={imageUrl}
+                                                    alt={`Driver License ${index + 1}`}
+                                                    className="img-fluid mt-1"
+                                                    onClick={() => handleImageClick(imageUrl)}
+                                                    style={{ cursor: "pointer" }}
+                                                />
                                             </div>
-                                        )}
+                                        ))}
+
                                         {additional?.companyLicenseImage && (
                                             <div className="col-md-2 mb-3">
                                                 <strong>Company License Image:</strong>
-                                                <Link to={additional?.companyLicenseImage} target="_blank" rel="noopener noreferrer">
-                                                    <img src={additional?.companyLicenseImage} alt="Company License" className="img-fluid mt-1" />
-                                                </Link>
+                                                <img
+                                                    src={additional?.companyLicenseImage}
+                                                    alt="Company License"
+                                                    className="img-fluid mt-1"
+                                                    onClick={() => handleImageClick(additional?.companyLicenseImage)}
+                                                    style={{ cursor: "pointer" }}
+                                                />
                                             </div>
                                         )}
+
                                         {additional?.businessLicenseImage && (
                                             <div className="col-md-2 mb-3">
                                                 <strong>Business License Image:</strong>
-                                                <Link to={additional?.businessLicenseImage} target="_blank" rel="noopener noreferrer">
-                                                    <img src={additional?.businessLicenseImage} alt="Business License" className="img-fluid mt-1" />
-                                                </Link>
+                                                <img
+                                                    src={additional?.businessLicenseImage}
+                                                    alt="Business License"
+                                                    className="img-fluid mt-1"
+                                                    onClick={() => handleImageClick(additional?.businessLicenseImage)}
+                                                    style={{ cursor: "pointer" }}
+                                                />
                                             </div>
                                         )}
+
                                         {additional?.licenseProofImage && (
                                             <div className="col-md-2 mb-3">
                                                 <strong>License Proof Image:</strong>
-                                                <Link to={additional?.licenseProofImage} target="_blank" rel="noopener noreferrer">
-                                                    <img src={additional?.licenseProofImage} alt="License Proof" className="img-fluid mt-1" />
-                                                </Link>
+                                                <img
+                                                    src={additional?.licenseProofImage}
+                                                    alt="License Proof"
+                                                    className="img-fluid mt-1"
+                                                    onClick={() => handleImageClick(additional?.licenseProofImage)}
+                                                    style={{ cursor: "pointer" }}
+                                                />
                                             </div>
                                         )}
+
                                         {additional?.businessImage && (
                                             <div className="col-md-2 mb-3">
-                                                <strong>Business Image:</strong>
-                                                <Link to={additional?.businessImage} target="_blank" rel="noopener noreferrer">
-                                                    <img src={additional?.businessImage} alt="Business" className="img-fluid mt-1" />
-                                                </Link>
+                                                <strong>Company Logo:</strong>
+                                                <img
+                                                    src={additional?.businessImage}
+                                                    alt="Company Logo"
+                                                    className="img-fluid mt-1"
+                                                    onClick={() => handleImageClick(additional?.businessImage)}
+                                                    style={{ cursor: "pointer" }}
+                                                />
                                             </div>
                                         )}
                                     </>
@@ -153,6 +188,9 @@ const ServiceProviderDetails = (): JSX.Element => {
                     </div>
                 </div>
             </div>
+
+            {/* Image Modal */}
+            {selectedImage && (<ImagePreviewModal imageUrl={selectedImage} onClose={handleModalClose} />)}
         </>
     );
 };

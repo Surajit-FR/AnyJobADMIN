@@ -17,7 +17,7 @@ export type AdditionalInfo = {
     companyIntroduction: string;
     DOB: string;
     driverLicense: string;
-    driverLicenseImage: string;
+    driverLicenseImages: Array<string>;
     EIN: string;
     socialSecurity: string;
     companyLicense: string;

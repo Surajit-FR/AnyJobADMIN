@@ -20,6 +20,7 @@ export type User = {
     email: string;
     phone: string;
     avatar: string;
+    dob: string;
     isVerified: boolean;
     userType: string;
     createdAt: string;
