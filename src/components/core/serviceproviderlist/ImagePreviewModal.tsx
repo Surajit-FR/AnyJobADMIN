@@ -43,7 +43,6 @@ const ImagePreviewModal = ({ imageUrl, onClose }: { imageUrl: string | null; onC
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Download</button>
                     </div>
                 </div>
             </div>
