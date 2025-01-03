@@ -5,6 +5,7 @@ import QuestionSlice from "./reducers/QuestionReducers";
 import ShiftSlice from "./reducers/ShiftReducers";
 import UserSlice from "./reducers/UserReducers";
 import ServiceSlice from "./reducers/ServiceReducers";
+import CustomerSlice from "./reducers/CustomerReducers"
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "./rootSaga";
 
@@ -19,6 +20,7 @@ export const store = configureStore({
         shiftSlice: ShiftSlice,
         userSlice: UserSlice,
         serviceSlice: ServiceSlice,
+        customerSlice: CustomerSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(middleware),
 });

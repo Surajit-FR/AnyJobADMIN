@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { REACT_APP_BASE_URL } from "../../config/app.config";
 import $ from "jquery";
 import axios from "axios";
@@ -11,35 +11,78 @@ import "datatables.net-buttons-bs5";
 import "datatables.net-buttons/js/buttons.html5";
 import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
 import { debounce } from "lodash";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/Store";
+import { getAllServiceRequest } from "../../store/reducers/ServiceReducers";
+import { CSVLink } from "react-csv";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
     { label: "Service Request List" }
 ];
-
+const headers = [
+    { label: "User Name", key: "userName" },
+    { label: "Request Progress", key: "requestProgress" },
+    { label: "Service Date", key: "serviceDate" },
+    { label: "Service Provider Status", key: "spStatus" },
+    { label: "Acceptance Status", key: "acceptedByProvider" },
+    { label: "Approval Status", key: "isApproved" },
+    { label: "Tip Amount", key: "tipAmount" },
+    { label: "Incentive Amount", key: "incentiveAmount" },
+];
 const ServiceRequestList = (): JSX.Element => {
     const navigate = useNavigate();
+    const dispatch: AppDispatch = useDispatch();
+    const { allServiceData } = useSelector((state: RootState) => state.serviceSlice)
+
+    // useEffect(() => {
+    //     dispatch(getAllServiceRequest({
+    //         params: {
+    //             page: 1,
+    //             limit: 10000,
+    //             query: '',
+    //             sortBy: '',
+    //             sortType: 'asc',
+    //         }
+    //     }))
+    // }, [dispatch])
+
+    const dataToExport = (data: any) => {
+        return data.map((item: any) => (
+            {
+                userName: item.userId ? `${item.userId.firstName} ${item.userId.lastName}` : 'N/A',
+                requestProgress: item.requestProgress,
+                serviceDate: item.serviceStartDate ? new Date(item.serviceStartDate).toLocaleDateString() : '--',
+                spStatus: item.serviceProviderId ? 'Assigned' : 'Unassigned',
+                acceptedByProvider: item.isReqAcceptedByServiceProvider ? 'Accepted' : 'Not Accepted',
+                isApproved: item.isApproved,
+                tipAmount: `$${item.tipAmount}`,
+                incentiveAmount: `$${item.incentiveAmount}`,
+            }
+        ))
+    }
 
     useEffect(() => {
         const handleViewDetails = (id: string) => {
             navigate(`/service-request-details/${id}`);
         };
-
         const table = $('#datatable-buttons').DataTable({
             responsive: true,
             fixedHeader: true,
             fixedColumns: true,
             select: true,
             dom: '<"top d-flex justify-content-between align-items-center"lBf>rt<"bottom"ip>',
-            buttons: [
-                {
-                    extend: 'csvHtml5',
-                    text: 'Export CSV',
-                    className: 'btn btn-primary btn-sm'
-                }
-            ],
+            buttons: [],
+                // {
+                //     extend: 'csvHtml5',
+                //     text: 'Export CSV',
+                //     className: 'btn btn-primary btn-sm',
+                //     exportOptions: exportOptions
+
+                // }
+           
             serverSide: true,
-            processing: true,
+            processing: false,
             ajax: async (data: any, callback: Function) => {
                 try {
                     const params = {
@@ -54,20 +97,19 @@ const ServiceRequestList = (): JSX.Element => {
                         params,
                         withCredentials: true
                     });
-
+ 
                     const serviceData = response?.data?.data?.serviceRequests.map((item: any) => [
                         item.userId ? `${item.userId.firstName} ${item.userId.lastName}` : 'N/A',
                         item.requestProgress,
                         item.serviceStartDate ? new Date(item.serviceStartDate).toLocaleDateString() : '--',
-                        item.serviceProviderId ? 'Assigned' : 'Unassigned',
-                        item.isReqAcceptedByServiceProvider ? 'Accepted' : 'Not Accepted',
-                        item.isApproved,
+                        // item.serviceProviderId ? 'Assigned' : 'Unassigned',
+                        // item.isReqAcceptedByServiceProvider ? 'Accepted' : 'Not Accepted',
+                        item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '--',
                         `$${item.tipAmount}`,
-                        `$${item.incentiveAmount}`,
                         `<button class="btn btn-primary btn-sm view-details" data-id="${item._id}">View Details</button>`
                     ]);
 
-                    const totalRecords = response.data.data.pagination.total;
+                    const totalRecords = response.data.data.pagination.totalRecords;
 
                     callback({
                         draw: data.draw,
@@ -82,12 +124,10 @@ const ServiceRequestList = (): JSX.Element => {
             columns: [
                 { title: "User Name" },
                 { title: "Request Progress" },
-                { title: "Service Date" },
-                { title: "Service Provider Status" },
-                { title: "Acceptance Status" },
-                { title: "Approval Status" },
+                { title: "Service Start Date" },
+                { title: "Service Create Date" },
                 { title: "Tip Amount" },
-                { title: "Incentive Amount" },
+                // { title: "Incentive Amount" },
                 { title: "Actions" },
             ],
         });
@@ -123,18 +163,24 @@ const ServiceRequestList = (): JSX.Element => {
             <div className="row">
                 <div className="col-12">
                     <div className="card">
+
                         <div className="card-body">
+                            {/* <div className="d-flex justify-content-sm-end mb-2 ">
+                            <CSVLink data={dataToExport(allServiceData)} headers={headers} filename={"service-request-list.csv"}>
+                                <button className="btn btn-primary btn-md view-details">Download CSV</button>
+                            </CSVLink>
+                            </div> */}
                             <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th>User Name</th>
                                         <th>Request Progress</th>
-                                        <th>Service Date</th>
-                                        <th>Service Provider Status</th>
-                                        <th>Acceptance Status</th>
-                                        <th>Approval Status</th>
+                                        <th>Service Start Date</th>
+                                        <th>"Service Create Date"</th>
+                                        {/* <th>Acceptance Status</th>
+                                        <th>Approval Status</th> */}
                                         <th>Tip Amount</th>
-                                        <th>Incentive Amount</th>
+                                        {/* <th>Incentive Amount</th> */}
                                         <th>Actions</th>
                                     </tr>
                                 </thead>

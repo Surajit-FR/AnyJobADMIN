@@ -11,7 +11,7 @@ export type TShiftPayload = {
 
 export type TShift = TShiftPayload & {
     _id: string;
-    isDeleted:boolean;
+    isDeleted: boolean;
     createdAt: string;
     updatedAt: string;
     createdBy: string;
@@ -20,3 +20,8 @@ export type TShift = TShiftPayload & {
 export type TShiftAPIResponse = {
     data: Array<TShift>;
 }
+
+export type ISalesShiftsData = {
+    title: string;
+    value: string;
+};

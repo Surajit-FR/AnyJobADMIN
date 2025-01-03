@@ -40,7 +40,7 @@ const ServiceRequestDetails = (): JSX.Element => {
         }
     }, [dispatch, serviceDetails]);
 
-    if (!serviceDetails || !serviceDetails.userId) {
+    if (!serviceDetails || !serviceDetails.customerName) {
         return (
             <>
                 <PageTitle pageName="Service Request Details" breadcrumbs={breadcrumbs} />
@@ -57,31 +57,26 @@ const ServiceRequestDetails = (): JSX.Element => {
     }
 
     const {
-        firstName,
-        lastName,
-        email,
-        phone,
-        avatar
-    } = serviceDetails?.userId;
-
-    const {
         SelectedShiftTime,
-        categoryId,
         serviceStartDate,
-        serviceZipCode,
-        serviceLatitude,
-        serviceLongitude,
         isIncentiveGiven,
         incentiveAmount,
-        isApproved,
-        isReqAcceptedByServiceProvider,
-        serviceProviderId,
         answerArray,
         createdAt,
         updatedAt,
         requestProgress,
         serviceProductImage,
-        otherInfo,
+        customerName,
+        customerEmail,
+        serviceProviderName,
+        serviceProviderPhone,
+        customerPhone,
+        categoryName,
+        customerAvatar,
+        serviceDescription,
+        bookedTimeSlot,
+        bookedServiceShift,
+        serviceProductSerialNumber,
     } = serviceDetails;
 
     const handleImageClick = (image: string) => {
@@ -108,7 +103,7 @@ const ServiceRequestDetails = (): JSX.Element => {
                             <div>
                                 <h4 className="text-uppercase text-decoration-underline">Service Request For</h4>
                                 <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                    <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Category:</strong> {categoryId?.name}
+                                    <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Category:</strong> {categoryName}
                                 </div>
                                 {answerArray.length > 0 ? (
                                     <ul>
@@ -140,35 +135,32 @@ const ServiceRequestDetails = (): JSX.Element => {
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
                                 <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Service Start Date:</strong> {formatReadableDateTime(serviceStartDate)}
                             </div>
-                            <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Service Shift:</strong> {singleShiftData?.shiftName?.toUpperCase()}
+                            {/* shift details */}
+                            {bookedTimeSlot && bookedTimeSlot.length>0 && (
+                             <>
+                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
+                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Service Shift:</strong> {bookedServiceShift && bookedServiceShift.toUpperCase()}
                             </div>
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Time Slot:</strong> {`${selectedShiftTime?.startTime} - ${selectedShiftTime?.endTime}`}
-                            </div>
-                            <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Service Zip Code:</strong> {serviceZipCode}
-                            </div>
-                            <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Latitude:</strong> {serviceLatitude}
-                            </div>
-                            <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Longitude:</strong> {serviceLongitude}
-                            </div>
+                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Time Slot:</strong> {`${bookedTimeSlot[0]?.startTime} - ${bookedTimeSlot[0]?.endTime}`}
+                            </div> 
+                            </>
+                            )}
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
                                 <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Incentive Given:</strong> {isIncentiveGiven ? 'Yes' : 'No'}
                             </div>
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
                                 <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Incentive Amount:</strong> {incentiveAmount ? incentiveAmount : "-- --"}
                             </div>
+                            {/* request progress pending*/}
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Approval Status:</strong> {isApproved}
+                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Request Accepted By Service Provider:</strong> {requestProgress === "Pending" ? 'No' : 'Yes'}
                             </div>
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Request Accepted By Service Provider:</strong> {isReqAcceptedByServiceProvider ? 'Yes' : 'No'}
+                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Assigned Service Provider:</strong> {serviceProviderName ? serviceProviderName : 'Not Assigned'}
                             </div>
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Assigned Service Provider:</strong> {serviceProviderId ? `${serviceProviderId?.firstName} ${serviceProviderId?.lastName}` : 'Not Assigned'}
+                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Service Provider Phone:</strong> {serviceProviderPhone ? serviceProviderPhone : '-- --'}
                             </div>
                         </div>
 
@@ -176,9 +168,9 @@ const ServiceRequestDetails = (): JSX.Element => {
                             <h4 className="mb-3 text-uppercase text-decoration-underline">Customer Information</h4>
                             <div className="mb-2">
                                 <img
-                                    src={avatar ? avatar : "https://placehold.co/50x50"}
+                                    src={customerAvatar ? customerAvatar : "https://placehold.co/50x50"}
                                     alt=""
-                                    className="img-fluid mt-1"
+                                    className="img-fluid"
                                     style={{
                                         height: "80px",
                                         width: "80px",
@@ -187,30 +179,25 @@ const ServiceRequestDetails = (): JSX.Element => {
                                 />
                             </div>
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Name:</strong> {firstName} {lastName}
+                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Name:</strong> {customerName}
                             </div>
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Email:</strong> {email}
+                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Email:</strong> {customerEmail}
                             </div>
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Phone:</strong> {phone ? phone : "-- --"}
+                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Phone:</strong> {customerPhone ? customerPhone : "-- --"}
                             </div>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-md-12">
-                            {otherInfo && (
-                                <>
                                     <h4 className="mt-4 text-uppercase text-decoration-underline">Other Info</h4>
                                     <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                        <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Product Serial Number:</strong> {otherInfo?.productSerialNumber ? otherInfo?.productSerialNumber : "-- --"}
+                                        <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Product Serial Number:</strong> {serviceProductSerialNumber ? serviceProductSerialNumber : "-- --"}
                                     </div>
                                     <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                        <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Service Description:</strong> {otherInfo?.serviceDescription ? otherInfo?.serviceDescription : "-- --"}
+                                        <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Service Description:</strong> {serviceDescription ? serviceDescription : "-- --"}
                                     </div>
-                                </>
-                            )}
-                            {/* Image in a div */}
                             <div className="cursor-pointer"
                                 onClick={() => handleImageClick(serviceProductImage || "https://placehold.co/150x150")}
                             >
@@ -218,6 +205,10 @@ const ServiceRequestDetails = (): JSX.Element => {
                                     src={serviceProductImage ? serviceProductImage : "https://placehold.co/150x150"}
                                     alt=""
                                     className="img-fluid mt-1 img-thumbnail"
+                                    style={{
+                                        height: "150px",
+                                        width: "150px",
+                                    }}
                                 />
                             </div>
 

@@ -22,7 +22,21 @@ export type MenuItems = {
     isSubmenu?: boolean;
     items?: Array<MenuItems>;
 };
-
+export type AllCustomers = {
+    name: string,
+    phone: string,
+    email: string,
+    avgRating: string,
+    status: number
+}
+export type ExportingCustomer = {
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string,
+    createdAt: Date,
+    avgRating: string,
+}
 export type DataState = {
     authData?: Partial<UserData>,
     categoryData?: Array<TCategory>,
@@ -35,6 +49,9 @@ export type DataState = {
     singleServiceData?: Partial<ServiceRequest>,
     error: string | null,
     type: string,
+    allServiceData?: Array<ServiceRequest>
+    allServiceProviderData?: Array<ServiceRequest>
+    allCustomerData?: Array<AllCustomers>
 };
 
 export type SagaGenerator<Y, R = void> = Generator<CallEffect<Y> | PutEffect | SelectEffect | TakeEffect, R, Y>;

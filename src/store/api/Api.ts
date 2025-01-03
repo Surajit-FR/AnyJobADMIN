@@ -62,3 +62,55 @@ export const USERDETAILS = (userId: string) => API.get(`/user/u/${userId}`);
 export const VERIFYSERVICEPROVEIDER = (userId: string, isVerified: boolean) => API.patch(`/user/verify/${userId}`, { isVerified });
 // Fetch service req details
 export const FETCHSERVICEREQDETAILS = (serviceId: string) => API.get(`/service/c/${serviceId}`);
+export const GETALLSERVICES = (params: {
+    page?: number,
+    limit: number,
+    query: '',
+    sortBy: '',
+    sortType: 'asc',
+
+}) => {
+    const queryString = new URLSearchParams();
+    if (params.page) {
+        queryString.append('page', params.page.toString());
+    }
+    if (params.limit) {
+        queryString.append('limit', params.limit.toString());
+    }
+    return API.get(`/service?${queryString.toString()}`)
+}
+export const GETALLSERVICEPROVIDER = (params: {
+    page?: number,
+    limit: number,
+    query: '',
+    sortBy: '',
+    sortType: 'asc',
+
+}) => {
+    const queryString = new URLSearchParams();
+    if (params.page) {
+        queryString.append('page', params.page.toString());
+    }
+    if (params.limit) {
+        queryString.append('limit', params.limit.toString());
+    }
+    return API.get(`/user/get-service-providers?${queryString.toString()}`)
+}
+
+export const GETALLREGISTEREDCUSTOMER = (params: {
+    page?: number,
+    limit: number,
+    query: '',
+    sortBy: '',
+    sortType: 'asc',
+
+}) => {
+    const queryString = new URLSearchParams();
+    if (params.page) {
+        queryString.append('page', params.page.toString());
+    }
+    if (params.limit) {
+        queryString.append('limit', params.limit.toString());
+    }
+    return API.get(`user/get-registered-customers?${queryString.toString()}`)
+}

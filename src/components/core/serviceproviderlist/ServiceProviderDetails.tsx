@@ -112,7 +112,7 @@ const ServiceProviderDetails = (): JSX.Element => {
                                                     alt={`Driver License ${index + 1}`}
                                                     className="img-fluid mt-1"
                                                     onClick={() => handleImageClick(imageUrl)}
-                                                    style={{ cursor: "pointer" }}
+                                                    style={{ cursor: "pointer" , height: "280px", objectFit:'cover'}}
                                                 />
                                             </div>
                                         ))}
@@ -125,7 +125,7 @@ const ServiceProviderDetails = (): JSX.Element => {
                                                     alt="Company License"
                                                     className="img-fluid mt-1"
                                                     onClick={() => handleImageClick(additional?.companyLicenseImage)}
-                                                    style={{ cursor: "pointer" }}
+                                                    style={{ cursor: "pointer", height: "280px", objectFit:'cover'}}
                                                 />
                                             </div>
                                         )}
@@ -138,7 +138,7 @@ const ServiceProviderDetails = (): JSX.Element => {
                                                     alt="Business License"
                                                     className="img-fluid mt-1"
                                                     onClick={() => handleImageClick(additional?.businessLicenseImage)}
-                                                    style={{ cursor: "pointer" }}
+                                                    style={{ cursor: "pointer", height: "280px", objectFit:'cover' }}
                                                 />
                                             </div>
                                         )}
@@ -151,7 +151,7 @@ const ServiceProviderDetails = (): JSX.Element => {
                                                     alt="License Proof"
                                                     className="img-fluid mt-1"
                                                     onClick={() => handleImageClick(additional?.licenseProofImage)}
-                                                    style={{ cursor: "pointer" }}
+                                                    style={{ cursor: "pointer" , height: "280px", objectFit:'cover'}}
                                                 />
                                             </div>
                                         )}
@@ -164,7 +164,7 @@ const ServiceProviderDetails = (): JSX.Element => {
                                                     alt="Company Logo"
                                                     className="img-fluid mt-1"
                                                     onClick={() => handleImageClick(additional?.businessImage)}
-                                                    style={{ cursor: "pointer" }}
+                                                    style={{ cursor: "pointer", height: "280px", objectFit:'cover' }}
                                                 />
                                             </div>
                                         )}

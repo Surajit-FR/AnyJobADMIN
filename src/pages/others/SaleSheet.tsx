@@ -1,4 +1,6 @@
 import PageTitle from "../../components/PageTitle";
+import SaleSheetComponent from "../../components/SalesShift";
+import salesSheetData from '../../components/SalesShift/salesShiftCardData.json'
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -8,16 +10,8 @@ const breadcrumbs = [
 const SaleSheet = (): JSX.Element => {
     return (
         <>
-            {/* PageTitle section */}
             <PageTitle pageName="Sale Sheet" breadcrumbs={breadcrumbs} />
-
-            <div className="card">
-                <div className="card-body">
-                    <div className="row">
-                        <h4 className="text-center">Work In Progress....</h4>
-                    </div>
-                </div>
-            </div>
+            <SaleSheetComponent cardData={salesSheetData}/>
         </>
     );
 };

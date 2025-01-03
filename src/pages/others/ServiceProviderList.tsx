@@ -11,14 +11,55 @@ import "datatables.net-buttons/js/buttons.html5";
 import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
 import { REACT_APP_BASE_URL } from "../../config/app.config";
 import { debounce } from "lodash";
+import { CSVLink } from "react-csv";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/Store";
+import { getAllServiceProviderRequest } from "../../store/reducers/ServiceReducers";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
     { label: "Service Provider List" }
 ];
+const headers = [
+    { label: "Name", key: "name" },
+    { label: "Email", key: "email" },
+    { label: "Phone", key: "phone" },
+    { label: "Company", key: "company" },
+    { label: "Date Registered", key: "dateRegestered" },
+    { label: "Verification", key: "isVerified" },
+    { label: "Avg. Rating", key: "avgRatings" },
+];
 
 const ServiceProviderList = (): JSX.Element => {
     const navigate = useNavigate();
+    const dispatch = useDispatch()
+    const { allServiceProviderData } = useSelector((state: RootState) => state.serviceSlice)
+    useEffect(() => {
+        dispatch(getAllServiceProviderRequest({
+            params: {
+                page: 1,
+                limit: 10000,
+                query: '',
+                sortBy: '',
+                sortType: 'asc',
+            }
+        }))
+    }, [dispatch])
+
+    const dataToExpoer = (data: any) => {
+        return data.map((item: any) => (
+            {
+                name: `${item?.firstName} ${item?.lastName}`,
+                email: item?.email || '-- --',
+                phone: item?.phone || '-- --',
+                company: item?.additionalInfo?.[0]?.companyName || '-- --',
+                dateRegestered: new Date(item?.createdAt).toLocaleDateString() || '-- --',
+                isVerified: item?.isVerified ? "Verified" : "Unverified",
+                avgRatings: item?.avgRating ? item?.avgRating.toFixed(1) : '-- --',
+                fieldAgents: item?.fieldAgents?.length > 0 ? item?.fieldAgents?.length : '-- --',
+            }
+        ))
+    }
 
     useEffect(() => {
         const table = $('#datatable-buttons').DataTable({
@@ -28,11 +69,11 @@ const ServiceProviderList = (): JSX.Element => {
             select: true,
             dom: '<"top d-flex justify-content-between align-items-center"lBf>rt<"bottom"ip>',
             buttons: [
-                {
-                    extend: 'csvHtml5',
-                    text: 'Export CSV',
-                    className: 'btn btn-primary btn-sm'
-                }
+                // {
+                //     extend: 'csvHtml5',
+                //     text: 'Export CSV',
+                //     className: 'btn btn-primary btn-sm'
+                // }
             ],
             serverSide: true,
             processing: true,
@@ -144,6 +185,14 @@ const ServiceProviderList = (): JSX.Element => {
                 <div className="col-12">
                     <div className="card">
                         <div className="card-body">
+                            <div className="d-flex justify-content-sm-end mb-2 ">
+                                <CSVLink
+                                    data={dataToExpoer(allServiceProviderData)}
+                                    headers={headers}
+                                    filename={"service-provider-list.csv"}>
+                                    <button className="btn btn-primary btn-md view-details">Download CSV</button>
+                                </CSVLink>
+                            </div>
                             <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100">
                                 <thead>
                                     <tr>

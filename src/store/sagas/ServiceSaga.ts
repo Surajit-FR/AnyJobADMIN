@@ -1,9 +1,14 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { ApiResponse, SagaGenerator } from "../../../types/common";
-import { FETCHSERVICEREQDETAILS } from "../api/Api";
+import { FETCHSERVICEREQDETAILS, GETALLSERVICEPROVIDER, GETALLSERVICES } from "../api/Api";
 import {
+    getAllServiceFailure,
+    getAllServiceProviderFailure,
+    getAllServiceProviderSuccess,
+    getAllServiceSuccess,
     getServiceFailure,
-    getServiceSuccess
+    getServiceSuccess,
+
 } from "../reducers/ServiceReducers";
 import { ServiceRequest } from "../../../types/services";
 
@@ -21,7 +26,53 @@ export function* getServiceSaga({ payload, type }: { payload: { serviceId: strin
     }
 };
 
+export function* getAllServiceSaga({ payload, type }: {
+    payload: {
+        params: {
+            page?: number,
+            limit: number,
+            query: '',
+            sortBy: "",
+            sortType: "asc"
+        }
+    }, type: string
+}): SagaGenerator<{ data: ApiResponse<ServiceRequest> }> {
+    try {
+        const resp = yield call(GETALLSERVICES, payload?.params);
+        const result: ApiResponse<ServiceRequest> = resp?.data;
+        if (result?.success) {
+            yield put(getAllServiceSuccess(result));
+        }
+    } catch (error: any) {
+        yield put(getAllServiceFailure(error?.response?.data?.message));
+    }
+};
+export function* getAllServiceProviderSaga({ payload, type }: {
+    payload: {
+        params: {
+            page?: number,
+            limit: number,
+            query: '',
+            sortBy: "",
+            sortType: "asc"
+        }
+    }, type: string
+}): SagaGenerator<{ data: ApiResponse<ServiceRequest> }> {
+    try {
+        const resp = yield call(GETALLSERVICEPROVIDER, payload?.params);
+        const result: ApiResponse<ServiceRequest> = resp?.data;
+        if (result?.success) {
+            yield put(getAllServiceProviderSuccess(result));
+        }
+    } catch (error: any) {
+        yield put(getAllServiceProviderFailure(error?.response?.data?.message));
+    }
+};
+
+
 // Watcher generator function
 export default function* watchService() {
     yield takeLatest('serviceSlice/getServiceRequest', getServiceSaga);
+    yield takeLatest('serviceSlice/getAllServiceRequest', getAllServiceSaga);
+    yield takeLatest('serviceSlice/getAllServiceProviderRequest', getAllServiceProviderSaga);
 };

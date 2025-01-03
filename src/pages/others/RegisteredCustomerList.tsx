@@ -8,21 +8,43 @@ import "datatables.net-responsive";
 import "datatables.net-buttons-bs5";
 import { REACT_APP_BASE_URL } from "../../config/app.config";
 import { debounce } from "lodash";
-// import { AppDispatch } from "../../store/Store";
-// import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../store/Store";
+import { useDispatch, useSelector } from "react-redux";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { showToast } from "../../utils/Toast";
+import { CSVLink } from "react-csv";
+import { getAllCustomerDataRequst } from "../../store/reducers/CustomerReducers";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
     { label: "Registered Customer List" }
 ];
-
+const headers = [
+    { label: "Name", key: "name" },
+    { label: "Email", key: "email" },
+    { label: "Phone", key: "phone" },
+    { label: "Registered Date", key: "dateRegistered" },
+    { label: "Avg. Rating", key: "avgRating" },
+    { label: "Status", key: "status" },
+];
 const RegisteredCustomerList = (): JSX.Element => {
     const [itemId, setItemID] = useState<string>("");
     const [isBanned, setIsBanned] = useState<boolean>(false);
+    const { allCustomerData } = useSelector((state: RootState) => state.customerSlice)
+    const dispatch: AppDispatch = useDispatch();
 
-    // const dispatch: AppDispatch = useDispatch();
+    const dataToExport = (data: any) => {
+        return data.map((item: any) => (
+            {
+                name: `${item?.firstName} ${item?.lastName}` || '-- --',
+                email: item?.email || '-- --',
+                phone: item?.phone || '-- --',
+                dateRegistered: new Date(item?.createdAt).toLocaleDateString() || '-- --',
+                avgRating: item?.avgRating || "-- --",
+                status: item?.isDeleted ? 'Banned' : 'Regular',
+            }
+        ))
+    }
 
     const handleBanUnban = async (userId: string, isBanned: boolean) => {
         if (userId) {
@@ -125,6 +147,17 @@ const RegisteredCustomerList = (): JSX.Element => {
         };
     }, []);
 
+    useEffect(() => {
+        dispatch(getAllCustomerDataRequst({
+            params: {
+                page: 1,
+                limit: 10000,
+                query: '',
+                sortBy: '',
+                sortType: 'asc',
+            }
+        }))
+    }, [dispatch])
     return (
         <>
             <PageTitle pageName="Registered Customer List" breadcrumbs={breadcrumbs} />
@@ -139,6 +172,11 @@ const RegisteredCustomerList = (): JSX.Element => {
                 <div className="col-12">
                     <div className="card">
                         <div className="card-body">
+                            <div className="d-flex justify-content-sm-end mb-2 ">
+                                <CSVLink data={dataToExport(allCustomerData)} headers={headers} filename={"All-Customers-list.csv"}>
+                                    <button className="btn btn-primary btn-md view-details">Download CSV</button>
+                                </CSVLink>
+                            </div>
                             <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100">
                                 <thead>
                                     <tr>

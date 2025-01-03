@@ -58,6 +58,12 @@ export type Location = {
     coordinates: [number, number];
 };
 
+export type BookedTimeSlot = {
+    endTime: string
+    startTime: string
+    _id: string
+}
+
 export type ServiceRequest = {
     _id: string;
     categoryId: {
@@ -98,4 +104,16 @@ export type ServiceRequest = {
     startedAt: string | null;
     completedAt: string | null;
     subCategoryId?: string; // Optional as it's missing in some entries
+    customerName?: string;
+    customerEmail?: string;
+    serviceProviderName?: string
+    serviceProviderPhone?: string
+    customerPhone?: string
+    categoryName?: string
+    customerAvatar?: string
+    bookedServiceShift?: string
+    serviceDescription?: string
+    bookedTimeSlot?: Array<BookedTimeSlot>
+    bookedServiceShift?: string
+    serviceProductSerialNumber?: string
 };
