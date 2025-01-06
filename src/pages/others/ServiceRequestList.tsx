@@ -22,42 +22,37 @@ const breadcrumbs = [
 ];
 const headers = [
     { label: "User Name", key: "userName" },
-    { label: "Request Progress", key: "requestProgress" },
-    { label: "Service Date", key: "serviceDate" },
-    { label: "Service Provider Status", key: "spStatus" },
-    { label: "Acceptance Status", key: "acceptedByProvider" },
-    { label: "Approval Status", key: "isApproved" },
+    { label: "Service Start Date", key: "serviceDate" },
+    { label: "Service Create Date", key: "createdAt" },
     { label: "Tip Amount", key: "tipAmount" },
-    { label: "Incentive Amount", key: "incentiveAmount" },
+    { label: "Request Progresst", key: "requestProgress" },
 ];
 const ServiceRequestList = (): JSX.Element => {
     const navigate = useNavigate();
     const dispatch: AppDispatch = useDispatch();
     const { allServiceData } = useSelector((state: RootState) => state.serviceSlice)
 
-    // useEffect(() => {
-    //     dispatch(getAllServiceRequest({
-    //         params: {
-    //             page: 1,
-    //             limit: 10000,
-    //             query: '',
-    //             sortBy: '',
-    //             sortType: 'asc',
-    //         }
-    //     }))
-    // }, [dispatch])
+    useEffect(() => {
+        dispatch(getAllServiceRequest({
+            params: {
+                page: 1,
+                limit: 10000,
+                query: '',
+                sortBy: '',
+                sortType: 'asc',
+            }
+        }))
+    }, [dispatch])
 
     const dataToExport = (data: any) => {
         return data.map((item: any) => (
             {
                 userName: item.userId ? `${item.userId.firstName} ${item.userId.lastName}` : 'N/A',
-                requestProgress: item.requestProgress,
+                createdAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '--',
                 serviceDate: item.serviceStartDate ? new Date(item.serviceStartDate).toLocaleDateString() : '--',
-                spStatus: item.serviceProviderId ? 'Assigned' : 'Unassigned',
-                acceptedByProvider: item.isReqAcceptedByServiceProvider ? 'Accepted' : 'Not Accepted',
                 isApproved: item.isApproved,
                 tipAmount: `$${item.tipAmount}`,
-                incentiveAmount: `$${item.incentiveAmount}`,
+                requestProgress: `$${item.requestProgress}`,
             }
         ))
     }
@@ -73,14 +68,14 @@ const ServiceRequestList = (): JSX.Element => {
             select: true,
             dom: '<"top d-flex justify-content-between align-items-center"lBf>rt<"bottom"ip>',
             buttons: [],
-                // {
-                //     extend: 'csvHtml5',
-                //     text: 'Export CSV',
-                //     className: 'btn btn-primary btn-sm',
-                //     exportOptions: exportOptions
+            // {
+            //     extend: 'csvHtml5',
+            //     text: 'Export CSV',
+            //     className: 'btn btn-primary btn-sm',
+            //     exportOptions: exportOptions
 
-                // }
-           
+            // }
+
             serverSide: true,
             processing: false,
             ajax: async (data: any, callback: Function) => {
@@ -97,13 +92,11 @@ const ServiceRequestList = (): JSX.Element => {
                         params,
                         withCredentials: true
                     });
- 
+
                     const serviceData = response?.data?.data?.serviceRequests.map((item: any) => [
                         item.userId ? `${item.userId.firstName} ${item.userId.lastName}` : 'N/A',
                         item.requestProgress,
                         item.serviceStartDate ? new Date(item.serviceStartDate).toLocaleDateString() : '--',
-                        // item.serviceProviderId ? 'Assigned' : 'Unassigned',
-                        // item.isReqAcceptedByServiceProvider ? 'Accepted' : 'Not Accepted',
                         item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '--',
                         `$${item.tipAmount}`,
                         `<button class="btn btn-primary btn-sm view-details" data-id="${item._id}">View Details</button>`
@@ -127,7 +120,6 @@ const ServiceRequestList = (): JSX.Element => {
                 { title: "Service Start Date" },
                 { title: "Service Create Date" },
                 { title: "Tip Amount" },
-                // { title: "Incentive Amount" },
                 { title: "Actions" },
             ],
         });
@@ -165,11 +157,11 @@ const ServiceRequestList = (): JSX.Element => {
                     <div className="card">
 
                         <div className="card-body">
-                            {/* <div className="d-flex justify-content-sm-end mb-2 ">
-                            <CSVLink data={dataToExport(allServiceData)} headers={headers} filename={"service-request-list.csv"}>
-                                <button className="btn btn-primary btn-md view-details">Download CSV</button>
-                            </CSVLink>
-                            </div> */}
+                            <div className="d-flex justify-content-sm-end mb-2 ">
+                                <CSVLink data={dataToExport(allServiceData)} headers={headers} filename={"service-request-list.csv"}>
+                                    <button className="btn btn-primary btn-md view-details">Download CSV</button>
+                                </CSVLink>
+                            </div>
                             <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100">
                                 <thead>
                                     <tr>
@@ -177,10 +169,7 @@ const ServiceRequestList = (): JSX.Element => {
                                         <th>Request Progress</th>
                                         <th>Service Start Date</th>
                                         <th>"Service Create Date"</th>
-                                        {/* <th>Acceptance Status</th>
-                                        <th>Approval Status</th> */}
                                         <th>Tip Amount</th>
-                                        {/* <th>Incentive Amount</th> */}
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
