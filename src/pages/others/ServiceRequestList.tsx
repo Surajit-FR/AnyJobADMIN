@@ -62,6 +62,7 @@ const ServiceRequestList = (): JSX.Element => {
             navigate(`/service-request-details/${id}`);
         };
         const table = $('#datatable-buttons').DataTable({
+            "order": [[1, "desc"]],
             responsive: true,
             fixedHeader: true,
             fixedColumns: true,
@@ -79,6 +80,7 @@ const ServiceRequestList = (): JSX.Element => {
             serverSide: true,
             processing: false,
             ajax: async (data: any, callback: Function) => {
+                console.log("data========>",data)
                 try {
                     const params = {
                         page: data.start / data.length + 1,
@@ -162,7 +164,7 @@ const ServiceRequestList = (): JSX.Element => {
                                     <button className="btn btn-primary btn-md view-details">Download CSV</button>
                                 </CSVLink>
                             </div>
-                            <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100">
+                            <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100" data-sort-order="desc">
                                 <thead>
                                     <tr>
                                         <th>User Name</th>

@@ -63,6 +63,7 @@ const ServiceProviderList = (): JSX.Element => {
 
     useEffect(() => {
         const table = $('#datatable-buttons').DataTable({
+            "order": [[1, "desc"]],
             responsive: true,
             fixedHeader: true,
             fixedColumns: true,
