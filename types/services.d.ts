@@ -116,4 +116,8 @@ export type ServiceRequest = {
     bookedTimeSlot?: Array<BookedTimeSlot>
     bookedServiceShift?: string
     serviceProductSerialNumber?: string
+    serviceProviderEmail?: string
+    assignedAgentEmail?: string
+    assignedAgentName?: string
+    assignedAgentPhone?: string
 };
