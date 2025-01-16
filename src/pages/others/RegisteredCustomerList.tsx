@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import PageTitle from "../../components/PageTitle";
 import $ from "jquery";
-import axios from "axios";
+// import axios from "axios";
 import "datatables.net";
 import "datatables.net-bs5";
 import "datatables.net-responsive";
 import "datatables.net-buttons-bs5";
-import { REACT_APP_BASE_URL } from "../../config/app.config";
+// import { REACT_APP_BASE_URL } from "../../config/app.config";
 import { debounce } from "lodash";
 import { AppDispatch, RootState } from "../../store/Store";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import ConfirmationModal from "../../components/ConfirmationModal";
 import { showToast } from "../../utils/Toast";
 import { CSVLink } from "react-csv";
 import { getAllCustomerDataRequst } from "../../store/reducers/CustomerReducers";
+import { API } from "../../store/api/Api";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -50,7 +51,7 @@ const RegisteredCustomerList = (): JSX.Element => {
         if (userId) {
             let isDeleted = isBanned ? false : true;
             try {
-                const resp = await axios.patch(`${REACT_APP_BASE_URL}/user/u/${userId}`, { isDeleted }, { withCredentials: true });
+                const resp = await API.patch(`/user/u/${userId}`, { isDeleted }, { withCredentials: true });
 
                 if (resp?.data?.success) {
                     console.log({ resp: resp?.data });
@@ -72,17 +73,19 @@ const RegisteredCustomerList = (): JSX.Element => {
             buttons: ["copy", "csv", "excel", "pdf", "print"],
             serverSide: true,
             processing: true,
+            stateSave:true,
+            "order": [[1, "desc"]],
             ajax: async (data: any, callback: Function) => {
                 try {
                     const params = {
                         page: data.start / data.length + 1,
                         limit: data.length,
                         query: data.search.value || '',
-                        sortBy: data.columns[data.order[0].column].data,
+                        sortBy: "createdAt",
                         sortType: data.order[0].dir
                     };
 
-                    const response = await axios.get(`${REACT_APP_BASE_URL}/user/get-registered-customers`, {
+                    const response = await API.get(`/user/get-registered-customers`, {
                         params,
                         withCredentials: true
                     });

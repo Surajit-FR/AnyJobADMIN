@@ -1,10 +1,22 @@
 import { Link } from "react-router-dom";
 import sideNavbarMenuData from "./sideNavbar.json";
-import React from "react";
+import sideNavbarAdmin from './sideNavbarAdmin.json'
+import React, { useEffect, useState } from "react";
 import { MenuItems } from "../../../types/common";
 import SidebarItem from "./topnavbar/SidebarItem";
 
 const SideNavbar = (): JSX.Element => {
+    const role = localStorage.getItem("role") || ""
+    const [navBarData, setNavbarData] = useState<any>([])
+
+    useEffect(() => {
+        if (role !== "SuperAdmin") {
+            setNavbarData(sideNavbarAdmin)
+        }
+        else {
+            setNavbarData(sideNavbarMenuData)
+        }
+    }, [role])
     return (
         <>
             {/* <!-- ========== Left Sidebar Start ========== --> */}
@@ -61,7 +73,7 @@ const SideNavbar = (): JSX.Element => {
 
                     {/* <!--- Sidemenu --> */}
                     <ul className="side-nav">
-                        {sideNavbarMenuData?.map((menuItem: MenuItems, index: number) => (
+                        {navBarData && navBarData.length> 0 && navBarData?.map((menuItem: MenuItems, index: number) => (
                             <React.Fragment key={index}>
                                 <li className="side-nav-title mt-1">{menuItem?.title}</li>
                                 {menuItem?.items?.map((item, itemIndex) => (

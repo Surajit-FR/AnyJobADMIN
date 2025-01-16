@@ -2,19 +2,20 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import $ from "jquery";
-import axios from "axios";
+// import axios from "axios";
 import "datatables.net";
 import "datatables.net-bs5";
 import "datatables.net-responsive";
 import "datatables.net-buttons-bs5";
 import "datatables.net-buttons/js/buttons.html5";
 import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
-import { REACT_APP_BASE_URL } from "../../config/app.config";
+// import { REACT_APP_BASE_URL } from "../../config/app.config";
 import { debounce } from "lodash";
 import { CSVLink } from "react-csv";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/Store";
 import { getAllServiceProviderRequest } from "../../store/reducers/ServiceReducers";
+import { API } from "../../store/api/Api";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -78,17 +79,18 @@ const ServiceProviderList = (): JSX.Element => {
             ],
             serverSide: true,
             processing: true,
+            stateSave:true,
             ajax: async (data: any, callback: Function) => {
                 try {
                     const params = {
                         page: data.start / data.length + 1,
                         limit: data.length,
                         query: data.search.value || '',
-                        sortBy: data.columns[data.order[0].column].data,
+                        sortBy: "createdAt",
                         sortType: data.order[0].dir
                     };
 
-                    const response = await axios.get(`${REACT_APP_BASE_URL}/user/get-service-providers`, {
+                    const response = await API.get(`/user/get-service-providers`, {
                         params,
                         withCredentials: true
                     });

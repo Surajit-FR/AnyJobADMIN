@@ -15,6 +15,7 @@ type LoginFormData = {
     password: string;
     userType: Array<string>;
     isAdminPanel: boolean;
+    func: string
 };
 
 const Login = (): JSX.Element => {
@@ -28,7 +29,7 @@ const Login = (): JSX.Element => {
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
 
     const onSubmit = (data: LoginFormData): void => {
-        dispatch(AuthLoginRequest({ data: { ...data, userType: ["SuperAdmin"], isAdminPanel: true }, navigate }));
+        dispatch(AuthLoginRequest({ data: { ...data, isAdminPanel: true }, navigate }));
     };
 
     return (
@@ -117,7 +118,22 @@ const Login = (): JSX.Element => {
                                                 )}
                                             </div>
                                         </div>
-
+                                        <label htmlFor="func" className="form_label">
+                                            Select Role
+                                        </label>
+                                        <div className="position-relative mb-3">
+                                            <select id="userType"
+                                                className={`form-control ${errors.userType ? "is-invalid" : ""}`}
+                                                {...register("userType", {
+                                                    required: "Select one Role"
+                                                })}>
+                                                <option value="">Select a Role</option>
+                                                <option value="SuperAdmin">Super Admin</option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="Finance">Finance</option>
+                                            </select>
+                                            {errors.userType && <div className="invalid-tooltip" style={{ display: "block" }}> {errors.userType.message}</div>}
+                                        </div>
                                         <div className="mb-3 mb-0 text-center">
                                             <button
                                                 className="btn btn-primary"
@@ -126,6 +142,7 @@ const Login = (): JSX.Element => {
                                                 Log In
                                             </button>
                                         </div>
+
                                     </form>
                                 </div>
                                 {/* end card-body */}

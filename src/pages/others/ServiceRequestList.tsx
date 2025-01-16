@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
-import { useEffect, useState } from "react";
-import { REACT_APP_BASE_URL } from "../../config/app.config";
+import { useEffect,
+    //  useState
+     } from "react";
 import $ from "jquery";
-import axios from "axios";
 import "datatables.net";
 import "datatables.net-bs5";
 import "datatables.net-responsive";
@@ -14,7 +14,10 @@ import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/Store";
 import { getAllServiceRequest } from "../../store/reducers/ServiceReducers";
-import { CSVLink } from "react-csv";
+import { CSVLink } from "react-csv"
+// import { io } from 'socket.io-client';
+import { API } from "../../store/api/Api";
+
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -27,11 +30,20 @@ const headers = [
     { label: "Tip Amount", key: "tipAmount" },
     { label: "Request Progresst", key: "requestProgress" },
 ];
+
+
 const ServiceRequestList = (): JSX.Element => {
     const navigate = useNavigate();
     const dispatch: AppDispatch = useDispatch();
     const { allServiceData } = useSelector((state: RootState) => state.serviceSlice)
+    // const [pageValue, setPageValue] = useState<number>(1)
+    // const [elemNum, setElemNum] = useState<number>(10)
+    // const [searchStr, setSearchStr] = useState<string>('')
 
+
+    // console.log("pageNum=====>", pageValue)
+    // console.log("elemvalue=====>", elemNum)
+    // console.log("search value=====>", searchStr)
     useEffect(() => {
         dispatch(getAllServiceRequest({
             params: {
@@ -43,6 +55,17 @@ const ServiceRequestList = (): JSX.Element => {
             }
         }))
     }, [dispatch])
+    // useEffect(() => {
+    //     dispatch(getAllServiceRequest({
+    //         params: {
+    //             page: pageValue,
+    //             limit: elemNum,
+    //             query: '',
+    //             sortBy: '',
+    //             sortType: 'asc',
+    //         }
+    //     }))
+    // }, [dispatch, pageValue,elemNum])
 
     const dataToExport = (data: any) => {
         return data.map((item: any) => (
@@ -69,6 +92,7 @@ const ServiceRequestList = (): JSX.Element => {
             select: true,
             dom: '<"top d-flex justify-content-between align-items-center"lBf>rt<"bottom"ip>',
             buttons: [],
+            stateSave:true,
             // {
             //     extend: 'csvHtml5',
             //     text: 'Export CSV',
@@ -78,23 +102,21 @@ const ServiceRequestList = (): JSX.Element => {
             // }
 
             serverSide: true,
-            processing: false,
+            processing: true,
             ajax: async (data: any, callback: Function) => {
-                console.log("data========>",data)
                 try {
                     const params = {
                         page: data.start / data.length + 1,
                         limit: data.length,
                         query: data.search.value || '',
-                        sortBy: data.columns[data.order[0].column].data,
+                        sortBy: 'createdAt',
                         sortType: data.order[0].dir
                     };
 
-                    const response = await axios.get(`${REACT_APP_BASE_URL}/service`, {
+                    const response = await API.get(`/service`, {
                         params,
                         withCredentials: true
                     });
-
                     const serviceData = response?.data?.data?.serviceRequests.map((item: any) => [
                         item.userId ? `${item.userId.firstName} ${item.userId.lastName}` : 'N/A',
                         item.requestProgress,
@@ -140,6 +162,7 @@ const ServiceRequestList = (): JSX.Element => {
 
         searchInput.on('input', function () {
             const searchValue = $(this).val();
+            // setSearchStr(searchValue as string)
             debouncedSearch(searchValue as string);
         });
 
@@ -178,7 +201,9 @@ const ServiceRequestList = (): JSX.Element => {
                                 <tbody>
                                 </tbody>
                             </table>
+                            {/* <button onClick={() => connect()}> Change Page </button> */}
                         </div>
+
                     </div>
                 </div>
             </div>

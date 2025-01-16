@@ -7,6 +7,7 @@ import watchShift from "./sagas/ShiftSaga";
 import watchUser from "./sagas/UserSaga";
 import watchService from "./sagas/ServiceSaga";
 import watchCustomer from "./sagas/CustomerSaga";
+import watchIp from "./sagas/IpSaga";
 
 export default function* rootSaga() {
     yield all([
@@ -17,5 +18,6 @@ export default function* rootSaga() {
         watchUser(),
         watchService(),
         watchCustomer(),
+        watchIp(),
     ])
 }

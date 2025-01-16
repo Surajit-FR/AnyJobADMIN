@@ -15,11 +15,9 @@ const ServiceSlice = createSlice({
     reducers: {
         // Get question
         getServiceRequest: (state, { payload, type }) => {
-            console.log("initialize",type)
             state.type = type;
         },
         getServiceSuccess: (state, { payload, type }) => {
-            console.log("success",type)
             state.type = type;
             state.singleServiceData = payload?.data[0];
         },
@@ -42,7 +40,6 @@ const ServiceSlice = createSlice({
             state.type = type;
         },
         getAllServiceProviderSuccess: (state, { payload, type }) => {
-            console.log(payload.data)
             state.type = type;
             state.allServiceProviderData = payload?.data?.serviceProviders;
         },

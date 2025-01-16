@@ -103,7 +103,6 @@ export const GETALLREGISTEREDCUSTOMER = (params: {
     query: '',
     sortBy: '',
     sortType: 'asc',
-
 }) => {
     const queryString = new URLSearchParams();
     if (params.page) {
@@ -113,4 +112,23 @@ export const GETALLREGISTEREDCUSTOMER = (params: {
         queryString.append('limit', params.limit.toString());
     }
     return API.get(`user/get-registered-customers?${queryString.toString()}`)
+}
+
+export const GETALLIPLOGS = (params: {
+    page?: number,
+    limit: number,
+    query: '',
+    sortBy: '',
+    sortType: 'asc',
+
+}) => {
+    console.log("Api")
+    const queryString = new URLSearchParams();
+    // if (params.page) {
+    //     queryString.append('page', params.page.toString());
+    // }
+    // if (params.limit) {
+    //     queryString.append('limit', params.limit.toString());
+    // }
+    return API.get(`/user/fetch-iplogs?${queryString.toString()}`)
 }

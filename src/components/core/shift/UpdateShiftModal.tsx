@@ -92,6 +92,7 @@ const UpdateShiftModal = (): JSX.Element => {
                                         id="shiftName"
                                         placeholder="Enter Shift Name"
                                         {...register("shiftName", { required: "Shift Name is required" })}
+                                        disabled
                                     />
                                     {errors.shiftName && (
                                         <div className="invalid-tooltip" style={{ display: "block" }}>

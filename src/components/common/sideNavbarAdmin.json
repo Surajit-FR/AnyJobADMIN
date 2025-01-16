@@ -1,0 +1,79 @@
+[
+    {
+        "title": "Main",
+        "icon": "",
+        "isSubmenu": false,
+        "items": [
+            {
+                "to": "/dashboard",
+                "icon": "ri-dashboard-2-fill",
+                "label": "Dashboard",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/registered-customer-list",
+                "label": "Registered Customer List",
+                "icon": "ri-contacts-fill",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/service-provider-list",
+                "icon": "ri-team-fill",
+                "label": "Service Provider List",
+                "isSubmenu": false,
+                "items": []
+            }
+        ]
+    },
+    {
+        "title": "Service",
+        "icon": "",
+        "isSubmenu": false,
+        "items": [
+            {
+                "to": "/service-request-list",
+                "icon": "ri-list-check-2",
+                "label": "Service Request List",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/manage-service-category",
+                "label": "Category",
+                "icon": "ri-layout-grid-fill",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/manage-service-questions",
+                "icon": "ri-grid-fill",
+                "label": "Service Questions",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/manage-service-shift",
+                "label": "Manage Shift",
+                "icon": "ri-time-fill",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/sale-sheet",
+                "icon": "ri-file-copy-2-fill",
+                "label": "Sale Sheet",
+                "isSubmenu": false,
+                "items": []
+            },
+            {
+                "to": "/system-ip-logs",
+                "icon": "ri-pages-fill",
+                "label": "IP Address Logs",
+                "isSubmenu": false,
+                "items": []
+            }
+        ]
+    }
+]

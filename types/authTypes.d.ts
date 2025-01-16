@@ -33,4 +33,5 @@ export type UserData = {
     user: User,
     accessToken?: string,
     refreshToken?: string,
+    user?: User
 };

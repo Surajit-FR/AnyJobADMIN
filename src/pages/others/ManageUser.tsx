@@ -10,6 +10,7 @@ import { REACT_APP_BASE_URL } from "../../config/app.config";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { showToast } from "../../utils/Toast";
 import AddAdminUser from "../../components/core/AddAdminUser";
+import { API } from "../../store/api/Api";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -54,7 +55,7 @@ const ManageUser = (): JSX.Element => {
                         sortType: data.order[0].dir
                     };
 
-                    const response = await axios.get(`${REACT_APP_BASE_URL}/user/get-admin-users`, {
+                    const response = await API.get(`/user/get-admin-users`, {
                         params,
                         withCredentials: true
                     });

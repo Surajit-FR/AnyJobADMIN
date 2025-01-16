@@ -13,9 +13,11 @@ export function* loginSaga({ payload, type }: { payload: { data: TLoginCredentia
         const resp = yield call(LOGIN, payload?.data);
         const result: ApiResponse<UserData> = resp?.data;
         if (result?.success) {
+            console.log("role", result?.data?.user?.userType)
             payload.navigate("/dashboard");
             window.localStorage.setItem("accessToken", result?.data?.accessToken as string);
             window.localStorage.setItem("refreshToken", result?.data?.refreshToken as string);
+            window.localStorage.setItem("role", result?.data?.user?.userType as string);
             showToast({ message: result?.message || 'Login Successfully.', type: 'success', durationTime: 3500, position: "top-center" });
             yield put(AuthLoginSuccess(result));
         };
@@ -34,6 +36,8 @@ export function* logoutSaga({ payload, type }: { payload: { navigate: NavigateFu
             payload.navigate("/logout-page");
             window.localStorage.removeItem("accessToken");
             window.localStorage.removeItem("refreshToken");
+            window.localStorage.removeItem("role");
+            window.localStorage.removeItem("_id");   
             showToast({ message: result?.message || 'Logout Successfully.', type: 'success', durationTime: 3500, position: "top-center" });
             yield put(AuthLogoutSuccess(result));
         };
