@@ -132,3 +132,6 @@ export const GETALLIPLOGS = (params: {
     // }
     return API.get(`/user/fetch-iplogs?${queryString.toString()}`)
 }
+
+export const GETIPDETAILFORUSER = ()=> API.get("https://ipapi.co/json/")
+export const POSTIPLOGDETAILS = (data:any) => API.post("/user/create-iplog",data)

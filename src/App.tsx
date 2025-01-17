@@ -33,6 +33,7 @@ const App = (): JSX.Element => {
           <div className="content">
             {/* Start Content */}
             <div className="container-fluid">
+              
               <AllRoutes />
 
               {/* Footer */}

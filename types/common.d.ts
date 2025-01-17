@@ -3,6 +3,7 @@ import { TCategory, TCategoryAPIResponse, TCategoryData } from "./categoryTypes"
 import { QuestionRespone, TQuestion } from "./questionTypes";
 import { ServiceRequest } from "./services";
 import { TShift } from "./shiftTypes";
+import {IPData} from './ipstate'
 
 export type DefaultSettings = {
     'data-layout-mode': string;
@@ -52,6 +53,8 @@ export type DataState = {
     allServiceData?: Array<ServiceRequest>
     allServiceProviderData?: Array<ServiceRequest>
     allCustomerData?: Array<AllCustomers>
+    ipData?: IPData,
+    userIpInfo?: IPData,
 };
 
 export type SagaGenerator<Y, R = void> = Generator<CallEffect<Y> | PutEffect | SelectEffect | TakeEffect, R, Y>;
