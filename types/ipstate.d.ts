@@ -1,3 +1,5 @@
+import { User } from "./authTypes"
+
 export type IPData = {
 ip: string,
 network: string,
@@ -14,8 +16,8 @@ country_tld: string,
 continent_code: string,
 in_eu: boolean,
 postal: number,
-latitude: number,
-longitude: number,
+latitude: string,
+longitude: string,
 timezone: string,
 utc_offset: string,
 country_calling_code: string,
@@ -26,5 +28,10 @@ country_area: number,
 country_population: number,
 asn: string,
 org: string
+ipAddress?: string
+userId?: Array<User>
+route?: string
+timestamp?:string
+userAgent?:string
 }
 

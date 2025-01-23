@@ -81,12 +81,13 @@ const ServiceProviderList = (): JSX.Element => {
             processing: true,
             stateSave:true,
             ajax: async (data: any, callback: Function) => {
+                console.log(data)
                 try {
                     const params = {
                         page: data.start / data.length + 1,
                         limit: data.length,
                         query: data.search.value || '',
-                        sortBy: "createdAt",
+                        sortBy: data.columns[data.order[0].column].name,
                         sortType: data.order[0].dir
                     };
 
@@ -120,27 +121,33 @@ const ServiceProviderList = (): JSX.Element => {
                 }
             },
             columns: [
-                { title: "Name" },
-                { title: "Email" },
-                { title: "Phone" },
-                { title: "Company" },
-                { title: "Date Registered" },
+                { title: "Name" ,name:"createdAt", orderable:false},
+                { title: "Email" , name:"email"},
+                { title: "Phone", name:"createdAt" ,orderable: false},
+                { title: "Company",name:"companyName",orderable: false },
+                { title: "Date Registered",name: "createdAt"},
                 {
                     title: "Verification",
+                    name: "isVerified",
+                    orderable: false,
                     render: (data: any, type: any, row: any) => {
                         const isVerified = row[5] === "Verified";
                         return `<strong class="${isVerified ? 'text-success' : 'text-danger'}">${row[5]}</strong>`;
                     }
                 },
-                { title: "Avg. rating" },
+                { title: "Avg. rating" ,name: "createdAt",orderable: false},
                 {
                     title: "Field Agents",
+                    name: "createdAt",
+                    orderable: false,
                     render: (data: any, type: any, row: any) => {
                         return row[7];
                     }
                 },
                 {
                     title: "Action",
+                    name: "action",
+                    orderable: false,
                     render: (data: any, type: any, row: any) => {
                         return `
                             <a href="#" class="btn btn-primary btn-sm action-button" data-id="${row[8]}">

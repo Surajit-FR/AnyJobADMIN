@@ -1,16 +1,18 @@
 // import { useDispatch, useSelector } from "react-redux";
 import PageTitle from "../../components/PageTitle";
-// import $ from "jquery";
+import { useNavigate } from "react-router-dom";
+import $ from "jquery";
 import "datatables.net";
 import "datatables.net-bs5";
 import "datatables.net-responsive";
 import "datatables.net-buttons-bs5";
 import "datatables.net-buttons/js/buttons.html5";
 import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
-// import { debounce } from "lodash";
+import { useEffect } from "react";
+// import { getIpDataRequest } from "../../store/reducers/IpReducers";
 // import { AppDispatch, RootState } from "../../store/Store";
-// import { useEffect } from "react";
-// import { API } from "../../store/api/Api";
+import { debounce } from "lodash";
+import { API } from "../../store/api/Api";
 // import { getIpDataRequest } from "../../store/reducers/IpReducers";
 
 const breadcrumbs = [
@@ -21,88 +23,106 @@ const breadcrumbs = [
 
 const IPAddressLog = (): JSX.Element => {
     // const dispatch: AppDispatch = useDispatch();
+      const navigate = useNavigate();
     // const { ipData } = useSelector((state: RootState) => state.ipSlice)
-    // console.log({ipData})
-    // useEffect(()=>{
-    //     dispatch(getIpDataRequest({page:1}))
-    // },[dispatch])
+    // console.log({ ipData })
     // useEffect(() => {
-    //     const table = $('#datatable-buttons').DataTable({
-    //         responsive: true,
-    //         fixedHeader: true,
-    //         fixedColumns: true,
-    //         select: true,
-    //         buttons: ["copy", "csv", "excel", "pdf", "print"],
-    //         serverSide: true,
-    //         processing: true,
-    //         ajax: async (data: any, callback: Function) => {
-    //             try {
-    //                 const params = {
-    //                     page: data.start / data.length + 1,
-    //                     limit: data.length,
-    //                     query: data.search.value || '',
-    //                     sortBy: "createdAt",
-    //                     sortType: data.order[0].dir
-    //                 };
+    //     dispatch(getIpDataRequest({ data: { page: 1, limit: 10 } }))
+    // }, [dispatch])
 
-    //                 const response = await API.get(`/user/get-registered-customers`, {
-    //                     params,
-    //                     withCredentials: true
-    //                 });
+    useEffect(() => {
+        let ipData: any[]= []
+        const table = $('#datatable-buttons').DataTable({
+            "order": [[1, "desc"]],
+            responsive: true,
+            fixedHeader: true,
+            fixedColumns: true,
+            select: true,
+            buttons: ["copy", "csv", "excel", "pdf", "print"],
+            serverSide: true,
+            processing: true,
+            stateSave:true,
+            ajax: async (data: any, callback: Function) => {
+                try {
+                    const params = {
+                        page: data.start / data.length + 1,
+                        limit: data.length,
+                        query: data.search.value || '',
+                        sortBy: data.columns[data.order[0].column].name,
+                        sortType: data.order[0].dir
+                    };
 
-    //                 const customerData = response?.data?.data?.customers.map((item: any) => [
-    //                     `${item?.firstName} ${item?.lastName}` || '-- --',
-    //                     item?.email || '-- --',
-    //                     item?.phone || '-- --',
-    //                     new Date(item?.createdAt).toLocaleDateString() || '-- --',
-    //                     item?.avgRating || "-- --",
-    //             
-    //                 ]);
+                    const response = await API.get(`/user/fetch-iplogs`, {
+                        params,
+                        withCredentials: true
+                    });
+                    ipData= response?.data?.data?.ipLogs
+                    const customerData = response?.data?.data?.ipLogs.map((item: any,index: number) => [
+                        `${item?.ipAddress}` || '-- --',
+                        new Date(item?.timestamp).toLocaleDateString() || '-- --',
+                        `${item?.userId[0].firstName} ${item?.userId[0].lastName}` || '-- --',
+                        item?.country || '-- --',
+                        item?.route || '-- --',
+                        item?._id
+                    ]);
 
-    //                 const totalRecords = response.data.data.pagination.total;
+                    const totalRecords = response.data.data.pagination.total;
 
-    //                 callback({
-    //                     draw: data.draw,
-    //                     recordsTotal: totalRecords,
-    //                     recordsFiltered: totalRecords,
-    //                     data: customerData
-    //                 });
-    //             } catch (error) {
-    //                 console.error('Error fetching data:', error);
-    //             }
-    //         },
-    //         columns: [
-    //             { title: "Name" },
-    //             { title: "Email" },
-    //             { title: "Phone" },
-    //             { title: "Date Registered" },
-    //             { title: "Avg. Rating" },
-    //             { title: "Actions", orderable: false }
-    //         ],
-    //     });
+                    callback({
+                        draw: data.draw,
+                        recordsTotal: totalRecords,
+                        recordsFiltered: totalRecords,
+                        data: customerData
+                    });
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            },
+            columns: [
+                { title: "Ip Address", name:"ipAddress", orderable:false },
+                { title: "Time",name:'timestamp'  },
+                { title: "Name",name: 'name',orderable:false },
+                { title: "Country", name:"country", orderable:false },
+                { title: "Route",name:'route',orderable:false },
+                {
+                    title: "Action",
+                    name:'action',
+                    orderable:false,
+                    render: (data: any, type: any, row: any) => {
+                        return `
+                            <a href="#" class="btn btn-primary btn-sm action-button" data-id="${row[4]}" data-val="${row[5]}"}">
+                                View Details
+                            </a>
+                        `;
+                    }
+                }
 
-    //     // Handle click event for action buttons
-    //     $('#datatable-buttons tbody').on('click', 'button', function () {
-    //         const userId = $(this).data('id');
-    //         const isBannedStatus = $(this).data('banned');
-    //     });
+            ],
+        });
 
-    //     const debouncedSearch = debounce((value: string) => {
-    //         table.search(value).draw();
-    //     }, 600);
+        $('#datatable-buttons tbody').on('click', '.action-button', function (event) {
+            event.preventDefault();
+            const value = $(this).data('val')
+            const filteredData= ipData.filter(item => item._id === value)
+            navigate(`/system-ip-logs-details`,{state: JSON.stringify(filteredData[0])});
+        });
 
-    //     const searchInput = $('#datatable-buttons_filter input');
+        const debouncedSearch = debounce((value: string) => {
+            table.search(value).draw();
+        }, 600);
 
-    //     searchInput.on('input', function () {
-    //         const searchValue = $(this).val();
-    //         debouncedSearch(searchValue as string);
-    //     });
+        const searchInput = $('#datatable-buttons_filter input');
 
-    //     return () => {
-    //         searchInput.off('input');
-    //         table.destroy();
-    //     };
-    // }, []);
+        searchInput.on('input', function () {
+            const searchValue = $(this).val();
+            debouncedSearch(searchValue as string);
+        });
+
+        return () => {
+            searchInput.off('input');
+            table.destroy();
+        };
+    }, [navigate]);
     return (
         <>
             {/* PageTitle section */}
@@ -110,10 +130,20 @@ const IPAddressLog = (): JSX.Element => {
 
             <div className="card">
                 <div className="card-body">
-                    {/* <div className="row">
-                        <h4 className="text-center">This is iplog page</h4>
-                    </div> */}
-
+                    <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100">
+                                <thead>
+                                    <tr>
+                                        <th>Ip Address</th>
+                                        <th>Name</th>
+                                        <th>Country</th>
+                                        <th>Region</th>
+                                        <th>Date Registered</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                 </div>
             </div>
         </>

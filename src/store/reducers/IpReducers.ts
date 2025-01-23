@@ -18,8 +18,8 @@ const initialState: DataState = {
         continent_code: "",
         in_eu: false,
         postal: 0,
-        latitude: 0,
-        longitude: 0,
+        latitude: '',
+        longitude: '',
         timezone: "",
         utc_offset: "",
         country_calling_code: "",
@@ -30,6 +30,7 @@ const initialState: DataState = {
         country_population: 0,
         asn: "",
         org: "",
+        userId:[],
     },
     error: null,
     type: '',
@@ -49,8 +50,8 @@ const initialState: DataState = {
         continent_code: "",
         in_eu: false,
         postal: 0,
-        latitude: 0,
-        longitude: 0,
+        latitude: '',
+        longitude: '',
         timezone: "",
         utc_offset: "",
         country_calling_code: "",
@@ -91,6 +92,18 @@ const IpReducers = createSlice({
             state.type = type;
             state.error = payload;
         },
+        // post ip details
+        exportIpDetailsRequest: (state, { payload, type }) => {
+            state.type = type;
+        },
+        exportIpDetailsRequestSuccess: (state, { payload, type }) => {
+            state.type = type;
+        },
+        exportIpDetailsRequestFailure: (state, { payload, type }) => {
+            state.type = type;
+            state.error = payload;
+        },
+
     }
 });
 
@@ -100,7 +113,10 @@ export const {
     getIpDataRequestFailure,
     getIncomingUserIprequest,
     getIncomingUserIprequestSuccess,
-    getIncomingUserIprequestFailure
+    getIncomingUserIprequestFailure,
+    exportIpDetailsRequest,
+    exportIpDetailsRequestSuccess,
+    exportIpDetailsRequestFailure
 } = IpReducers.actions;
 
 export default IpReducers.reducer;

@@ -139,12 +139,12 @@ const ServiceRequestList = (): JSX.Element => {
                 }
             },
             columns: [
-                { title: "User Name" },
-                { title: "Request Progress" },
-                { title: "Service Start Date" },
-                { title: "Service Create Date" },
-                { title: "Tip Amount" },
-                { title: "Actions" },
+                { title: "User Name",name: "name",orderable:false},
+                { title: "Request Progress",name: "createdAt",orderable: false },
+                { title: "Service Start Date",name: "createdAt" },
+                { title: "Service Create Date",name: "createdAt" },
+                { title: "Tip Amount" ,name: "createdAt",orderable: false},
+                { title: "Actions" ,name: "createdAt",  orderable: false},
             ],
         });
 

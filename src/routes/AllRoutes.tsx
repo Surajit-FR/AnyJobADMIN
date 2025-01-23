@@ -15,46 +15,11 @@ import AllQuestions from '../pages/others/AllQuestions';
 import ManageShiftPage from '../pages/others/ManageShiftPage';
 import ServiceProviderDetails from '../components/core/serviceproviderlist/ServiceProviderDetails';
 import ServiceRequestDetails from '../components/core/servicerequestlist/ServiceRequestDetails';
-import axios from "axios";
-import { useDispatch, useSelector } from 'react-redux';
-import {AppDispatch,RootState} from "../store/Store";
-import { useEffect, useState } from 'react';
-import { getIncomingUserIprequest } from '../store/reducers/IpReducers';
+import IpDetails from '../pages/others/IPDetails';
 
 
 const AllRoutes = (): JSX.Element => {
-const dispatch: AppDispatch = useDispatch()
-const {userIpInfo} = useSelector((state: RootState)=> state.ipSlice)
-const role = localStorage.getItem("role")
-const ipDetails = sessionStorage.getItem("ipDetails")
-const [ip, setIP] = useState("")
-    const getIpData = async () => {
-        const res = await axios.get("https://api.ipify.org/?format=json");
-        // const res2 = await axios.get("https://ipapi.co/json");
-        // console.log(res.data);
-        setIP(res.data.ip);
-        // console.log({res2})
-    };
-    useEffect(()=>{
-        if(!ipDetails){
-            dispatch(getIncomingUserIprequest("IpSlice/getIncomingUserIprequest"))
-            getIpData()
-        }
 
-    },[dispatch, ipDetails])
-//     useEffect(()=>{
-//         getIp()
-//     },[])
-    useEffect(()=>{
-        getIpData()
-    },[])
-
-    useEffect(()=>{
-        if(ip && role && userIpInfo?.ip){
-            sessionStorage.setItem("ipDetails",JSON.stringify({...userIpInfo,ip,route:window.location.href,userType:role}))
-        }
-    },[userIpInfo,ip,role])
-    console.log({userIpInfo})
     return (
         <>
             <Routes>
@@ -74,6 +39,7 @@ const [ip, setIP] = useState("")
                 <Route path='/manage-service-request-queue' element={<ManageQueue />} />
                 <Route path='/sale-sheet' element={<SaleSheet />} />
                 <Route path='/system-ip-logs' element={<IPAddressLog />} />
+                <Route path='/system-ip-logs-details' element={<IpDetails />} />
             </Routes>
         </>
     );

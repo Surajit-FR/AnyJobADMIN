@@ -119,19 +119,21 @@ export const GETALLIPLOGS = (params: {
     limit: number,
     query: '',
     sortBy: '',
-    sortType: 'asc',
+    sortType: 'desc',
 
 }) => {
     console.log("Api")
     const queryString = new URLSearchParams();
-    // if (params.page) {
-    //     queryString.append('page', params.page.toString());
-    // }
-    // if (params.limit) {
-    //     queryString.append('limit', params.limit.toString());
-    // }
+    if (params.page) {
+        queryString.append('page', params.page.toString());
+    }
+    if (params.limit) {
+        queryString.append('limit', params.limit.toString());
+    }
     return API.get(`/user/fetch-iplogs?${queryString.toString()}`)
 }
 
-export const GETIPDETAILFORUSER = ()=> API.get("https://ipapi.co/json/")
+// export const GETIPDETAILFORUSER = ()=> API.get("https://ipapi.co/")
+// export const GETIPDETAILFORUSER = (data:any)=> API.get(`https://www.opentracker.net/feature/ip-tracker?ip=${data?.ipAddress}`)
+export const GETIPDETAILFORUSER = (data: any)=> axios.get(`https://api.hostip.info/get_html.php?ip=${data?.ipAddress}&position=true`)
 export const POSTIPLOGDETAILS = (data:any) => API.post("/user/create-iplog",data)
