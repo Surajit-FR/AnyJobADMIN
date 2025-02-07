@@ -6,14 +6,16 @@ const initialState: DataState = {
     error: null,
     type: '',
     allServiceData: [],
-    allServiceProviderData: []
+    allServiceProviderData: [],
+    serviceRequestTableData:[],
+    serviceTableTotalElems: 0
 };
 
 const ServiceSlice = createSlice({
     name: "serviceSlice",
     initialState,
     reducers: {
-        // Get question
+        // Get Services
         getServiceRequest: (state, { payload, type }) => {
             state.type = type;
         },
@@ -33,6 +35,19 @@ const ServiceSlice = createSlice({
             state.allServiceData = payload?.data?.serviceRequests;
         },
         getAllServiceFailure: (state, { payload, type }) => {
+            state.type = type;
+            state.error = payload;
+        },
+        getServiceTableDataRequest: (state, { payload, type }) => {
+            state.type = type;
+        },
+        getServiceTableDataRequestSuccess: (state, { payload, type }) => {
+            // console.log({payload})
+            state.type = type;
+            state.serviceRequestTableData = payload?.data?.serviceRequests;
+            state.serviceTableTotalElems = payload?.data?.pagination?.totalRecords;
+        },
+        getServiceTableDataRequestFailure: (state, { payload, type }) => {
             state.type = type;
             state.error = payload;
         },
@@ -57,6 +72,9 @@ export const {
     getAllServiceRequest,
     getAllServiceSuccess,
     getAllServiceFailure,
+    getServiceTableDataRequest,
+    getServiceTableDataRequestSuccess,
+    getServiceTableDataRequestFailure,
     getAllServiceProviderRequest,
     getAllServiceProviderSuccess,
     getAllServiceProviderFailure,

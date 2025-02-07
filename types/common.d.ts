@@ -55,6 +55,8 @@ export type DataState = {
     allCustomerData?: Array<AllCustomers>
     ipData?: IPData,
     userIpInfo?: IPData,
+    serviceRequestTableData?:Array<ServiceRequest>
+    serviceTableTotalElems?: number
 };
 
 export type SagaGenerator<Y, R = void> = Generator<CallEffect<Y> | PutEffect | SelectEffect | TakeEffect, R, Y>;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import PageTitle from "../../components/PageTitle";
 import $ from "jquery";
 // import axios from "axios";
@@ -14,7 +14,7 @@ import ConfirmationModal from "../../components/ConfirmationModal";
 import { showToast } from "../../utils/Toast";
 import { CSVLink } from "react-csv";
 import { getAllCustomerDataRequst } from "../../store/reducers/CustomerReducers";
-import { API } from "../../store/api/Api";
+import { API, UPDATEBAN } from "../../store/api/Api";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -29,10 +29,12 @@ const headers = [
     { label: "Status", key: "status" },
 ];
 const RegisteredCustomerList = (): JSX.Element => {
-    const [itemId, setItemID] = useState<string>("");
-    const [isBanned, setIsBanned] = useState<boolean>(false);
     const { allCustomerData } = useSelector((state: RootState) => state.customerSlice)
     const dispatch: AppDispatch = useDispatch();
+    const csvRef = useRef<any>(null)
+    const [download, setDownload] = useState(false)
+    const [itemId, setItemID] = useState<string>("");
+    const [isBanned, setIsBanned] = useState<boolean>(false);
 
     const dataToExport = (data: any) => {
         return data.map((item: any) => (
@@ -51,7 +53,7 @@ const RegisteredCustomerList = (): JSX.Element => {
         if (userId) {
             let isDeleted = isBanned ? false : true;
             try {
-                const resp = await API.patch(`/user/u/${userId}`, { isDeleted }, { withCredentials: true });
+                const resp = await UPDATEBAN(userId, { isDeleted });
 
                 if (resp?.data?.success) {
                     console.log({ resp: resp?.data });
@@ -64,6 +66,19 @@ const RegisteredCustomerList = (): JSX.Element => {
         }
     };
 
+    const handleCsvdownload = useCallback(() => {
+        setDownload(true)
+        dispatch(getAllCustomerDataRequst({
+            params: {
+                page: 1,
+                limit: 10000,
+                query: '',
+                sortBy: '',
+                sortType: 'asc',
+            }
+        }))
+    }, [dispatch])
+
     useEffect(() => {
         const table = $('#datatable-buttons').DataTable({
             responsive: true,
@@ -73,7 +88,7 @@ const RegisteredCustomerList = (): JSX.Element => {
             buttons: ["copy", "csv", "excel", "pdf", "print"],
             serverSide: true,
             processing: true,
-            stateSave:true,
+            stateSave: true,
             "order": [[1, "desc"]],
             ajax: async (data: any, callback: Function) => {
                 try {
@@ -151,16 +166,12 @@ const RegisteredCustomerList = (): JSX.Element => {
     }, []);
 
     useEffect(() => {
-        dispatch(getAllCustomerDataRequst({
-            params: {
-                page: 1,
-                limit: 10000,
-                query: '',
-                sortBy: '',
-                sortType: 'asc',
-            }
-        }))
-    }, [dispatch])
+        if (allCustomerData && allCustomerData.length > 0 && download) {
+            csvRef.current?.link.click()
+            setDownload(false)
+        }
+    }, [allCustomerData, download])
+
     return (
         <>
             <PageTitle pageName="Registered Customer List" breadcrumbs={breadcrumbs} />
@@ -176,9 +187,9 @@ const RegisteredCustomerList = (): JSX.Element => {
                     <div className="card">
                         <div className="card-body">
                             <div className="d-flex justify-content-sm-end mb-2 ">
-                                <CSVLink data={dataToExport(allCustomerData)} headers={headers} filename={"All-Customers-list.csv"}>
-                                    <button className="btn btn-primary btn-md view-details">Download CSV</button>
-                                </CSVLink>
+                                {download && <CSVLink data={dataToExport(allCustomerData)} headers={headers} filename={"All-Customers-list.csv"} ref={csvRef} />}
+                                <button className="btn btn-primary btn-md view-details" onClick={()=>handleCsvdownload()}>Download CSV</button>
+                                {/* </CSVLink> */}
                             </div>
                             <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100">
                                 <thead>

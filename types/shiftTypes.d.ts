@@ -1,5 +1,5 @@
 export type TShiftTime = {
-    startTime: string;
+    startTime: string ;
     endTime: string;
     _id?: string;
 };

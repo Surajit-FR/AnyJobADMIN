@@ -7,6 +7,8 @@ import { addCategoryRequest } from "../../../store/reducers/CategoryReducers";
 
 const AddCategory = (): JSX.Element => {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const wrapperRef = useRef<any>(null);
+
     const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<TCategoryPayload>();
     const dispatch: AppDispatch = useDispatch();
 
@@ -23,6 +25,26 @@ const AddCategory = (): JSX.Element => {
 
         dispatch(addCategoryRequest({ data: formData, reset }));
     };
+
+    const onDragEnter = (e: any) => {
+        e.preventDefault()
+        fileInputRef.current?.classList?.add('dragover')
+    };
+
+    const onDragLeave = () => wrapperRef.current?.classList?.remove('dragover');
+
+    const onDrop = (e: any) => {
+        fileInputRef.current?.classList?.remove('dragover')
+        e.preventDefault()
+        const allowedExtension = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp']
+        if (e.dataTransfer.files.length > 0) {
+            if (allowedExtension.indexOf(e.dataTransfer.files[0].type) !== -1) {
+                setValue("categoryImage", e.dataTransfer.files[0]);
+            } else {
+                alert('Not an image')
+            }
+        }
+    }
 
     const handleDropzoneClick = (): void => {
         if (fileInputRef.current) {
@@ -72,12 +94,19 @@ const AddCategory = (): JSX.Element => {
                                     className="dropzone text-center p-3 border rounded"
                                     onClick={handleDropzoneClick}
                                     style={{ cursor: "pointer" }}
+                                    onDragEnter={onDragEnter}
+                                    onDragLeave={onDragLeave}
+                                    onDrop={onDrop}
+                                    onDragOver={onDrop}
+                                    ref={wrapperRef}
+                                    draggable
                                 >
                                     <input
                                         ref={fileInputRef}
                                         type="file"
                                         className="d-none"
                                         onChange={handleImageUpload}
+                                        accept="image/*"
                                     />
                                     {watch("categoryImage") ? (
                                         <img

@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import PageTitle from "../../components/PageTitle";
 import $ from "jquery";
-import axios from "axios";
 import "datatables.net";
 import "datatables.net-bs5";
 import "datatables.net-responsive";
 import "datatables.net-buttons-bs5";
-import { REACT_APP_BASE_URL } from "../../config/app.config";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { showToast } from "../../utils/Toast";
 import AddAdminUser from "../../components/core/AddAdminUser";
-import { API } from "../../store/api/Api";
+import { API, UPDATEBAN } from "../../store/api/Api";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -25,7 +23,7 @@ const ManageUser = (): JSX.Element => {
         if (userId) {
             let isDeleted = isBanned ? false : true;
             try {
-                const resp = await axios.patch(`${REACT_APP_BASE_URL}/user/u/${userId}`, { isDeleted }, { withCredentials: true });
+                const resp = await UPDATEBAN(userId, { isDeleted });
 
                 if (resp?.data?.success) {
                     console.log({ resp: resp?.data });

@@ -1,5 +1,5 @@
 import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { useTimeFormat } from "../../../hooks/useTimeFormat";
+// import { useTimeFormat } from "../../../hooks/useTimeFormat";
 import { AppDispatch } from "../../../store/Store";
 import { useDispatch } from "react-redux";
 import { addShiftRequest } from "../../../store/reducers/ShiftReducers";
@@ -21,19 +21,21 @@ const AddShift = (): JSX.Element => {
         name: "shiftTimes"
     });
 
-    const { convertTo12HourFormat } = useTimeFormat();
+    // const { convertTo12HourFormat } = useTimeFormat();
 
     const onSubmit = (data: TShiftPayload) => {
+        const d= new Date().toLocaleDateString('en-CA')
         // Format the shift times
         const formattedShiftTimes = data.shiftTimes.map(shift => ({
-            startTime: convertTo12HourFormat(shift.startTime),
-            endTime: convertTo12HourFormat(shift.endTime)
+            startTime: d + 'T' + shift.startTime+ ":00",
+            endTime: d + 'T' + shift.endTime +":00"
         }));
 
         const formattedData = {
             shiftName: data.shiftName,
             shiftTimes: formattedShiftTimes
         };
+        console.log(formattedData)
         dispatch(addShiftRequest({ data: formattedData, reset }));
     };
 
@@ -74,6 +76,7 @@ const AddShift = (): JSX.Element => {
                                         render={({ field }) => (
                                             <input
                                                 type="time"
+                                                step={3600000}
                                                 className={`form-control me-2 ${errors.shiftTimes?.[index]?.startTime ? "is-invalid" : ""
                                                     }`}
                                                 {...field}

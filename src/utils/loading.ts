@@ -13,6 +13,9 @@ const loadingActions = [
     'getAllQuestionRequest',
     'getQuestionRequest',
     'updateQuestionRequest',
+    'getServiceRequest',
+    'getAllServiceRequest',
+    'getServiceTableDataRequest',
 ];
 
 export const isLoading = (slice: SliceState, actions: string[]): boolean => {
@@ -33,4 +36,7 @@ export const isQuestionLoading = (question: SliceState): boolean => {
 
 export const isSubCategoryLoading = (subCategory: SliceState): boolean => {
     return isLoading(subCategory, loadingActions.filter(action => action.includes('SubCategory')));
+};
+export const isServiceLoading = (service: SliceState): boolean => {
+    return isLoading(service, loadingActions.filter(action => action.includes('Service')));
 };

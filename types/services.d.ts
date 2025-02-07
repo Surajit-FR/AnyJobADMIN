@@ -120,4 +120,5 @@ export type ServiceRequest = {
     assignedAgentEmail?: string
     assignedAgentName?: string
     assignedAgentPhone?: string
+    isReqAcceptedByServiceProvider?: boolean
 };

@@ -18,7 +18,7 @@ const breadcrumbs = [
 const ServiceRequestDetails = (): JSX.Element => {
     const { service_requestId } = useParams();
     const { singleServiceData } = useSelector((state: RootState) => state.serviceSlice);
-    const { singleShiftData } = useSelector((state: RootState) => state.shiftSlice);
+    // const { singleShiftData } = useSelector((state: RootState) => state.shiftSlice);
     const dispatch: AppDispatch = useDispatch();
 
     const [serviceDetails, setServiceDetails] = useState<ServiceRequest | null>(null);
@@ -57,7 +57,7 @@ const ServiceRequestDetails = (): JSX.Element => {
     }
 
     const {
-        SelectedShiftTime,
+        // SelectedShiftTime,
         serviceStartDate,
         isIncentiveGiven,
         incentiveAmount,
@@ -80,6 +80,7 @@ const ServiceRequestDetails = (): JSX.Element => {
         assignedAgentEmail,
         assignedAgentName,
         assignedAgentPhone,
+        isReqAcceptedByServiceProvider,
 
     } = serviceDetails;
 
@@ -92,9 +93,9 @@ const ServiceRequestDetails = (): JSX.Element => {
         setIsModalOpen(false);
     };
 
-    const selectedShiftTime = singleShiftData?.shiftTimes?.find(
-        (shiftTime) => shiftTime?._id === SelectedShiftTime?.shiftTimeId
-    );
+    // const selectedShiftTime = singleShiftData?.shiftTimes?.find(
+    //     (shiftTime) => shiftTime?._id === SelectedShiftTime?.shiftTimeId
+    // );
 
     return (
         <>
@@ -158,7 +159,7 @@ const ServiceRequestDetails = (): JSX.Element => {
                             </div>
                             {/*request progress pending*/}
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Request Accepted By Service Provider:</strong> {requestProgress === "Pending" ? 'No' : 'Yes'}
+                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Request Accepted By Service Provider:</strong> {!isReqAcceptedByServiceProvider ? 'No' : 'Yes'}
                             </div>
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
                                 <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Assigned Service Provider:</strong> {serviceProviderName ? serviceProviderName : 'Not Assigned'}

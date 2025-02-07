@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import $ from "jquery";
@@ -33,9 +33,23 @@ const headers = [
 
 const ServiceProviderList = (): JSX.Element => {
     const navigate = useNavigate();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const csvref = useRef<any>();
     const { allServiceProviderData } = useSelector((state: RootState) => state.serviceSlice)
-    useEffect(() => {
+    const [isDownloaded, setIsDownloaded] = useState(false)
+    // useEffect(() => {
+    //     dispatch(getAllServiceProviderRequest({
+    //         params: {
+    //             page: 1,
+    //             limit: 10000,
+    //             query: '',
+    //             sortBy: '',
+    //             sortType: 'asc',
+    //         }
+    //     }))
+    // }, [dispatch])
+    const handleCsvClick = useCallback(() => {
+        setIsDownloaded(true)
         dispatch(getAllServiceProviderRequest({
             params: {
                 page: 1,
@@ -46,7 +60,6 @@ const ServiceProviderList = (): JSX.Element => {
             }
         }))
     }, [dispatch])
-
     const dataToExpoer = (data: any) => {
         return data.map((item: any) => (
             {
@@ -61,10 +74,16 @@ const ServiceProviderList = (): JSX.Element => {
             }
         ))
     }
+    useEffect(() => {
+        if (allServiceProviderData && allServiceProviderData.length > 0 && isDownloaded) {
+            csvref.current?.link.click()
+            setIsDownloaded(false)
+        }
 
+    }, [allServiceProviderData, isDownloaded])
     useEffect(() => {
         const table = $('#datatable-buttons').DataTable({
-            "order": [[1, "desc"]],
+            "order": [[4, "desc"]],
             responsive: true,
             fixedHeader: true,
             fixedColumns: true,
@@ -79,9 +98,9 @@ const ServiceProviderList = (): JSX.Element => {
             ],
             serverSide: true,
             processing: true,
-            stateSave:true,
+            stateSave: true,
             ajax: async (data: any, callback: Function) => {
-                console.log(data)
+                // console.log(data)
                 try {
                     const params = {
                         page: data.start / data.length + 1,
@@ -121,11 +140,11 @@ const ServiceProviderList = (): JSX.Element => {
                 }
             },
             columns: [
-                { title: "Name" ,name:"createdAt", orderable:false},
-                { title: "Email" , name:"email"},
-                { title: "Phone", name:"createdAt" ,orderable: false},
-                { title: "Company",name:"companyName",orderable: false },
-                { title: "Date Registered",name: "createdAt"},
+                { title: "Name", name: "createdAt", orderable: false },
+                { title: "Email", name: "email", orderable: false },
+                { title: "Phone", name: "createdAt", orderable: false },
+                { title: "Company", name: "companyName", orderable: false },
+                { title: "Date Registered", name: "createdAt" },
                 {
                     title: "Verification",
                     name: "isVerified",
@@ -135,7 +154,7 @@ const ServiceProviderList = (): JSX.Element => {
                         return `<strong class="${isVerified ? 'text-success' : 'text-danger'}">${row[5]}</strong>`;
                     }
                 },
-                { title: "Avg. rating" ,name: "createdAt",orderable: false},
+                { title: "Avg. rating", name: "avgRating", orderable: false },
                 {
                     title: "Field Agents",
                     name: "createdAt",
@@ -196,12 +215,17 @@ const ServiceProviderList = (): JSX.Element => {
                     <div className="card">
                         <div className="card-body">
                             <div className="d-flex justify-content-sm-end mb-2 ">
-                                <CSVLink
-                                    data={dataToExpoer(allServiceProviderData)}
-                                    headers={headers}
-                                    filename={"service-provider-list.csv"}>
-                                    <button className="btn btn-primary btn-md view-details">Download CSV</button>
-                                </CSVLink>
+                                {isDownloaded &&
+                                    <CSVLink
+                                        data={dataToExpoer(allServiceProviderData)}
+                                        headers={headers}
+                                        filename={"service-provider-list.csv"}
+                                        ref={csvref}
+                                    />
+                                }
+
+                                <button className="btn btn-primary btn-md view-details" onClick={()=>handleCsvClick()}>Download CSV</button>
+                                {/* </CSVLink> */}
                             </div>
                             <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100">
                                 <thead>

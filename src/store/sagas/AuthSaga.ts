@@ -13,13 +13,11 @@ export function* loginSaga({ payload, type }: { payload: { data: TLoginCredentia
         const resp = yield call(LOGIN, payload?.data);
         const result: ApiResponse<UserData> = resp?.data;
         if (result?.success) {
-            console.log("role", result?.data?.user?.userType)
-            console.log("id", result?.data?.user?._id)
             payload.navigate("/dashboard");
             window.localStorage.setItem("accessToken", result?.data?.accessToken as string);
             window.localStorage.setItem("refreshToken", result?.data?.refreshToken as string);
             window.localStorage.setItem("role", result?.data?.user?.userType as string);
-            window.localStorage.setItem("id", result?.data?.user?._id as string);
+            window.localStorage.setItem("_id", result?.data?.user?._id as string);
             showToast({ message: result?.message || 'Login Successfully.', type: 'success', durationTime: 3500, position: "top-center" });
             yield put(AuthLoginSuccess(result));
         };
@@ -35,11 +33,14 @@ export function* logoutSaga({ payload, type }: { payload: { navigate: NavigateFu
         const resp = yield call(LOGOUT);
         const result: ApiResponse<UserData> = resp?.data;
         if (result?.success) {
-            payload.navigate("/logout-page");
             window.localStorage.removeItem("accessToken");
             window.localStorage.removeItem("refreshToken");
             window.localStorage.removeItem("role");
-            window.localStorage.removeItem("id");   
+            window.localStorage.removeItem("_id");   
+            window.localStorage.removeItem("ipDetails")
+            localStorage.clear()
+            sessionStorage.clear()
+            payload.navigate("/logout-page");
             showToast({ message: result?.message || 'Logout Successfully.', type: 'success', durationTime: 3500, position: "top-center" });
             yield put(AuthLogoutSuccess(result));
         };

@@ -37,7 +37,7 @@ const LocationPin = ({ text, name }: Props): JSX.Element => (
 
 const IpDetails = (): JSX.Element => {
 
-    const nodeRef = useRef(null)
+    const nodeRef = useRef<GoogleMapReact| null>(null)
 
     const location = useLocation()
     const [userData, setUserData] = useState<IPData>()
@@ -115,13 +115,11 @@ const IpDetails = (): JSX.Element => {
                             <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>latitude:</strong>
                             {userData?.latitude || '-- --'}
                         </div>
-                        <div style={{ marginBottom: "0.55rem", fontSize: "15px" ,whiteSpace:'nowrap'}}>
-                            <p style={{display:'inline'}}
-                            //  className="row align-items-center"
-                             >
-                            <span style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px",display:'inline' }}>Route Visited:</span>
-                            <span style={{display:'inline'}}>{userData?.route || '-- --'}</span>
-                            </p>
+                        <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
+
+                            <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Route Visited:</strong>
+                            {userData?.route || '-- --'}
+
                         </div>
                         <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
                             <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Date Visited:</strong>
@@ -134,7 +132,7 @@ const IpDetails = (): JSX.Element => {
                     </div>
                     <div
                         style={{ minHeight: "500px" }}
-                        className="col-md-6" ref={nodeRef}>
+                        className="col-md-6" >
                         {userData && userData.latitude && userData.longitude ?
                             <GoogleMapReact
                                 bootstrapURLKeys={{ key: GOOGLE_API_KEY, libraries: ['places'], id: 'CUSTOM_SCRIPT_ID' }}
@@ -142,7 +140,9 @@ const IpDetails = (): JSX.Element => {
                                     lat: Number(userData?.latitude),
                                     lng: Number(userData?.longitude)
                                 }}
-                                defaultZoom={13}>
+                                defaultZoom={13}
+                                ref={nodeRef}
+                            >
                                 <LocationPin
                                     lat={Number(userData?.latitude)}
                                     lng={Number(userData?.longitude)}

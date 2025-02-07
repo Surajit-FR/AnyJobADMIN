@@ -127,7 +127,7 @@ const Login = (): JSX.Element => {
                                                 {...register("userType", {
                                                     required: "Select one Role"
                                                 })}>
-                                                <option value="">Select a Role</option>
+                                                <option value="" disabled>Select a Role</option>
                                                 <option value="SuperAdmin">Super Admin</option>
                                                 <option value="Admin">Admin</option>
                                                 <option value="Finance">Finance</option>

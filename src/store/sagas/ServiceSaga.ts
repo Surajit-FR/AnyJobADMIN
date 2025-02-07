@@ -8,6 +8,8 @@ import {
     getAllServiceSuccess,
     getServiceFailure,
     getServiceSuccess,
+    getServiceTableDataRequestFailure,
+    getServiceTableDataRequestSuccess,
 
 } from "../reducers/ServiceReducers";
 import { ServiceRequest } from "../../../types/services";
@@ -47,6 +49,30 @@ export function* getAllServiceSaga({ payload, type }: {
         yield put(getAllServiceFailure(error?.response?.data?.message));
     }
 };
+
+export function* getServiceRequstTableSaga({ payload, type }: {
+    payload: {
+        params: {
+            page?: number,
+            limit?: number,
+            query?: '',
+            sortBy?: "",
+            sortType?: string
+        }
+    }, type: string
+}): SagaGenerator<{ data: ApiResponse<ServiceRequest> }> {
+
+    try {
+        const resp = yield call(GETALLSERVICES, payload?.params);
+        const result: ApiResponse<ServiceRequest> = resp?.data;
+        if (result?.success) {
+            yield put(getServiceTableDataRequestSuccess(result));
+        }
+    } catch (error: any) {
+        yield put(getServiceTableDataRequestFailure(error?.response?.data?.message));
+    }
+};
+
 export function* getAllServiceProviderSaga({ payload, type }: {
     payload: {
         params: {
@@ -75,4 +101,5 @@ export default function* watchService() {
     yield takeLatest('serviceSlice/getServiceRequest', getServiceSaga);
     yield takeLatest('serviceSlice/getAllServiceRequest', getAllServiceSaga);
     yield takeLatest('serviceSlice/getAllServiceProviderRequest', getAllServiceProviderSaga);
+    yield takeLatest('serviceSlice/getServiceTableDataRequest', getServiceRequstTableSaga);
 };

@@ -54,6 +54,8 @@ export const GETALLSHIFTS = () => API.get("/shift");
 export const GETSHIFT = (shiftId: string) => API.get(`/shift/${shiftId}`);
 // Update shift
 export const UPDATESHIFT = (shiftId: string, data: TShiftPayload) => API.patch(`/shift/${shiftId}`, data);
+// Update shift
+export const UPDATEBAN = (userId: string, data: any) => API.patch(`/user/u/${userId}`, data);
 // Delete shift
 export const DELETESHIFT = (shiftId: string) => API.delete(`/shift/${shiftId}`);
 // Get user details
@@ -64,12 +66,13 @@ export const VERIFYSERVICEPROVEIDER = (userId: string, isVerified: boolean) => A
 export const FETCHSERVICEREQDETAILS = (serviceId: string) => API.get(`/service/c/${serviceId}`);
 export const GETALLSERVICES = (params: {
     page?: number,
-    limit: number,
-    query: '',
-    sortBy: '',
-    sortType: 'asc',
+    limit?: number,
+    query?: string,
+    sortBy?: string,
+    sortType?: string,
 
 }) => {
+    // console.log({params})
     const queryString = new URLSearchParams();
     if (params.page) {
         queryString.append('page', params.page.toString());
@@ -77,7 +80,18 @@ export const GETALLSERVICES = (params: {
     if (params.limit) {
         queryString.append('limit', params.limit.toString());
     }
+    if (params.query) {
+        queryString.append('query', params.query.toString());
+    }
+    if (params.sortBy) {
+        queryString.append('sortBy', params.sortBy.toString());
+    }
+    if (params.sortType) {
+        queryString.append('sortType', params.sortType.toString());
+    }
+    
     return API.get(`/service?${queryString.toString()}`)
+    
 }
 export const GETALLSERVICEPROVIDER = (params: {
     page?: number,

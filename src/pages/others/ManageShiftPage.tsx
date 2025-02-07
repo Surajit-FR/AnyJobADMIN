@@ -26,7 +26,7 @@ const ManageShiftPage = (): JSX.Element => {
     useEffect(() => {
         dispatch(getAllShiftRequest('shiftSlice/getAllShiftRequest'));
     }, [dispatch]);
-
+console.log({shiftData})
     return (
         <>
             <PageTitle pageName="Manage Service Shift" breadcrumbs={breadcrumbs} />

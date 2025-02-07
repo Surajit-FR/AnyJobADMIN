@@ -4,6 +4,8 @@ import { AppDispatch, RootState } from "../../store/Store";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { getIncomingUserIprequest, exportIpDetailsRequest } from "../../store/reducers/IpReducers";
+import { IP_CAPTURE_URL } from "../../config/app.config";
+
 
 const PrivateOne = (): JSX.Element => {
     const accessToken: string | null = window.localStorage.getItem("accessToken");
@@ -12,19 +14,20 @@ const PrivateOne = (): JSX.Element => {
     const dispatch: AppDispatch = useDispatch()
     const { userIpInfo } = useSelector((state: RootState) => state.ipSlice)
     const role = localStorage.getItem("role")
-    const id = localStorage.getItem("id")
+    const id = localStorage.getItem("_id")
     const ipDetails = sessionStorage.getItem("ipDetails") || ''
     const [ip, setIP] = useState("")
     const getIpData = async () => {
-        const res = await axios.get("https://api.ipify.org/?format=json");
+        const res = await axios.get(IP_CAPTURE_URL);
         setIP(res.data.ip);
     };
     useEffect(() => {
         if (!ipDetails) {
             getIpData()
         }
+    }, [ipDetails])
+console.log({ip})
 
-    }, [dispatch, ipDetails])
     //     useEffect(()=>{
     //         getIp()
     //     },[])
@@ -52,7 +55,6 @@ const PrivateOne = (): JSX.Element => {
             }))
         }
     }, [userIpInfo, ip, role, id])
-
     useEffect(()=>{
         if(window.location.origin !== "http://localhost:3000"){
             let parsedDetails = ipDetails && JSON.parse(ipDetails)
@@ -60,7 +62,6 @@ const PrivateOne = (): JSX.Element => {
                 parsedDetails = {...parsedDetails, route:window.location.href, userAgent: window.navigator.userAgent}
                 sessionStorage.setItem("ipDetails", JSON.stringify(parsedDetails))
                 dispatch(exportIpDetailsRequest(parsedDetails))
-                console.log(window.navigator)
             }
         }
        

@@ -8,13 +8,16 @@ import { useSelector } from "react-redux";
 import { RootState } from "./store/Store";
 import {
   isCategoryLoading,
+  isServiceLoading,
 } from "./utils/loading";
 
 const App = (): JSX.Element => {
   const category = useSelector((state: RootState) => state.categorySlice);
   // const question = useSelector((state: RootState) => state.questionSlice);
+  const service = useSelector((state: RootState)=>state.serviceSlice)
 
   const LOADING = isCategoryLoading(category)
+  // || isServiceLoading(service)
   // || isQuestionLoading(question)
 
   return (
