@@ -44,11 +44,11 @@ console.log({ip})
         if (ip && role && userIpInfo?.ipAddress && id) {
             sessionStorage.setItem("ipDetails", JSON.stringify({
                 ...userIpInfo,
-                country: userIpInfo.country.trim(),
-                region: userIpInfo.region.trim(),
-                ipAddress: userIpInfo.ipAddress.trim(),
-                latitude: Number(userIpInfo.latitude.trim()),
-                longitude: Number(userIpInfo.longitude.trim()),
+                country: userIpInfo.country && userIpInfo.country.trim(),
+                region: userIpInfo.region && userIpInfo.region.trim(),
+                ipAddress: userIpInfo.ipAddress && userIpInfo.ipAddress.trim(),
+                latitude:userIpInfo.latitude && Number(userIpInfo.latitude.trim()),
+                longitude: userIpInfo.longitude && Number(userIpInfo.longitude.trim()),
                 route: window.location.href,
                 userId: id,
                 userType: role
@@ -56,7 +56,6 @@ console.log({ip})
         }
     }, [userIpInfo, ip, role, id])
     useEffect(()=>{
-        console.log(window.location.origin)
         if(window.location.origin !== "http://localhost:3000"){
             let parsedDetails = ipDetails && JSON.parse(ipDetails)
             if(parsedDetails && parsedDetails?.route !== window.location.href){
