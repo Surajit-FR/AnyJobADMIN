@@ -61,7 +61,7 @@ const PrivateOne = (): JSX.Element => {
             if(parsedDetails && parsedDetails?.route !== window.location.href){
                 parsedDetails = {...parsedDetails, route:window.location.href, userAgent: window.navigator.userAgent}
                 sessionStorage.setItem("ipDetails", JSON.stringify(parsedDetails))
-                // dispatch(exportIpDetailsRequest(parsedDetails))
+                dispatch(exportIpDetailsRequest(parsedDetails))
             // }
         }
 
