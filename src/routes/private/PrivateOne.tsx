@@ -56,6 +56,7 @@ console.log({ip})
         }
     }, [userIpInfo, ip, role, id])
     useEffect(()=>{
+        console.log(window.location.origin)
         if(window.location.origin !== "http://localhost:3000"){
             let parsedDetails = ipDetails && JSON.parse(ipDetails)
             if(parsedDetails && parsedDetails?.route !== window.location.href){
