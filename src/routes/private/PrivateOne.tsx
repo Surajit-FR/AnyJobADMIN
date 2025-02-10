@@ -56,15 +56,15 @@ const PrivateOne = (): JSX.Element => {
         }
     }, [userIpInfo, ip, role, id])
     useEffect(()=>{
-        if(window.location.origin !== "http://localhost:3000"){
+        // if(window.location.origin !== "http://localhost:3000"){
             let parsedDetails = ipDetails && JSON.parse(ipDetails)
             if(parsedDetails && parsedDetails?.route !== window.location.href){
                 parsedDetails = {...parsedDetails, route:window.location.href, userAgent: window.navigator.userAgent}
                 sessionStorage.setItem("ipDetails", JSON.stringify(parsedDetails))
-                dispatch(exportIpDetailsRequest(parsedDetails))
-            }
+                // dispatch(exportIpDetailsRequest(parsedDetails))
+            // }
         }
-       console.log(location.pathname)
+
     },[ipDetails,dispatch,location.pathname])
 
     return (
