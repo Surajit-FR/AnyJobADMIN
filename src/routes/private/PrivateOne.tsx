@@ -26,7 +26,7 @@ const PrivateOne = (): JSX.Element => {
             getIpData()
         }
     }, [ipDetails])
-console.log({ip})
+// console.log({ip})
 
     //     useEffect(()=>{
     //         getIp()
@@ -64,7 +64,7 @@ console.log({ip})
                 dispatch(exportIpDetailsRequest(parsedDetails))
             }
         }
-       
+       console.log(location.pathname)
     },[ipDetails,dispatch,location.pathname])
 
     return (
