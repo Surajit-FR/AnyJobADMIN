@@ -7,7 +7,7 @@ const PaymentSuccess = (): JSX.Element => {
             {/* CommonSection */}
             {/* <CommonSection /> */}
 
-            <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative" style={{background:'##00fffc26', height:'100vh'}}>
+            <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative" style={{background:'rgb(221 243 242)', height:'100vh'}}>
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-xxl-10">
