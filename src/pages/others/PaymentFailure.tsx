@@ -5,9 +5,9 @@ const PaymentFailure = (): JSX.Element => {
     return (
         <>
             {/* CommonSection */}
-            <CommonSection />
+            {/* <CommonSection /> */}
 
-            <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
+            <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative" style={{background:'##00fffc26', height:'100vh'}}>
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-xxl-10">
@@ -35,7 +35,7 @@ const PaymentFailure = (): JSX.Element => {
             </div>
 
             {/* AuthFooter */}
-            <AuthFooter />
+            {/* <AuthFooter /> */}
         </>
     );
 };
