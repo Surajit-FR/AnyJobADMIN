@@ -17,6 +17,8 @@ import { Toaster } from 'react-hot-toast';
 import Index from './pages/Index';
 import PrivateOne from './routes/private/PrivateOne';
 import PublicRouteAccess from './routes/PublicRouteAccess';
+import PaymentSuccess from './pages/others/PaymentSuccess';
+import PaymentFailure from './pages/others/PaymentFailure';
 
 // Define default settings
 const defaultSettings: DefaultSettings = {
@@ -66,6 +68,8 @@ root.render(
         <Route path='/recovery-password' element={<RecoveryPassword />} />
         <Route path='/logout-page' element={<LogoutPage />} />
         <Route path='/maintenance' element={<MaintenancePage />} />
+        <Route path='/payment-success' element={<PaymentSuccess />} />
+        <Route path='/payment-error' element={<PaymentFailure />} />
       </Routes>
     </Router>
     <Toaster

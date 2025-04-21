@@ -42,6 +42,7 @@ const ListCategory = ({
                                                     </div>
                                                     <div className="col ps-0">
                                                         <Link to="#" className="text-muted fw-bold">{category?.name}</Link>
+                                                        <p className="m-0 p-0">${category.serviceCost}</p>
                                                     </div>
                                                     <div className="col-auto px-2" id="tooltip-container9">
                                                         {/* <Link to="#" data-bs-container="#tooltip-container9" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"

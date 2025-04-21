@@ -16,6 +16,7 @@ const UpdateCategoryModal = (): JSX.Element => {
 
         // Append category name
         formData.append("name", data.name);
+        formData.append("serviceCost", data.serviceCost.toString());
 
         // Append the category image file if selected
         if (data.categoryImage instanceof File) {
@@ -40,6 +41,10 @@ const UpdateCategoryModal = (): JSX.Element => {
     useEffect(() => {
         if (singleCategoryData) {
             setValue("name", singleCategoryData?.name as string);
+            if(singleCategoryData?.serviceCost){
+
+                setValue("serviceCost", singleCategoryData?.serviceCost);
+            }
             if (singleCategoryData?.categoryImage) {
                 setValue("categoryImage", singleCategoryData?.categoryImage);
             }
@@ -77,6 +82,26 @@ const UpdateCategoryModal = (): JSX.Element => {
                                     {errors.name && (
                                         <div className="invalid-tooltip" style={{ display: "block" }}>
                                             {errors.name.message}
+                                        </div>
+                                    )}
+                                </div>
+                                {/* Category Cost */}
+                                <div className="position-relative mb-3">
+                                    <label className="form-label" htmlFor="name">
+                                        Category Cost
+                                    </label>
+                                    <input
+                                        type="number"
+                                        className={`form-control ${errors.serviceCost ? "is-invalid" : ""}`}
+                                        id="serviceCost"
+                                        placeholder="Enter Category Cost"
+                                        {...register("serviceCost", {
+                                            required: "Service Cost is required",
+                                        })}
+                                    />
+                                    {errors.serviceCost && (
+                                        <div className="invalid-tooltip" style={{ display: "block" }}>
+                                            {errors.serviceCost.message}
                                         </div>
                                     )}
                                 </div>

@@ -13,6 +13,7 @@ import {
 
 const App = (): JSX.Element => {
   const category = useSelector((state: RootState) => state.categorySlice);
+
   // const question = useSelector((state: RootState) => state.questionSlice);
   const service = useSelector((state: RootState)=>state.serviceSlice)
 

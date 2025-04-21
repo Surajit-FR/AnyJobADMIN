@@ -1,6 +1,7 @@
 export type TCategoryPayload = {
     name: string;
     categoryImage?: File | string;
+    serviceCost: number;
 };
 
 export type TCategory = {
@@ -12,6 +13,7 @@ export type TCategory = {
     createdAt: string;
     updatedAt: string;
     __v: number;
+    serviceCost: number;
 };
 
 

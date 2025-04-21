@@ -17,6 +17,8 @@ const AddCategory = (): JSX.Element => {
 
         // Append category name
         formData.append("name", data.name);
+        data.serviceCost &&
+        formData.append("serviceCost", data.serviceCost.toString());
 
         // Append the category image file if selected
         if (data.categoryImage instanceof File) {
@@ -83,6 +85,26 @@ const AddCategory = (): JSX.Element => {
                                 {errors.name && (
                                     <div className="invalid-tooltip" style={{ display: "block" }}>
                                         {errors.name.message}
+                                    </div>
+                                )}
+                            </div>
+                            {/* Category Cost */}
+                            <div className="position-relative mb-3">
+                                <label className="form-label" htmlFor="name">
+                                    Category Cost
+                                </label>
+                                <input
+                                    type="number"
+                                    className={`form-control ${errors.serviceCost ? "is-invalid" : ""}`}
+                                    id="name"
+                                    placeholder="Enter Category cost"
+                                    {...register("serviceCost", {
+                                        required: "Category Cost is required",
+                                    })}
+                                />
+                                {errors.serviceCost && (
+                                    <div className="invalid-tooltip" style={{ display: "block" }}>
+                                        {errors.serviceCost.message}
                                     </div>
                                 )}
                             </div>
