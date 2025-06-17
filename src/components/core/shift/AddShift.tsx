@@ -24,7 +24,7 @@ const AddShift = (): JSX.Element => {
     // const { convertTo12HourFormat } = useTimeFormat();
 
     const onSubmit = (data: TShiftPayload) => {
-        const d= new Date().toLocaleDateString('en-CA')
+        const d= "2025-02-06"
         // Format the shift times
         const formattedShiftTimes = data.shiftTimes.map(shift => ({
             startTime: d + 'T' + shift.startTime+ ":00",
@@ -83,7 +83,7 @@ const AddShift = (): JSX.Element => {
                                             />
                                         )}
                                     />
-                                    {errors.shiftTimes?.[index]?.startTime && (
+                                    {errors.shiftTimes?.[index]?.startTime && ( 
                                         <div className="invalid-tooltip" style={{ display: "block" }}>
                                             {errors.shiftTimes[index]?.startTime?.message}
                                         </div>
