@@ -3,7 +3,7 @@ import { TCategory, TCategoryAPIResponse, TCategoryData } from "./categoryTypes"
 import { QuestionRespone, TQuestion } from "./questionTypes";
 import { ServiceRequest } from "./services";
 import { TShift } from "./shiftTypes";
-import {IPData} from './ipstate'
+import { IPData } from './ipstate'
 
 export type DefaultSettings = {
     'data-layout-mode': string;
@@ -38,6 +38,20 @@ export type ExportingCustomer = {
     createdAt: Date,
     avgRating: string,
 }
+export type TransactionsData = {
+    _id: string,
+    type: string,
+    currency: string,
+    amount: number,
+    description: string,
+    stripeTransactionId: string,
+    createdAt: Date,
+    updatedAt: Date,
+    serviceProviderName: string,
+    customerName: string,
+    categoryName: string,
+    categoryCost: string
+}
 export type DataState = {
     authData?: Partial<UserData>,
     categoryData?: Array<TCategory>,
@@ -55,8 +69,9 @@ export type DataState = {
     allCustomerData?: Array<AllCustomers>
     ipData?: IPData,
     userIpInfo?: IPData,
-    serviceRequestTableData?:Array<ServiceRequest>
+    serviceRequestTableData?: Array<ServiceRequest>
     serviceTableTotalElems?: number
+    transactionData?: Array<TransactionsData>
 };
 
 export type SagaGenerator<Y, R = void> = Generator<CallEffect<Y> | PutEffect | SelectEffect | TakeEffect, R, Y>;

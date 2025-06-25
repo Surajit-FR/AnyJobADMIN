@@ -12,20 +12,6 @@
                 "items": []
             },
             {
-                "to": "/manage-role",
-                "icon": " ri-admin-fill",
-                "label": "Manage Role",
-                "isSubmenu": false,
-                "items": []
-            },
-            {
-                "to": "/manage-user",
-                "icon": "ri-user-settings-fill",
-                "label": "Manage User",
-                "isSubmenu": false,
-                "items": []
-            },
-            {
                 "to": "/registered-customer-list",
                 "label": "Registered Customer List",
                 "icon": "ri-contacts-fill",
@@ -75,16 +61,23 @@
                 "items": []
             },
             {
-                "to": "/sale-sheet",
-                "icon": "ri-file-copy-2-fill",
-                "label": "Sale Sheet",
-                "isSubmenu": false,
-                "items": []
-            },
-            {
                 "to": "/system-ip-logs",
                 "icon": "ri-pages-fill",
                 "label": "IP Address Logs",
+                "isSubmenu": false,
+                "items": []
+            }
+        ]
+    },
+    {
+        "title": "Transaction",
+        "icon": "",
+        "isSubmenu": false,
+        "items": [
+            {
+                "to": "/transactions",
+                "icon": "ri-exchange-dollar-line",
+                "label": "Transaction History",
                 "isSubmenu": false,
                 "items": []
             }

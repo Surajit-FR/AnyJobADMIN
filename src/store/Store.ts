@@ -10,7 +10,7 @@ import UserSlice from "./reducers/UserReducers";
 import ServiceSlice from "./reducers/ServiceReducers";
 import CustomerSlice from "./reducers/CustomerReducers"
 import IpReducers from "./reducers/IpReducers";
-
+import TransactionSlice from './reducers/TransactionReducers'
 
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware];
@@ -25,6 +25,7 @@ export const store = configureStore({
         serviceSlice: ServiceSlice,
         customerSlice: CustomerSlice,
         ipSlice: IpReducers,
+        transactionSlice: TransactionSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(middleware),
 });

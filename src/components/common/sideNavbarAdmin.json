@@ -75,5 +75,19 @@
                 "items": []
             }
         ]
+    },
+    {
+        "title": "Transaction",
+        "icon": "",
+        "isSubmenu": false,
+        "items": [
+            {
+                "to": "/transactions",
+                "icon": "ri-exchange-dollar-line",
+                "label": "Transaction History",
+                "isSubmenu": false,
+                "items": []
+            }
+        ]
     }
 ]

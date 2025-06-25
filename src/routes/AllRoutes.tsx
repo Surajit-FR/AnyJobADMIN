@@ -16,6 +16,7 @@ import ManageShiftPage from '../pages/others/ManageShiftPage';
 import ServiceProviderDetails from '../components/core/serviceproviderlist/ServiceProviderDetails';
 import ServiceRequestDetails from '../components/core/servicerequestlist/ServiceRequestDetails';
 import IpDetails from '../pages/others/IPDetails';
+import TransactionsList from '../pages/others/AllTransactions';
 
 
 const AllRoutes = (): JSX.Element => {
@@ -40,6 +41,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/sale-sheet' element={<SaleSheet />} />
                 <Route path='/system-ip-logs' element={<IPAddressLog />} />
                 <Route path='/system-ip-logs-details' element={<IpDetails />} />
+                <Route path='/transactions' element={<TransactionsList />} />
             </Routes>
         </>
     );

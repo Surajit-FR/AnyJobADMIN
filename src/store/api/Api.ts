@@ -136,7 +136,6 @@ export const GETALLIPLOGS = (params: {
     sortType: 'desc',
 
 }) => {
-    console.log("Api")
     const queryString = new URLSearchParams();
     if (params.page) {
         queryString.append('page', params.page.toString());
@@ -151,3 +150,21 @@ export const GETALLIPLOGS = (params: {
 // export const GETIPDETAILFORUSER = (data:any)=> API.get(`https://www.opentracker.net/feature/ip-tracker?ip=${data?.ipAddress}`)
 export const GETIPDETAILFORUSER = (data: any)=> axios.get(`https://api.hostip.info/get_html.php?ip=${data?.ipAddress}&position=true`)
 export const POSTIPLOGDETAILS = (data:any) => API.post("/user/create-iplog",data)
+
+export const GETALLTTANSACTIONS = (params: {
+    page?: number,
+    limit: number,
+    query: '',
+    sortBy: '',
+    sortType: string,
+
+}) => {
+    const queryString = new URLSearchParams();
+    if (params.page) {
+        queryString.append('page', params.page.toString());
+    }
+    if (params.limit) {
+        queryString.append('limit', params.limit.toString());
+    }
+    return API.get(`/user/fetch-admin-all-transactions?${queryString.toString()}`)
+}
