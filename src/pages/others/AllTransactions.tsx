@@ -79,7 +79,6 @@ const TransactionsList = (): JSX.Element => {
     useEffect(() => {
 
         const table = $('#datatable-buttons').DataTable({
-            "order": [[1, "asc"]],
             responsive: true,
             fixedHeader: true,
             fixedColumns: true,
@@ -87,7 +86,6 @@ const TransactionsList = (): JSX.Element => {
             dom: '<"top d-flex justify-content-between align-items-center"lBf>rt<"bottom"ip>',
             buttons: [],
             stateSave: true,
-
             serverSide: true,
             processing: true,
             ajax: async (data: any, callback: Function) => {
@@ -134,6 +132,10 @@ const TransactionsList = (): JSX.Element => {
                 { title: "Service Type", name: "categoryName", orderable: false },
                 { title: "Description", name: "description", orderable: false },
             ],
+            "columnDefs": [
+                { "orderable": false, "targets": "_all" } // Applies the option to all columns
+            ],
+             ordering: false,
         });
 
         // Handle button clicks
@@ -170,7 +172,7 @@ const TransactionsList = (): JSX.Element => {
                                     <button className="btn btn-primary btn-md view-details">Download CSV</button>
                                 </CSVLink>
                             </div>
-                            <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100" data-sort-order="desc">
+                            <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th>Transaction Id</th>

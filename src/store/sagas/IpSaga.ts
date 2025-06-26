@@ -45,7 +45,7 @@ export function* GetUserIpSagaFromExternal({ payload, type }: { payload: any, ty
         }
     } catch (error: any) {
         yield put(getIncomingUserIprequestFailure("failed to get ip"));
-        showToast({ message: error?.response?.data?.message || 'failed.', type: 'error', durationTime: 1000, position: "bottom-center" });
+        // showToast({ message: error?.response?.data?.message || 'failed.', type: 'error', durationTime: 1000, position: "bottom-center" });
     };
 };
 export function* ExportIpdetails({ payload, type }: { payload: any, type: string }): SagaGenerator<{ data: ApiResponse<any> }> {
