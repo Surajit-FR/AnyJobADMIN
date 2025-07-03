@@ -186,20 +186,13 @@ const TransactionsList = (): JSX.Element => {
                             {
                                 dashboardCardData && (
                                     <>
-                                        <ProgressBar striped variant="primary" now={(dashboardCardData?.balance?.avilable / (dashboardCardData?.balance?.avilable + dashboardCardData?.balance?.pending)) * 100} style={{background:'#eeeef1'}}/>
+                                        <ProgressBar>
+                                            <ProgressBar now={100 - (dashboardCardData?.balance?.avilable / (dashboardCardData?.balance?.avilable + dashboardCardData?.balance?.pending)) * 100} style={{ background: '#eeeef1' }} />
+                                            <ProgressBar now={(dashboardCardData?.balance?.avilable / (dashboardCardData?.balance?.avilable + dashboardCardData?.balance?.pending)) * 100} variant="primary" />
+                                        </ProgressBar>
                                         <div className="row align-items-center justify-content-between p-1">
                                             <div style={{ width: "fit-content" }} className="row align-items-center">
-                                                <div style={{ width: '10px', height: '10px', background: "#4254ba", borderRadius: "50%" }}></div>
-                                                <span style={{ width: "fit-content" }}>
-                                                    Available Balance
-                                                </span>
-                                            </div>
-                                            <span style={{ width: "fit-content" }} className="fw-bold">
-                                                ${dashboardCardData?.balance?.avilable}
-                                            </span>
-                                        </div>
-                                        <div className="row align-items-center justify-content-between p-1 mb-3" style={{ background: '#f8f9fa' }}>
-                                            <div style={{ width: "fit-content" }} className="row align-items-center">
+
                                                 <div style={{ width: '10px', height: '10px', background: "#eeeef1", borderRadius: "50%" }}>
                                                 </div>
                                                 <span style={{ width: "fit-content" }}>
@@ -208,6 +201,17 @@ const TransactionsList = (): JSX.Element => {
                                             </div>
                                             <span style={{ width: "fit-content" }} className="fw-bold">
                                                 ${dashboardCardData?.balance?.pending}
+                                            </span>
+                                        </div>
+                                        <div className="row align-items-center justify-content-between p-1 mb-3" style={{ background: '#f8f9fa' }}>
+                                            <div style={{ width: "fit-content" }} className="row align-items-center">
+                                                <div style={{ width: '10px', height: '10px', background: "#4254ba", borderRadius: "50%" }}></div>
+                                                <span style={{ width: "fit-content" }}>
+                                                    Available Balance
+                                                </span>
+                                            </div>
+                                            <span style={{ width: "fit-content" }} className="fw-bold">
+                                                ${dashboardCardData?.balance?.avilable}
                                             </span>
                                         </div>
                                     </>
