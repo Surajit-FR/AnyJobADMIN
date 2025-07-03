@@ -186,7 +186,7 @@ const TransactionsList = (): JSX.Element => {
                             {
                                 dashboardCardData && (
                                     <>
-                                        <ProgressBar striped variant="primary" now={(dashboardCardData?.balance?.avilable / (dashboardCardData?.balance?.avilable + dashboardCardData?.balance?.pending)) * 100} />
+                                        <ProgressBar striped variant="primary" now={(dashboardCardData?.balance?.avilable / (dashboardCardData?.balance?.avilable + dashboardCardData?.balance?.pending)) * 100} style={{background:'#eeeef1'}}/>
                                         <div className="row align-items-center justify-content-between p-1">
                                             <div style={{ width: "fit-content" }} className="row align-items-center">
                                                 <div style={{ width: '10px', height: '10px', background: "#4254ba", borderRadius: "50%" }}></div>
