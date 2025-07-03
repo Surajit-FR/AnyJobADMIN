@@ -18,7 +18,8 @@ import { CSVLink } from "react-csv"
 // import { io } from 'socket.io-client';
 import { API } from "../../store/api/Api";
 import { getAllTransactionsRequest } from "../../store/reducers/TransactionReducers";
-
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import { getDashboardCardDataRequest } from "../../store/reducers/DashboardReducer";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -38,7 +39,13 @@ const TransactionsList = (): JSX.Element => {
     const navigate = useNavigate();
     const dispatch: AppDispatch = useDispatch();
     const { transactionData } = useSelector((state: RootState) => state.transactionSlice)
+    const { dashboardCardData } = useSelector((state: RootState) => state.dashboardSlice)
+
     const [total, setTotal] = useState(0);
+
+    useEffect(() => {
+        dispatch(getDashboardCardDataRequest('DashboardSlice/getDashboardCardDataRequest'))
+    }, [dispatch])
 
     useEffect(() => {
         dispatch(getAllTransactionsRequest({
@@ -56,6 +63,7 @@ const TransactionsList = (): JSX.Element => {
             setTotal(transactionData.length)
         }
     }, [transactionData])
+
 
     const formatDescLabel = (label: string) => {
         const result = label.replace(/([A-Z])/g, " $1");
@@ -135,7 +143,7 @@ const TransactionsList = (): JSX.Element => {
             "columnDefs": [
                 { "orderable": false, "targets": "_all" } // Applies the option to all columns
             ],
-             ordering: false,
+            ordering: false,
         });
 
         // Handle button clicks
@@ -167,11 +175,45 @@ const TransactionsList = (): JSX.Element => {
                     <div className="card">
 
                         <div className="card-body">
-                            <div className="d-flex justify-content-sm-end mb-2 ">
+                            <div className="d-flex justify-content-sm-end mb-2">
                                 <CSVLink data={dataToExport(transactionData)} headers={headers} filename={"transactions-history.csv"}>
                                     <button className="btn btn-primary btn-md view-details">Download CSV</button>
                                 </CSVLink>
                             </div>
+                            <div className="row">
+                                <p className="mb-1 fw-bold" >Transaction Status</p>
+                            </div>
+                            {
+                                dashboardCardData && (
+                                    <>
+                                        <ProgressBar striped variant="primary" now={(dashboardCardData?.balance?.avilable / (dashboardCardData?.balance?.avilable + dashboardCardData?.balance?.pending)) * 100} />
+                                        <div className="row align-items-center justify-content-between p-1">
+                                            <div style={{ width: "fit-content" }} className="row align-items-center">
+                                                <div style={{ width: '10px', height: '10px', background: "#4254ba", borderRadius: "50%" }}></div>
+                                                <span style={{ width: "fit-content" }}>
+                                                    Available Balance
+                                                </span>
+                                            </div>
+                                            <span style={{ width: "fit-content" }} className="fw-bold">
+                                                ${dashboardCardData?.balance?.avilable}
+                                            </span>
+                                        </div>
+                                        <div className="row align-items-center justify-content-between p-1 mb-3" style={{ background: '#f8f9fa' }}>
+                                            <div style={{ width: "fit-content" }} className="row align-items-center">
+                                                <div style={{ width: '10px', height: '10px', background: "#eeeef1", borderRadius: "50%" }}>
+                                                </div>
+                                                <span style={{ width: "fit-content" }}>
+                                                    Pending
+                                                </span>
+                                            </div>
+                                            <span style={{ width: "fit-content" }} className="fw-bold">
+                                                ${dashboardCardData?.balance?.pending}
+                                            </span>
+                                        </div>
+                                    </>
+                                )
+                            }
+
                             <table id="datatable-buttons" className="table table-striped dt-responsive nowrap w-100">
                                 <thead>
                                     <tr>

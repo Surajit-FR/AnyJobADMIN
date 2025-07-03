@@ -7,7 +7,9 @@ export type Badge = {
 export type dashboadCardData = {
     title: string;
     value: string;
-    badge: Badge;
+    badge?: Badge;
     icon: string;
     iconBg: string;
+    link?:string;
+    borderColor?: string;
 };

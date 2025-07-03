@@ -9,6 +9,7 @@ import watchService from "./sagas/ServiceSaga";
 import watchCustomer from "./sagas/CustomerSaga";
 import watchIp from "./sagas/IpSaga";
 import watchTransaction from "./sagas/TransactionsSaga";
+import watchDashboard from "./sagas/DashboardSaga";
 
 export default function* rootSaga() {
     yield all([
@@ -21,5 +22,6 @@ export default function* rootSaga() {
         watchCustomer(),
         watchIp(),
         watchTransaction(),
+        watchDashboard()
     ])
 }

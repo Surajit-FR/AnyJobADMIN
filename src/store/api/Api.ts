@@ -89,9 +89,9 @@ export const GETALLSERVICES = (params: {
     if (params.sortType) {
         queryString.append('sortType', params.sortType.toString());
     }
-    
+
     return API.get(`/service?${queryString.toString()}`)
-    
+
 }
 export const GETALLSERVICEPROVIDER = (params: {
     page?: number,
@@ -148,8 +148,8 @@ export const GETALLIPLOGS = (params: {
 
 // export const GETIPDETAILFORUSER = ()=> API.get("https://ipapi.co/")
 // export const GETIPDETAILFORUSER = (data:any)=> API.get(`https://www.opentracker.net/feature/ip-tracker?ip=${data?.ipAddress}`)
-export const GETIPDETAILFORUSER = (data: any)=> axios.get(`https://api.hostip.info/get_html.php?ip=${data?.ipAddress}&position=true`)
-export const POSTIPLOGDETAILS = (data:any) => API.post("/user/create-iplog",data)
+export const GETIPDETAILFORUSER = (data: any) => axios.get(`https://api.hostip.info/get_html.php?ip=${data?.ipAddress}&position=true`)
+export const POSTIPLOGDETAILS = (data: any) => API.post("/user/create-iplog", data)
 
 export const GETALLTTANSACTIONS = (params: {
     page?: number,
@@ -168,3 +168,5 @@ export const GETALLTTANSACTIONS = (params: {
     }
     return API.get(`/user/fetch-admin-all-transactions?${queryString.toString()}`)
 }
+
+export const GETDASHBOARDCARDDATA = () => API.get("/user/get-dashboard-card-details");

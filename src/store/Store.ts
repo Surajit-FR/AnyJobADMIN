@@ -11,6 +11,7 @@ import ServiceSlice from "./reducers/ServiceReducers";
 import CustomerSlice from "./reducers/CustomerReducers"
 import IpReducers from "./reducers/IpReducers";
 import TransactionSlice from './reducers/TransactionReducers'
+import DashboardSlice from './reducers/DashboardReducer'
 
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware];
@@ -26,6 +27,7 @@ export const store = configureStore({
         customerSlice: CustomerSlice,
         ipSlice: IpReducers,
         transactionSlice: TransactionSlice,
+        dashboardSlice: DashboardSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(middleware),
 });
