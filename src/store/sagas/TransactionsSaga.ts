@@ -9,7 +9,7 @@ export function* getAllTransactionsSaga({ payload, type }: {
         params: {
             page?: number,
             limit: number,
-            query: '',
+            query: string,
             sortBy: "",
             sortType: "desc"
         }

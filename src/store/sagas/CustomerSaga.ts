@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { ApiResponse, SagaGenerator } from "../../../types/common";
 import { GETALLREGISTEREDCUSTOMER } from "../api/Api";
-import { getAllCustomerDataFailure, getAllCustomerDataRequst, getAllCustomerDataSuccess } from "../reducers/CustomerReducers";
+import { getAllCustomerDataFailure, getAllCustomerDataSuccess } from "../reducers/CustomerReducers";
 import { ServiceRequest } from "../../../types/services";
 
 

@@ -40,6 +40,7 @@ const TransactionsList = (): JSX.Element => {
     const dispatch: AppDispatch = useDispatch();
     const { transactionData } = useSelector((state: RootState) => state.transactionSlice)
     const { dashboardCardData } = useSelector((state: RootState) => state.dashboardSlice)
+    const [queryToFetch, setQueryToFetch] = useState('')
 
     const [total, setTotal] = useState(0);
 
@@ -52,17 +53,18 @@ const TransactionsList = (): JSX.Element => {
             params: {
                 page: 1,
                 limit: 10000,
-                query: '',
+                query: queryToFetch,
                 sortBy: '',
                 sortType: 'asc',
             }
         }))
-    }, [dispatch])
+    }, [dispatch, queryToFetch])
     useEffect(() => {
         if (transactionData && transactionData.length > 0) {
             setTotal(transactionData.length)
         }
-    }, [transactionData])
+    }, [transactionData,queryToFetch])
+console.log(transactionData);
 
 
     const formatDescLabel = (label: string) => {
@@ -150,6 +152,7 @@ const TransactionsList = (): JSX.Element => {
 
         const debouncedSearch = debounce((value: string) => {
             table.search(value).draw();
+            setQueryToFetch(value)
         }, 600);
 
         const searchInput = $('#datatable-buttons_filter input');

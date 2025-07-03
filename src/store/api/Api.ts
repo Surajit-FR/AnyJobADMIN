@@ -154,7 +154,7 @@ export const POSTIPLOGDETAILS = (data: any) => API.post("/user/create-iplog", da
 export const GETALLTTANSACTIONS = (params: {
     page?: number,
     limit: number,
-    query: '',
+    query: string,
     sortBy: '',
     sortType: string,
 
@@ -165,6 +165,9 @@ export const GETALLTTANSACTIONS = (params: {
     }
     if (params.limit) {
         queryString.append('limit', params.limit.toString());
+    }
+    if (params.query) {
+        queryString.append('query', params.query.toString());
     }
     return API.get(`/user/fetch-admin-all-transactions?${queryString.toString()}`)
 }
