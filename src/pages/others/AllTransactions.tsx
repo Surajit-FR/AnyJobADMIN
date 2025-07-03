@@ -200,7 +200,7 @@ const TransactionsList = (): JSX.Element => {
                                                 </span>
                                             </div>
                                             <span style={{ width: "fit-content" }} className="fw-bold">
-                                                ${dashboardCardData?.balance?.pending}
+                                                $ {dashboardCardData?.balance?.pending/100}
                                             </span>
                                         </div>
                                         <div className="row align-items-center justify-content-between p-1 mb-3" style={{ background: '#f8f9fa' }}>
@@ -211,7 +211,7 @@ const TransactionsList = (): JSX.Element => {
                                                 </span>
                                             </div>
                                             <span style={{ width: "fit-content" }} className="fw-bold">
-                                                ${dashboardCardData?.balance?.avilable}
+                                                $ {dashboardCardData?.balance?.avilable/100}
                                             </span>
                                         </div>
                                     </>
