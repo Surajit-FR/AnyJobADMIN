@@ -158,7 +158,7 @@ const ServiceProviderDetails = (): JSX.Element => {
 
                                         {additional?.businessImage && (
                                             <div className="col-md-2 mb-3">
-                                                <strong>Company Logo:</strong>
+                                                <p className="fw-bold p-0 m-0">Company Logo:</p>
                                                 <img
                                                     src={additional?.businessImage}
                                                     alt="Company Logo"
