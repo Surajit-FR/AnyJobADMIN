@@ -21,8 +21,8 @@ const UserDropdown = (): JSX.Element => {
                             className="rounded-circle" />
                     </span>
                     <span className="d-lg-flex flex-column gap-1 d-none">
-                        <h5 className="my-0">Doris Larson</h5>
-                        <h6 className="my-0 fw-normal">Founder</h6>
+                        <h5 className="my-0">AnyJob</h5>
+                        <h6 className="my-0 fw-normal">Super Admin</h6>
                     </span>
                 </Link>
                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
@@ -32,10 +32,10 @@ const UserDropdown = (): JSX.Element => {
                     </div>
 
                     {/* <!-- item--> */}
-                    <Link to="/profile" className="dropdown-item">
+                    {/* <Link to="/profile" className="dropdown-item">
                         <i className="ri-account-circle-fill align-middle me-1"></i>
                         <span>My Account</span>
-                    </Link>
+                    </Link> */}
 
                     {/* <!-- item--> */}
                     <Link className="dropdown-item" data-bs-toggle="offcanvas" to="#theme-settings-offcanvas">
