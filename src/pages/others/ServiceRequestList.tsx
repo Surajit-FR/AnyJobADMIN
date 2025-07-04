@@ -74,7 +74,7 @@ const ServiceRequestList = (): JSX.Element => {
                 createdAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '--',
                 serviceDate: item.serviceStartDate ? new Date(item.serviceStartDate).toLocaleDateString() : '--',
                 isApproved: item.isApproved,
-                tipAmount: `$${item.tipAmount}`,
+                tipAmount: `$${item.incentiveAmount}`,
                 requestProgress: `$${item.requestProgress}`,
             }
         ))
@@ -122,7 +122,7 @@ const ServiceRequestList = (): JSX.Element => {
                         item.requestProgress,
                         item.serviceStartDate ? new Date(item.serviceStartDate).toLocaleDateString() : '--',
                         item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '--',
-                        `$${item.tipAmount}`,
+                        `$${item.incentiveAmount}`,
                         `<button class="btn btn-primary btn-sm view-details" data-id="${item._id}">View Details</button>`
                     ]);
 
@@ -143,7 +143,7 @@ const ServiceRequestList = (): JSX.Element => {
                 { title: "Request Progress",name: "createdAt",orderable: false },
                 { title: "Service Start Date",name: "createdAt" },
                 { title: "Service Create Date",name: "createdAt" },
-                { title: "Tip Amount" ,name: "createdAt",orderable: false},
+                { title: "Incentive Amount" ,name: "createdAt",orderable: false},
                 { title: "Actions" ,name: "createdAt",  orderable: false},
             ],
         });
@@ -194,7 +194,7 @@ const ServiceRequestList = (): JSX.Element => {
                                         <th>Request Progress</th>
                                         <th>Service Start Date</th>
                                         <th>"Service Create Date"</th>
-                                        <th>Tip Amount</th>
+                                        <th>Incentive Amount</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
