@@ -190,13 +190,13 @@ console.log(transactionData);
                                 dashboardCardData && (
                                     <>
                                         <ProgressBar>
-                                            <ProgressBar now={100 - (dashboardCardData?.balance?.avilable / (dashboardCardData?.balance?.avilable + dashboardCardData?.balance?.pending)) * 100} style={{ background: '#eeeef1' }} />
+                                            <ProgressBar now={100 - (dashboardCardData?.balance?.avilable / (dashboardCardData?.balance?.avilable + dashboardCardData?.balance?.pending)) * 100} style={{ background: '#17a497' }} />
                                             <ProgressBar now={(dashboardCardData?.balance?.avilable / (dashboardCardData?.balance?.avilable + dashboardCardData?.balance?.pending)) * 100} variant="primary" />
                                         </ProgressBar>
                                         <div className="row align-items-center justify-content-between p-1">
                                             <div style={{ width: "fit-content" }} className="row align-items-center">
 
-                                                <div style={{ width: '10px', height: '10px', background: "#eeeef1", borderRadius: "50%" }}>
+                                                <div style={{ width: '10px', height: '10px', background: "#17a497", borderRadius: "50%" }}>
                                                 </div>
                                                 <span style={{ width: "fit-content" }}>
                                                     Pending

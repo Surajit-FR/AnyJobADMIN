@@ -46,12 +46,12 @@ const Dashboard = (): JSX.Element => {
                         icon: "ri-arrow-up-line"
                     },
                     link: '/registered-customer-list',
-                    borderColor:"#17a497",
+                    borderColor: "#17a497",
                 },
                 {
                     title: "Service Providers",
                     value: String(dashboardCardData?.totalServiceProvider),
-                    icon: "ri-group-line",
+                    icon: "ri-presentation-fill",
                     iconBg: "text-bg-primary",
                     badge: {
                         text: "view detils",
@@ -59,12 +59,12 @@ const Dashboard = (): JSX.Element => {
                         icon: "ri-arrow-up-line"
                     },
                     link: '/service-provider-list',
-                    borderColor:"#4254ba",
+                    borderColor: "#4254ba",
                 },
                 {
                     title: "Service Requests",
                     value: String(dashboardCardData?.totalGeneratedService),
-                    icon: "ri-shopping-basket-2-line",
+                    icon: "ri-service-fill",
                     iconBg: "text-bg-info",
                     badge: {
                         text: "view detils",
@@ -72,7 +72,7 @@ const Dashboard = (): JSX.Element => {
                         icon: "ri-arrow-up-line"
                     },
                     link: '/service-request-list',
-                    borderColor:'#299bf6'
+                    borderColor: '#299bf6'
                 },
                 {
                     title: "Pending Transactions",
@@ -85,7 +85,7 @@ const Dashboard = (): JSX.Element => {
                         icon: "ri-arrow-up-line"
                     },
                     link: '/transactions',
-                    borderColor:"#fec20d"
+                    borderColor: "#fec20d"
                 },
                 {
                     title: "Available Balance",
@@ -98,7 +98,7 @@ const Dashboard = (): JSX.Element => {
                         icon: "ri-arrow-up-line"
                     },
                     link: '/transactions',
-                    borderColor:"#f7473a"
+                    borderColor: "#f7473a"
                 },
             ])
         }
