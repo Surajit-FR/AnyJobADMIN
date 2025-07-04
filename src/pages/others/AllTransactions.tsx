@@ -206,7 +206,9 @@ console.log(transactionData);
                                                 $ {dashboardCardData?.balance?.pending/100}
                                             </span>
                                         </div>
-                                        <div className="row align-items-center justify-content-between p-1 mb-3" style={{ background: '#f8f9fa' }}>
+                                        <div className="row align-items-center justify-content-between p-1 mb-3 bg-nav-pills" 
+                                        // style={{ background: '#f8f9fa' }}
+                                        >
                                             <div style={{ width: "fit-content" }} className="row align-items-center">
                                                 <div style={{ width: '10px', height: '10px', background: "#4254ba", borderRadius: "50%" }}></div>
                                                 <span style={{ width: "fit-content" }}>

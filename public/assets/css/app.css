@@ -17146,7 +17146,9 @@ select.form-control-sm:not([size]):not([multiple]) {
   --ct-popover-body-padding-x: 1rem !important;
   --ct-popover-body-padding-y: .5rem !important;
 }
-
+.transaction-status {
+  background: var(--ct-white) !important;
+}
 @media print {
   .leftside-menu,
 .end-bar,
