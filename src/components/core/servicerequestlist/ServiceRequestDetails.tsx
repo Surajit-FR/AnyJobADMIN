@@ -81,6 +81,7 @@ const ServiceRequestDetails = (): JSX.Element => {
         assignedAgentName,
         assignedAgentPhone,
         isReqAcceptedByServiceProvider,
+        totalCustomerRatings,
 
     } = serviceDetails;
 
@@ -179,6 +180,9 @@ const ServiceRequestDetails = (): JSX.Element => {
                                         </div>
                                         <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
                                             <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Assigned Field Agent Phone:</strong> {assignedAgentPhone}
+                                        </div>
+                                        <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
+                                            <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Total Customer Ratings:</strong> {totalCustomerRatings}
                                         </div>
                                     </>
                                 )

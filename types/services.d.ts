@@ -121,4 +121,5 @@ export type ServiceRequest = {
     assignedAgentName?: string
     assignedAgentPhone?: string
     isReqAcceptedByServiceProvider?: boolean
+    totalCustomerRatings?: string
 };
