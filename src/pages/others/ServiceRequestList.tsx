@@ -17,6 +17,7 @@ import { getAllServiceRequest } from "../../store/reducers/ServiceReducers";
 import { CSVLink } from "react-csv"
 // import { io } from 'socket.io-client';
 import { API } from "../../store/api/Api";
+import { getTimeDiff } from "../../utils/timeDifference";
 
 
 const breadcrumbs = [
@@ -25,10 +26,11 @@ const breadcrumbs = [
 ];
 const headers = [
     { label: "User Name", key: "userName" },
-    { label: "Service Start Date", key: "serviceDate" },
-    { label: "Service Create Date", key: "createdAt" },
-    { label: "Tip Amount", key: "tipAmount" },
-    { label: "Request Progresst", key: "requestProgress" },
+    { label: "Actual Start Date", key: "serviceDate" },
+    { label: "Requested Start Date", key: "createdAt" },
+    { label: "Time in Queue", key: "queueTime" },
+    { label: "Tip Amount", key: "incentiveAmount" },
+    { label: "Request Progress", key: "requestProgress" },
 ];
 
 
@@ -73,9 +75,10 @@ const ServiceRequestList = (): JSX.Element => {
                 userName: item.userId ? `${item.userId.firstName} ${item.userId.lastName}` : 'N/A',
                 createdAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '--',
                 serviceDate: item.serviceStartDate ? new Date(item.serviceStartDate).toLocaleDateString() : '--',
+                queueTime:  item.acceptedAt ? getTimeDiff(item.acceptedAt,item.createdAt): '--',
                 isApproved: item.isApproved,
-                tipAmount: `$${item.incentiveAmount}`,
-                requestProgress: `$${item.requestProgress}`,
+                incentiveAmount:item.incentiveAmount? `$${item.incentiveAmount}`: '--',
+                requestProgress: `${item.requestProgress}`,
             }
         ))
     }
@@ -105,11 +108,12 @@ const ServiceRequestList = (): JSX.Element => {
             processing: true,
             ajax: async (data: any, callback: Function) => {
                 try {
+                    console.log(data.columns[data.draw-1].name)
                     const params = {
                         page: data.start / data.length + 1,
                         limit: data.length,
                         query: data.search.value || '',
-                        sortBy: 'createdAt',
+                        sortBy: data.columns[data.draw-1].name,
                         sortType: data.order[0].dir
                     };
 
@@ -122,7 +126,8 @@ const ServiceRequestList = (): JSX.Element => {
                         item.requestProgress,
                         item.serviceStartDate ? new Date(item.serviceStartDate).toLocaleDateString() : '--',
                         item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '--',
-                        `$${item.incentiveAmount}`,
+                        item.acceptedAt ? getTimeDiff(item.acceptedAt,item.createdAt): '--',
+                        item.incentiveAmount?`$${item.incentiveAmount}`: '--',
                         `<button class="btn btn-primary btn-sm view-details" data-id="${item._id}">View Details</button>`
                     ]);
 
@@ -139,12 +144,13 @@ const ServiceRequestList = (): JSX.Element => {
                 }
             },
             columns: [
-                { title: "User Name",name: "name",orderable:false},
-                { title: "Request Progress",name: "createdAt",orderable: false },
-                { title: "Service Start Date",name: "createdAt" },
-                { title: "Service Create Date",name: "createdAt" },
-                { title: "Incentive Amount" ,name: "createdAt",orderable: false},
-                { title: "Actions" ,name: "createdAt",  orderable: false},
+                { title: "User Name",name: "name",orderable: false},
+                { title: "Request Progress",name: "createdAt",  orderable:false },
+                { title: "Requested Start Date",name: "serviceStartDate" },
+                { title: "Service Create Date",name: "acceptedAt" },
+                { title: "Time in Queue",name: "createdAt",orderable:false },
+                { title: "Incentive Amount" ,name: "incentiveAmount"},
+                { title: "Actions" ,name: "createdAt",  orderable:false},
             ],
         });
 
@@ -193,7 +199,8 @@ const ServiceRequestList = (): JSX.Element => {
                                         <th>User Name</th>
                                         <th>Request Progress</th>
                                         <th>Service Start Date</th>
-                                        <th>"Service Create Date"</th>
+                                        <th>Service Create Date</th>
+                                        <th>Time in Queue</th>
                                         <th>Incentive Amount</th>
                                         <th>Actions</th>
                                     </tr>
