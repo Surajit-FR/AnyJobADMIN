@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
-import { useEffect,
+import {
+    useEffect,
     //  useState
-     } from "react";
+} from "react";
 import $ from "jquery";
 import "datatables.net";
 import "datatables.net-bs5";
@@ -17,7 +18,7 @@ import { getAllServiceRequest } from "../../store/reducers/ServiceReducers";
 import { CSVLink } from "react-csv"
 // import { io } from 'socket.io-client';
 import { API } from "../../store/api/Api";
-import { getTimeDiff } from "../../utils/timeDifference";
+import { getTimeDiffByMinutes } from "../../utils/timeDifference";
 
 
 const breadcrumbs = [
@@ -28,6 +29,7 @@ const headers = [
     { label: "User Name", key: "userName" },
     { label: "Actual Start Date", key: "serviceDate" },
     { label: "Requested Start Date", key: "createdAt" },
+    { label: "Request Accept Date", key: "acceptedAt" },
     { label: "Time in Queue", key: "queueTime" },
     { label: "Tip Amount", key: "incentiveAmount" },
     { label: "Request Progress", key: "requestProgress" },
@@ -75,9 +77,10 @@ const ServiceRequestList = (): JSX.Element => {
                 userName: item.userId ? `${item.userId.firstName} ${item.userId.lastName}` : 'N/A',
                 createdAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '--',
                 serviceDate: item.serviceStartDate ? new Date(item.serviceStartDate).toLocaleDateString() : '--',
-                queueTime:  item.acceptedAt ? getTimeDiff(item.acceptedAt,item.createdAt): '--',
+                acceptedAt:   item.acceptedAt ? new Date(item.acceptedAt).toLocaleDateString() : '--',
+                queueTime:  item.acceptedAt ? `${getTimeDiffByMinutes(item.timeInQueue)}` : '--',
                 isApproved: item.isApproved,
-                incentiveAmount:item.incentiveAmount? `$${item.incentiveAmount}`: '--',
+                incentiveAmount: item.incentiveAmount ? `$${item.incentiveAmount}` : '--',
                 requestProgress: `${item.requestProgress}`,
             }
         ))
@@ -95,7 +98,7 @@ const ServiceRequestList = (): JSX.Element => {
             select: true,
             dom: '<"top d-flex justify-content-between align-items-center"lBf>rt<"bottom"ip>',
             buttons: [],
-            stateSave:true,
+            stateSave: true,
             // {
             //     extend: 'csvHtml5',
             //     text: 'Export CSV',
@@ -108,12 +111,11 @@ const ServiceRequestList = (): JSX.Element => {
             processing: true,
             ajax: async (data: any, callback: Function) => {
                 try {
-                    console.log(data.columns[data.draw-1].name)
                     const params = {
                         page: data.start / data.length + 1,
                         limit: data.length,
                         query: data.search.value || '',
-                        sortBy: data.columns[data.draw-1].name,
+                        sortBy: data.columns[data.order[0].column].name,
                         sortType: data.order[0].dir
                     };
 
@@ -126,8 +128,9 @@ const ServiceRequestList = (): JSX.Element => {
                         item.requestProgress,
                         item.serviceStartDate ? new Date(item.serviceStartDate).toLocaleDateString() : '--',
                         item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '--',
-                        item.acceptedAt ? getTimeDiff(item.acceptedAt,item.createdAt): '--',
-                        item.incentiveAmount?`$${item.incentiveAmount}`: '--',
+                        item.acceptedAt ? new Date(item.acceptedAt).toLocaleDateString() : '--',
+                        item.acceptedAt ? `${getTimeDiffByMinutes(item.timeInQueue)}` : '--',
+                        item.incentiveAmount ? `$${item.incentiveAmount}` : '--',
                         `<button class="btn btn-primary btn-sm view-details" data-id="${item._id}">View Details</button>`
                     ]);
 
@@ -144,13 +147,14 @@ const ServiceRequestList = (): JSX.Element => {
                 }
             },
             columns: [
-                { title: "User Name",name: "name",orderable: false},
-                { title: "Request Progress",name: "createdAt",  orderable:false },
-                { title: "Requested Start Date",name: "serviceStartDate" },
-                { title: "Service Create Date",name: "acceptedAt" },
-                { title: "Time in Queue",name: "createdAt",orderable:false },
-                { title: "Incentive Amount" ,name: "incentiveAmount"},
-                { title: "Actions" ,name: "createdAt",  orderable:false},
+                { title: "User Name", name: "firstName" },
+                { title: "Request Progress", name: "createdAt", orderable: false },
+                { title: "Requested Start Date", name: "serviceStartDate" },
+                { title: "Service Create Date", name: "createdAt" },
+                { title: "Service Accepted Date", name: "acceptedAt" },
+                { title: "Time in Queue", name: "timeInQueue" },
+                { title: "Incentive Amount", name: "incentiveAmount" },
+                { title: "Actions", name: "createdAt", orderable: false },
             ],
         });
 
@@ -200,6 +204,7 @@ const ServiceRequestList = (): JSX.Element => {
                                         <th>Request Progress</th>
                                         <th>Service Start Date</th>
                                         <th>Service Create Date</th>
+                                        <th>Service Accepted Date</th>
                                         <th>Time in Queue</th>
                                         <th>Incentive Amount</th>
                                         <th>Actions</th>

@@ -8,6 +8,7 @@ export type UserAddress = {
     longitude: number;
     createdAt: string;
     updatedAt: string;
+    location?: string
 };
 
 export type AdditionalInfo = {

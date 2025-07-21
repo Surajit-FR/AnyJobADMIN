@@ -10,3 +10,15 @@ const diffInMinutes = (diffInMilliseconds % (1000 * 60 * 60)) / (1000 * 60); // 
 return `${Math.floor(diffInHours)} hours and ${Math.round(diffInMinutes)} minutes`// Output: Time difference: 5 hours and 30 minutes
  
 }
+
+export const getTimeDiffByMinutes = (time: number)=>{
+
+
+const diffInMilliseconds = time*60*1000;
+
+const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
+const diffInMinutes = (diffInMilliseconds % (1000 * 60 * 60)) / (1000 * 60); // Remaining minutes
+
+return `${Math.floor(diffInHours)} hours and ${Math.round(diffInMinutes)} minutes`// Output: Time difference: 5 hours and 30 minutes
+ 
+}

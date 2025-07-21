@@ -87,6 +87,7 @@ const ServiceProviderDetails = (): JSX.Element => {
                             {userAddress && userAddress?.length > 0 ? (
                                 userAddress?.map((address) => (
                                     <div key={address?._id} className="mb-3">
+                                        <strong>Address:</strong> {address?.location} <br />
                                         <strong>Zip Code:</strong> {address?.zipCode} <br />
                                         <strong>Location:</strong> ({address?.latitude}, {address?.longitude})
                                     </div>
