@@ -118,7 +118,7 @@ console.log(transactionData);
                         `${item.type}`,
                         `${item.currency?.toUpperCase()} ${item.amount}`,
                         item.createdAt ? new Date(item.createdAt).toLocaleString() : '--',
-                        item.categoryName,
+                        item.categoryName? item.categoryName : '--',
                         formatDescLabel(item.description)
                     ]);
 
