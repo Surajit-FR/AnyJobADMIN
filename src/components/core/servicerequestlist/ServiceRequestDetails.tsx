@@ -97,6 +97,7 @@ const ServiceRequestDetails = (): JSX.Element => {
     // const selectedShiftTime = singleShiftData?.shiftTimes?.find(
     //     (shiftTime) => shiftTime?._id === SelectedShiftTime?.shiftTimeId
     // );
+console.log(serviceStartDate);
 
     return (
         <>
@@ -139,7 +140,8 @@ const ServiceRequestDetails = (): JSX.Element => {
                         <div className="col-md-4">
                             <h4 className="mb-3 text-uppercase text-decoration-underline">Service Request Details</h4>
                             <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Service Start Date:</strong> {formatReadableDateTime(serviceStartDate)}
+                                <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Service Start Date:</strong> {new Date(serviceStartDate).toLocaleDateString()}
+                                {/* {formatReadableDateTime(serviceStartDate)} */}
                             </div>
                             {/* shift details */}
                             {bookedTimeSlot && bookedTimeSlot.length > 0 && (

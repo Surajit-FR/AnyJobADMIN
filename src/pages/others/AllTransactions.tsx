@@ -27,6 +27,7 @@ const breadcrumbs = [
 ];
 const headers = [
     { label: "Transaction Id", key: "stripeTransactionId" },
+    { label: "User name", key: "customerName" },
     { label: "Type", key: "type" },
     { label: "Amount", key: "amount" },
     { label: "Time", key: "createdAt" },
@@ -78,6 +79,7 @@ console.log(transactionData);
             {
                 stripeTransactionId: item.stripeTransactionId,
                 type: item.type,
+                customerName: item.customerName ? item.customerName : '--',
                 createdAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '--',
                 amount: `${item.currency?.toUpperCase()} ${item.amount}`,
                 categoryName: item.categoryName,
@@ -116,6 +118,7 @@ console.log(transactionData);
                     const TransactionData = response?.data?.data?.transactionsData.map((item: any) => [
                         item.stripeTransactionId ? `${item.stripeTransactionId}` : 'N/A',
                         `${item.type}`,
+                        item.customerName ? item.customerName : '--',
                         `${item.currency?.toUpperCase()} ${item.amount}`,
                         item.createdAt ? new Date(item.createdAt).toLocaleString() : '--',
                         item.categoryName? item.categoryName : '--',
@@ -137,6 +140,7 @@ console.log(transactionData);
             columns: [
                 { title: "Transaction Id", name: "stripeTransactionId", orderable: false },
                 { title: "Type", name: "type", orderable: false },
+                { title: "Customer Name", name: "customerName", orderable: false },
                 { title: "Amount", name: "amount", orderable: false },
                 { title: "Time", name: "createdAt", orderable: false },
                 { title: "Service Type", name: "categoryName", orderable: false },
@@ -228,6 +232,7 @@ console.log(transactionData);
                                     <tr>
                                         <th>Transaction Id</th>
                                         <th>Type</th>
+                                        <th>Customer Name</th>
                                         <th>Amount</th>
                                         <th>Time</th>
                                         <th>Service Type</th>
