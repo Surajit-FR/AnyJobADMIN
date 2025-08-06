@@ -30,17 +30,18 @@ export function* loginSaga({ payload, type }: { payload: { data: TLoginCredentia
 // logoutSaga generator function
 export function* logoutSaga({ payload, type }: { payload: { navigate: NavigateFunction }, type: string }): SagaGenerator<{ data: ApiResponse<UserData> }> {
     try {
+
+        window.localStorage.removeItem("accessToken");
+        window.localStorage.removeItem("refreshToken");
+        window.localStorage.removeItem("role");
+        window.localStorage.removeItem("_id");
+        window.localStorage.removeItem("ipDetails")
+        localStorage.clear()
+        sessionStorage.clear()
+        payload.navigate("/logout-page");
+        showToast({ message: 'Logout Successfully.', type: 'success', durationTime: 3500, position: "top-center" });
         const resp = yield call(LOGOUT);
         const result: ApiResponse<UserData> = resp?.data;
-            window.localStorage.removeItem("accessToken");
-            window.localStorage.removeItem("refreshToken");
-            window.localStorage.removeItem("role");
-            window.localStorage.removeItem("_id");   
-            window.localStorage.removeItem("ipDetails")
-            localStorage.clear()
-            sessionStorage.clear()
-            payload.navigate("/logout-page");
-            showToast({ message: 'Logout Successfully.', type: 'success', durationTime: 3500, position: "top-center" });
         if (result?.success) {
             // window.localStorage.removeItem("accessToken");
             // window.localStorage.removeItem("refreshToken");
