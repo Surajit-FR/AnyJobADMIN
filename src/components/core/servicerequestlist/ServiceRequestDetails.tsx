@@ -82,8 +82,10 @@ const ServiceRequestDetails = (): JSX.Element => {
         assignedAgentPhone,
         isReqAcceptedByServiceProvider,
         totalCustomerRatings,
-
+        serviceStartReadableFormat,
+        serviceEndReadableFormat
     } = serviceDetails;
+
 
     const handleImageClick = (image: string) => {
         setSelectedImage(image);
@@ -97,7 +99,7 @@ const ServiceRequestDetails = (): JSX.Element => {
     // const selectedShiftTime = singleShiftData?.shiftTimes?.find(
     //     (shiftTime) => shiftTime?._id === SelectedShiftTime?.shiftTimeId
     // );
-console.log(serviceStartDate);
+
 
     return (
         <>
@@ -144,13 +146,13 @@ console.log(serviceStartDate);
                                 {/* {formatReadableDateTime(serviceStartDate)} */}
                             </div>
                             {/* shift details */}
-                            {bookedTimeSlot && bookedTimeSlot.length > 0 && (
+                            {serviceStartReadableFormat && serviceEndReadableFormat  && (
                                 <>
                                     <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
                                         <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Service Shift:</strong> {bookedServiceShift && bookedServiceShift.toUpperCase()}
                                     </div>
                                     <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                        <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Time Slot:</strong> {`${new Date(bookedTimeSlot[0]?.startTime).toLocaleTimeString()} - ${new Date(bookedTimeSlot[0]?.endTime).toLocaleTimeString()}`}
+                                        <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Time Slot:</strong> {`${new Date(serviceStartReadableFormat).toLocaleTimeString()} - ${new Date(serviceEndReadableFormat).toLocaleTimeString()}`}
                                     </div>
                                 </>
                             )}
