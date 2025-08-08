@@ -27,7 +27,7 @@ const breadcrumbs = [
 ];
 const headers = [
     { label: "Transaction Id", key: "stripeTransactionId" },
-    { label: "User name", key: "customerName" },
+    { label: "Name", key: "customerName" },
     { label: "Type", key: "type" },
     { label: "Amount", key: "amount" },
     { label: "Time", key: "createdAt" },
@@ -65,7 +65,7 @@ const TransactionsList = (): JSX.Element => {
             setTotal(transactionData.length)
         }
     }, [transactionData,queryToFetch])
-console.log(transactionData);
+// console.log(transactionData);
 
 
     const formatDescLabel = (label: string) => {
@@ -140,7 +140,7 @@ console.log(transactionData);
             columns: [
                 { title: "Transaction Id", name: "stripeTransactionId", orderable: false },
                 { title: "Type", name: "type", orderable: false },
-                { title: "Customer Name", name: "customerName", orderable: false },
+                { title: "Name", name: "customerName", orderable: false },
                 { title: "Amount", name: "amount", orderable: false },
                 { title: "Time", name: "createdAt", orderable: false },
                 { title: "Service Type", name: "categoryName", orderable: false },
@@ -232,7 +232,7 @@ console.log(transactionData);
                                     <tr>
                                         <th>Transaction Id</th>
                                         <th>Type</th>
-                                        <th>Customer Name</th>
+                                        <th>Name</th>
                                         <th>Amount</th>
                                         <th>Time</th>
                                         <th>Service Type</th>
