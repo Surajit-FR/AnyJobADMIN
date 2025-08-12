@@ -146,13 +146,13 @@ const ServiceRequestDetails = (): JSX.Element => {
                                 {/* {formatReadableDateTime(serviceStartDate)} */}
                             </div>
                             {/* shift details */}
-                            {serviceStartReadableFormat && serviceEndReadableFormat  && (
+                            {serviceStartReadableFormat && bookedTimeSlot  && (
                                 <>
                                     <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
                                         <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Service Shift:</strong> {bookedServiceShift && bookedServiceShift.toUpperCase()}
                                     </div>
                                     <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                        <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Time Slot:</strong> {`${new Date(serviceStartReadableFormat).toLocaleTimeString()} - ${new Date(serviceEndReadableFormat).toLocaleTimeString()}`}
+                                        <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Time Slot:</strong> {`${bookedTimeSlot[0].startTime} - ${bookedTimeSlot[0].endTime}`}
                                     </div>
                                 </>
                             )}
