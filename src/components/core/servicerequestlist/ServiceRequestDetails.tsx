@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { getServiceRequest } from "../../../store/reducers/ServiceReducers";
 import { ServiceRequest } from "../../../../types/services";
 import { getShiftRequest } from "../../../store/reducers/ShiftReducers";
-import { formatReadableDateTime } from "../../../utils/utility";
+import { formatReadableDateTime, HrFormat } from "../../../utils/utility";
 
 
 const breadcrumbs = [
@@ -152,7 +152,7 @@ const ServiceRequestDetails = (): JSX.Element => {
                                         <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Service Shift:</strong> {bookedServiceShift && bookedServiceShift.toUpperCase()}
                                     </div>
                                     <div style={{ marginBottom: "0.55rem", fontSize: "15px" }}>
-                                        <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Time Slot:</strong> {`${bookedTimeSlot[0].startTime} - ${bookedTimeSlot[0].endTime}`}
+                                        <strong style={{ fontWeight: "bold", fontSize: "16px", marginRight: "2px" }}>Booked Time Slot:</strong> {`${HrFormat(bookedTimeSlot[0].startTime)} - ${HrFormat(bookedTimeSlot[0].endTime)}`}
                                     </div>
                                 </>
                             )}

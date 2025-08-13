@@ -80,3 +80,14 @@ export const formatReadableDateTime = (isoTimestamp: string, locale: string = "e
     // Format the date
     return new Intl.DateTimeFormat(locale, formatOptions).format(new Date(isoTimestamp));
 }
+
+export const HrFormat = (time: string)=>{
+    const parsedTime= Number(time)
+    if (parsedTime == 0){
+      return "12 am"
+    }
+    else if(parsedTime < 12){
+      return `${parsedTime} am`
+    }
+    return `${parsedTime - 12} pm`
+  }
