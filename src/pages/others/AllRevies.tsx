@@ -59,8 +59,8 @@ const AllReviews = (): JSX.Element => {
                     console.log("resp", response?.data?.data)
                     // ipData= response?.data?.data
                     const customerData = response?.data?.data?.userReviews?.map((item: any, index: number) => [
-                        `<span className="account-user-avatar rounded"><img src=${item?.ratedBy_avatar || "/assets/images/users/avatar-1.jpg"} className="rounded-circle " width="32" /></span> ${item?.ratedBy_firstName} ${item?.ratedBy_lastName} (${item?.ratedBy_userType})` || '-- --',
-                        `<span className="account-user-avatar rounded"><img src=${item?.ratedTo_avatar || "/assets/images/users/avatar-1.jpg"} className="rounded-circle " width="32" /></span> ${item?.ratedTo_firstName} ${item?.ratedTo_lastName} (${item?.ratedTo_userType})` || '-- --',
+                        `<span className="account-user-avatar rounded"><img src=${item?.ratedBy_avatar || "/assets/images/users/avatar-3.jpg"} className="rounded-circle " width="32" /></span> ${item?.ratedBy_firstName} ${item?.ratedBy_lastName} (${item?.ratedBy_userType})` || '-- --',
+                        `<span className="account-user-avatar rounded"><img src=${item?.ratedTo_avatar || "/assets/images/users/avatar-3.jpg"} className="rounded-circle " width="32" /></span> ${item?.ratedTo_firstName} ${item?.ratedTo_lastName} (${item?.ratedTo_userType})` || '-- --',
                         new Date(item?.createdAt).toLocaleDateString() || '-- --',
                         item?.rating || '-- --',
                         item?.comments || '-- --',
