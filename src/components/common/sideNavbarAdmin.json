@@ -89,5 +89,19 @@
                 "items": []
             }
         ]
+    },
+      {
+        "title": "Revies",
+        "icon": "",
+        "isSubmenu": false,
+        "items": [
+            {
+                "to": "/review",
+                "icon": "ri-star-half-fill",
+                "label": "All Reviews",
+                "isSubmenu": false,
+                "items": []
+            }
+        ]
     }
 ]

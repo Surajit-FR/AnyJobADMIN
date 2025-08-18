@@ -173,3 +173,33 @@ export const GETALLTTANSACTIONS = (params: {
 }
 
 export const GETDASHBOARDCARDDATA = () => API.get("/user/get-dashboard-card-details");
+
+export const GETALLREVIEWS = (params: {
+    page?: number,
+    limit?: number,
+    query?: string,
+    sortBy?: string,
+    sortType?: string,
+
+}) => {
+    // console.log({params})
+    const queryString = new URLSearchParams();
+    if (params.page) {
+        queryString.append('page', params.page.toString());
+    }
+    if (params.limit) {
+        queryString.append('limit', params.limit.toString());
+    }
+    if (params.query) {
+        queryString.append('query', params.query.toString());
+    }
+    if (params.sortBy) {
+        queryString.append('sortBy', params.sortBy.toString());
+    }
+    if (params.sortType) {
+        queryString.append('sortType', params.sortType.toString());
+    }
+
+    return API.get(`/rating/fetch-user-ratings?${queryString.toString()}`)
+
+}

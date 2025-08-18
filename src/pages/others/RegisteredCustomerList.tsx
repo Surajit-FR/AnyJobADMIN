@@ -25,7 +25,7 @@ const headers = [
     { label: "Email", key: "email" },
     { label: "Phone", key: "phone" },
     { label: "Registered Date", key: "dateRegistered" },
-    { label: "Avg. Rating", key: "avgRating" },
+    { label: "Avg. Rating", key: "customerAvgRating" },
     { label: "Status", key: "status" },
 ];
 const RegisteredCustomerList = (): JSX.Element => {
@@ -43,7 +43,7 @@ const RegisteredCustomerList = (): JSX.Element => {
                 email: item?.email || '-- --',
                 phone: item?.phone || '-- --',
                 dateRegistered: new Date(item?.createdAt).toLocaleDateString() || '-- --',
-                avgRating: item?.avgRating || "-- --",
+                customerAvgRating: item?.customerAvgRating || "-- --",
                 status: item?.isDeleted ? 'Banned' : 'Regular',
             }
         ))
@@ -110,7 +110,7 @@ const RegisteredCustomerList = (): JSX.Element => {
                         item?.email || '-- --',
                         item?.phone || '-- --',
                         new Date(item?.createdAt).toLocaleDateString() || '-- --',
-                        item?.avgRating || "-- --",
+                        item?.customerAvgRating || "-- --",
                         `<button class="btn btn-sm btn-soft-${item?.isDeleted ? 'success' : 'danger'}" 
                                  data-id="${item?._id}" 
                                  data-banned="${item?.isDeleted}" 

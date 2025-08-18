@@ -17,6 +17,7 @@ import ServiceProviderDetails from '../components/core/serviceproviderlist/Servi
 import ServiceRequestDetails from '../components/core/servicerequestlist/ServiceRequestDetails';
 import IpDetails from '../pages/others/IPDetails';
 import TransactionsList from '../pages/others/AllTransactions';
+import AllReviews from '../pages/others/AllRevies';
 
 
 const AllRoutes = (): JSX.Element => {
@@ -42,6 +43,7 @@ const AllRoutes = (): JSX.Element => {
                 <Route path='/system-ip-logs' element={<IPAddressLog />} />
                 <Route path='/system-ip-logs-details' element={<IpDetails />} />
                 <Route path='/transactions' element={<TransactionsList />} />
+                <Route path='/review' element={<AllReviews />} />
             </Routes>
         </>
     );

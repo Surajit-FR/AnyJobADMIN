@@ -89,5 +89,8 @@ export const HrFormat = (time: string)=>{
     else if(parsedTime < 12){
       return `${parsedTime} am`
     }
+    else if(parsedTime == 12){
+      return `${parsedTime} pm`
+    }
     return `${parsedTime - 12} pm`
   }

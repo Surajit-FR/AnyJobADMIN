@@ -33,6 +33,7 @@ const headers = [
     { label: "Time", key: "createdAt" },
     { label: "Service Type", key: "categoryName" },
     { label: "Description", key: "description" },
+    { label: "Service Company", key: "spCompanyName" },
 ];
 
 
@@ -84,6 +85,7 @@ const TransactionsList = (): JSX.Element => {
                 amount: `${item.currency?.toUpperCase()} ${item.amount}`,
                 categoryName: item.categoryName,
                 description: formatDescLabel(item.description),
+                spCompanyName: item.spCompanyName? item.spCompanyName: '--',
             }
         ))
     }
@@ -118,7 +120,7 @@ const TransactionsList = (): JSX.Element => {
                     const TransactionData = response?.data?.data?.transactionsData.map((item: any) => [
                         item.stripeTransactionId ? `${item.stripeTransactionId}` : 'N/A',
                         `${item.type}`,
-                        item.customerName ? item.customerName : '--',
+                        item.spCompanyName ? item.spCompanyName : item.customerName,
                         `${item.currency?.toUpperCase()} ${item.amount}`,
                         item.createdAt ? new Date(item.createdAt).toLocaleString() : '--',
                         item.categoryName? item.categoryName : '--',

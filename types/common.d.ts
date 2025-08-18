@@ -50,7 +50,8 @@ export type TransactionsData = {
     serviceProviderName: string,
     customerName: string,
     categoryName: string,
-    categoryCost: string
+    categoryCost: string,
+    spCompanyName: string,
 }
 export type BalanceCardData = {
     avilable: number,
@@ -61,6 +62,19 @@ export type DashboardCardData = {
     totalServiceProvider: number,
     totalGeneratedService: number,
     balance: BalanceCardData,
+}
+export type UserRatingsData = {
+    rating: number | null,
+    comments: string,
+    createdAt: string,
+    ratedBy_firstName: string,
+    ratedBy_lastName: string,
+    ratedBy_avatar: string,
+    ratedBy_userType: string,
+    ratedTo_firstName: string,
+    ratedTo_lastName: string,
+    ratedTo_avatar: string,
+    ratedTo_userType: string,
 }
 export type DataState = {
     authData?: Partial<UserData>,
@@ -83,6 +97,7 @@ export type DataState = {
     serviceTableTotalElems?: number
     transactionData?: Array<TransactionsData>
     dashboardCardData?: DashboardCardData
+    allRatingsData?: Array<UserRatingsData>
 };
 
 export type SagaGenerator<Y, R = void> = Generator<CallEffect<Y> | PutEffect | SelectEffect | TakeEffect, R, Y>;
