@@ -110,7 +110,7 @@ const RegisteredCustomerList = (): JSX.Element => {
                         item?.email || '-- --',
                         item?.phone || '-- --',
                         new Date(item?.createdAt).toLocaleDateString() || '-- --',
-                        item?.customerAvgRating || "-- --",
+                        item?.customerAvgRating ? `${item.customerAvgRating}/5`: "-- --",
                         `<button class="btn btn-sm btn-soft-${item?.isDeleted ? 'success' : 'danger'}" 
                                  data-id="${item?._id}" 
                                  data-banned="${item?.isDeleted}" 

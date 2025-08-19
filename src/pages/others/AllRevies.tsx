@@ -42,6 +42,7 @@ const AllReviews = (): JSX.Element => {
             serverSide: true,
             processing: true,
             stateSave: true,
+            searching: false,
             ajax: async (data: any, callback: Function) => {
                 try {
                     const params = {
@@ -62,7 +63,7 @@ const AllReviews = (): JSX.Element => {
                         `<span className="account-user-avatar rounded"><img src=${item?.ratedBy_avatar || "/assets/images/users/avatar-3.jpg"} className="rounded-circle " width="32" /></span> ${item?.ratedBy_firstName} ${item?.ratedBy_lastName} (${item?.ratedBy_userType})` || '-- --',
                         `<span className="account-user-avatar rounded"><img src=${item?.ratedTo_avatar || "/assets/images/users/avatar-3.jpg"} className="rounded-circle " width="32" /></span> ${item?.ratedTo_firstName} ${item?.ratedTo_lastName} (${item?.ratedTo_userType})` || '-- --',
                         new Date(item?.createdAt).toLocaleDateString() || '-- --',
-                        item?.rating || '-- --',
+                        item?.rating? `${item.rating}/5` : '-- --',
                         item?.comments || '-- --',
                     ]);
 
@@ -79,8 +80,8 @@ const AllReviews = (): JSX.Element => {
                 }
             },
             columns: [
-                { title: "Reviewed from", name: 'ratedFrom_firstName', orderable: false },
-                { title: "Reviewed To", name: "ratedTo_firstName", orderable: false },
+                { title: "Review from", name: 'ratedFrom_firstName', orderable: false },
+                { title: "Reviewed", name: "ratedTo_firstName", orderable: false },
                 { title: "Date Rated", name: 'createdAt', orderable: false },
                 { title: "Rating", name: "rating", orderable: false },
                 { title: "Comment", name: 'comments', orderable: false },

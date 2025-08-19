@@ -17,7 +17,7 @@ const AllRatingSlice = createSlice({
         },
         getAllRatingsRequestSuccess: (state, { payload, type }) => {
             state.type = type;
-            state.allRatingsData = payload?.data;
+            state.allRatingsData = payload?.data?.userReviews;
         },
         getAllRatingsRequestFailure: (state, { payload, type }) => {
             state.type = type;
