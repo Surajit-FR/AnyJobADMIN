@@ -9,7 +9,7 @@ import { updateQuestionRequest } from "../../../store/reducers/QuestionReducers"
 const UpdateQuestionsModal = (): JSX.Element => {
     const { singleQuestionData } = useSelector((state: RootState) => state.questionSlice);
     const dispatch: AppDispatch = useDispatch();
-
+    
     const { register, handleSubmit, control, setValue, watch, reset } = useForm<TQuestionPayload>({
         defaultValues: {
             questionArray: [{ question: "", options: {}, derivedQuestions: [] }]
@@ -73,7 +73,7 @@ const UpdateQuestionsModal = (): JSX.Element => {
                             <form onSubmit={handleSubmit(handleFormSubmit)} className="px-3 py-2">
                                 {/* Render all questions from the form state */}
                                 {questions?.map((question, qIndex) => (
-                                    <Question
+                                     <Question
                                         key={question.id}
                                         question={question}
                                         qIndex={qIndex}
@@ -82,7 +82,11 @@ const UpdateQuestionsModal = (): JSX.Element => {
                                         register={register}
                                         setValue={setValue}
                                         watch={watch}
+                                        quesId={singleQuestionData?.questions &&  singleQuestionData?.questions.length>0 ? singleQuestionData?.questions[qIndex]?._id : ''}
+                                        catId={singleQuestionData?._id}
                                     />
+                                       
+
                                 ))}
 
                                 {/* Submit Button */}

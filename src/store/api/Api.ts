@@ -3,7 +3,7 @@ import { REACT_APP_BASE_URL } from "../../config/app.config";
 import { TLoginCredentials } from "../../../types/authTypes";
 import { TCategoryPayload } from "../../../types/categoryTypes";
 import { setupInterceptors } from "./interceptor";
-import { TQuestionPayload } from "../../../types/questionTypes";
+import { TDeriveQuestionPayload, TQuestionPayload } from "../../../types/questionTypes";
 import { TShiftPayload } from "../../../types/shiftTypes";
 import { AddAdminUserFormData } from "../../components/core/AddAdminUser";
 
@@ -46,6 +46,7 @@ export const GETQUESTION = (categoryId: string, questionId: string) => API.get(`
 export const UPDATEQUESTION = (data: TQuestionPayload, categoryId: string, questionId: string) => API.patch(`/question/q/${categoryId}/${questionId}`, data);
 // Delete question
 export const DELETEQUESTION = (questionId: string) => API.delete(`/question/q/${questionId}`);
+export const DELETEDERIVEDQUESTION = (data:TDeriveQuestionPayload ) => API.delete(`/question/delete-derived-question`, {data});
 // Add shift
 export const ADDSHIFT = (data: TShiftPayload) => API.post("/shift", data);
 // Get all shifts

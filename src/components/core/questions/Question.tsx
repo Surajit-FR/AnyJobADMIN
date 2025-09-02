@@ -11,9 +11,11 @@ type QuestionProps = {
     register: UseFormRegister<TQuestionPayload>;
     setValue: UseFormSetValue<TQuestionPayload>;
     watch: UseFormWatch<TQuestionPayload>;
+    quesId?: string
+    catId?: string
 }
 
-const Question = ({ question, qIndex, remove, register, setValue, watch }: QuestionProps) => {
+const Question = ({ question, qIndex, remove, register, setValue, watch, quesId, catId }: QuestionProps) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const toggleCollapse = () => {
@@ -107,6 +109,10 @@ const Question = ({ question, qIndex, remove, register, setValue, watch }: Quest
                                 setValue={setValue}
                                 watch={watch}
                                 register={register}
+                                question={question}
+                                quesId={quesId}
+                                dq={derivedQuestion}
+                                catId={catId}
                             />
                         ))}
                     </>

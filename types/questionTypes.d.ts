@@ -34,3 +34,8 @@ export type QuestionRespone = {
 export type TQuestionAPIResponse = {
     data: Array<QuestionRespone>;
 };
+
+export type TDeriveQuestionPayload = {
+    questionId: string;
+    derivedQuestionId: string;
+}

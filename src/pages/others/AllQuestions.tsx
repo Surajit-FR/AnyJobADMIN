@@ -81,6 +81,16 @@ const AllQuestions = (): JSX.Element => {
                                             className="accordion-collapse collapse"
                                             aria-labelledby={`heading${index}`}
                                         >
+                                                     {/* <button
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#delete-question-alert-modal"
+                        className="btn btn-sm btn-soft-danger m-1"
+                        onClick={() => console.log("trigerred")
+                        }
+                    >
+                        <i className="ri-delete-bin-line me-1"></i>
+                        Delete Question
+                    </button> */}
                                             <div className="accordion-body">
                                                 {category?.questions?.map((question: any) => (
                                                     <QuestionAccordion
@@ -93,6 +103,7 @@ const AllQuestions = (): JSX.Element => {
                                                         setItemID={setItemID}
                                                     />
                                                 ))}
+                                         
                                             </div>
                                         </div>
                                     </div>

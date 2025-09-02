@@ -80,6 +80,7 @@ const QuestionAccordion = ({
                                 <li key={key}>
                                     {value}
                                 </li>
+                                
                             ))}
                         </ul>
                         {derivedQuestions?.length > 0 && (

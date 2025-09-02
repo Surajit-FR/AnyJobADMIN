@@ -73,6 +73,17 @@ const QuestionSlice = createSlice({
             state.type = type;
             state.error = payload;
         },
+        // Delete derived question
+        deleteDerivedQuestionRequest: (state, { payload, type }) => {
+            state.type = type;
+        },
+        deleteDerivedQuestionSuccess: (state, { payload, type }) => {
+            state.type = type;
+        },
+        deleteDerivedQuestionFailure: (state, { payload, type }) => {
+            state.type = type;
+            state.error = payload;
+        },
     }
 });
 
@@ -96,6 +107,10 @@ export const {
     deleteQuestionRequest,
     deleteQuestionSuccess,
     deleteQuestionFailure,
+    
+    deleteDerivedQuestionRequest,
+    deleteDerivedQuestionSuccess,
+    deleteDerivedQuestionFailure,
 } = QuestionSlice.actions;
 
 export default QuestionSlice.reducer;

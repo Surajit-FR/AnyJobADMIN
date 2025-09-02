@@ -1,8 +1,9 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { ApiResponse, SagaGenerator } from "../../../types/common";
-import { QuestionRespone, TQuestion, TQuestionAPIResponse, TQuestionPayload } from "../../../types/questionTypes";
+import { QuestionRespone, TDeriveQuestionPayload, TQuestion, TQuestionAPIResponse, TQuestionPayload } from "../../../types/questionTypes";
 import {
     ADDQUESTIONS,
+    DELETEDERIVEDQUESTION,
     DELETEQUESTION,
     GETALLQUESTIONS,
     GETQUESTION,
@@ -11,12 +12,15 @@ import {
 import {
     addQuestionFailure,
     addQuestionSuccess,
+    deleteDerivedQuestionFailure,
+    deleteDerivedQuestionSuccess,
     deleteQuestionFailure,
     deleteQuestionSuccess,
     getAllQuestionFailure,
     getAllQuestionRequest,
     getAllQuestionSuccess,
     getQuestionFailure,
+    getQuestionRequest,
     getQuestionSuccess,
     updateQuestionFailure,
     updateQuestionSuccess
@@ -57,7 +61,10 @@ export function* getAllQuestionSaga({ payload, type }: { payload: { categoryId?:
 export function* getQuestionSaga({ payload, type }: { payload: { categoryId: string, questionId: string }, type: string }): SagaGenerator<{ data: ApiResponse<{ data: QuestionRespone }> }> {
     try {
         const resp = yield call(GETQUESTION, payload.categoryId, payload.questionId);
+
         const result: ApiResponse<{ data: QuestionRespone }> = resp?.data;
+        console.log({result});
+        
         if (result?.success) {
             yield put(getQuestionSuccess(result));
         }
@@ -77,6 +84,7 @@ export function* updateQuestionSaga({ payload, type }: { payload: { data: TQuest
             yield put(getAllQuestionRequest({
                 categoryId: payload?.data?.categoryId || undefined,
             }));
+            yield put(getQuestionRequest({categoryId: payload?.categoryId || undefined, questionId: payload?.questionId}))
         }
     } catch (error: any) {
         showToast({ message: error?.response?.data?.message, type: 'error', durationTime: 3500, position: "top-center" });
@@ -101,7 +109,23 @@ export function* deleteQuestionSaga({ payload, type }: { payload: { data: TQuest
         yield put(deleteQuestionFailure(error?.response?.data?.message));
     }
 };
-
+export function* deleteDerivedQuestionSaga({ payload, type }: { payload: { data: TDeriveQuestionPayload, categoryId: string }, type: string }): SagaGenerator<{ data: ApiResponse<null> }> {
+    try {
+        const resp = yield call(DELETEDERIVEDQUESTION, payload?.data);
+        const result: ApiResponse<null> = resp?.data;
+        if (result?.success) {
+            yield put(deleteDerivedQuestionSuccess(result));
+            showToast({ message: result?.message || 'Question deleted successfully.', type: 'success', durationTime: 3500, position: "top-center" });
+            yield put(getQuestionRequest({
+                categoryId: payload?.categoryId || undefined,
+                questionId: payload?.data?.questionId
+            }));
+        }
+    } catch (error: any) {
+        showToast({ message: error?.response?.data?.message, type: 'error', durationTime: 3500, position: "top-center" });
+        yield put(deleteDerivedQuestionFailure(error?.response?.data?.message));
+    }
+};
 // Watcher generator function
 export default function* watchQuestion() {
     yield takeLatest('questionSlice/addQuestionRequest', addQuestionSaga);
@@ -109,4 +133,5 @@ export default function* watchQuestion() {
     yield takeLatest('questionSlice/getQuestionRequest', getQuestionSaga);
     yield takeLatest('questionSlice/updateQuestionRequest', updateQuestionSaga);
     yield takeLatest('questionSlice/deleteQuestionRequest', deleteQuestionSaga);
+    yield takeLatest('questionSlice/deleteDerivedQuestionRequest', deleteDerivedQuestionSaga);
 };
