@@ -204,3 +204,5 @@ export const GETALLREVIEWS = (params: {
     return API.get(`/rating/fetch-user-ratings?${queryString.toString()}`)
 
 }
+
+export const REMOVEUSER = (userId:string ) => API.delete(`/auth/delete-user`, {data:{userId}});

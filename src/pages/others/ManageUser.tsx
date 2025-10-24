@@ -8,7 +8,7 @@ import "datatables.net-buttons-bs5";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { showToast } from "../../utils/Toast";
 import AddAdminUser from "../../components/core/AddAdminUser";
-import { API, UPDATEBAN } from "../../store/api/Api";
+import { API, REMOVEUSER, UPDATEBAN } from "../../store/api/Api";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -32,6 +32,21 @@ const ManageUser = (): JSX.Element => {
                 }
             } catch (error) {
                 console.error(`Error while trying to ${isDeleted ? "ban" : "unban"} user:`, error);
+            }
+        }
+    };
+    const handleDeleteUser = async (userId: string) => {
+        if (userId) {
+            try {
+                const resp = await REMOVEUSER(userId);
+
+                if (resp?.data?.success) {
+                    console.log({ resp: resp?.data });
+                    $('#datatable-buttons').DataTable().ajax.reload();
+                    showToast({ message: resp?.data?.message, type: 'success', durationTime: 3500, position: "top-center" });
+                }
+            } catch (error) {
+                console.error(`Error while trying to delete user:`, error);
             }
         }
     };
@@ -67,7 +82,12 @@ const ManageUser = (): JSX.Element => {
                                  data-id="${item?._id}" 
                                  data-banned="${item?.isDeleted}" 
                                  data-bs-toggle="modal" 
-                                 data-bs-target="#ban-alert-modal">${item?.isDeleted ? 'Unban' : 'Ban'}</button>`
+                                 data-bs-target="#ban-alert-modal">${item?.isDeleted ? 'Unban' : 'Ban'}</button>`,
+                        `<button class="btn btn-sm btn-soft-danger" 
+                                 data-id="${item?._id}" 
+                                 data-banned="${item?.isDeleted}" 
+                                 data-bs-toggle="modal" 
+                                 data-bs-target="#delete-alert-modal">Remove</button>`
                     ]);
 
                     const totalRecords = response.data.data.pagination.total;
@@ -87,7 +107,8 @@ const ManageUser = (): JSX.Element => {
                 { title: "Email" },
                 { title: "Phone" },
                 { title: "User Type" }, // New column for User Type
-                { title: "Actions", orderable: false }
+                { title: "Actions", orderable: false },
+                { title: "Remove", orderable: false }
             ],
         });
 
@@ -113,6 +134,11 @@ const ManageUser = (): JSX.Element => {
                 modalText={"Want To Ban The User?"}
                 onDelete={() => handleBanUnban(itemId, isBanned)}
             />
+            <ConfirmationModal
+                modalId="delete-alert-modal"
+                modalText={"Want To Remove The User?"}
+                onDelete={() => handleDeleteUser(itemId)}
+            />
 
             <div className="row">
                 <div className="col-12">
@@ -133,6 +159,7 @@ const ManageUser = (): JSX.Element => {
                                         <th>Phone</th>
                                         <th>User Type</th>
                                         <th>Actions</th>
+                                        <th>Remove</th>
                                     </tr>
                                 </thead>
                                 <tbody>

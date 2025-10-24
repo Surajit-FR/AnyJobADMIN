@@ -3,9 +3,11 @@ import { AppDispatch, RootState } from "../../../store/Store";
 import PageTitle from "../../PageTitle";
 import { useEffect, useState } from "react";
 import { getUserDetailsRequest, verifyServiceProviderUserDetailsRequest } from "../../../store/reducers/UserReducers";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ConfirmationModal from "../../ConfirmationModal";
 import ImagePreviewModal from "./ImagePreviewModal";
+import { REMOVEUSER } from "../../../store/api/Api";
+import { showToast } from "../../../utils/Toast";
 
 const breadcrumbs = [
     { label: "AnyJob", link: "/dashboard" },
@@ -15,6 +17,7 @@ const breadcrumbs = [
 
 const ServiceProviderDetails = (): JSX.Element => {
     const { service_providerId } = useParams();
+     const navigate = useNavigate();
     const { userData } = useSelector((state: RootState) => state.userSlice);
     const dispatch: AppDispatch = useDispatch();
 
@@ -34,6 +37,21 @@ const ServiceProviderDetails = (): JSX.Element => {
     const handleModalClose = () => {
         setSelectedImage(null);
     };
+       const handleDeleteUser = async () => {    
+        if (service_providerId) {
+            try {
+                const resp = await REMOVEUSER(service_providerId);
+
+                if (resp?.data?.success) {
+                    console.log({ resp: resp?.data });
+                    showToast({ message: resp?.data?.message, type: 'success', durationTime: 3500, position: "top-center" });
+                    navigate("/service-provider-list");
+                }
+            } catch (error) {
+                console.error(`Error while trying to delete user:`, error);
+            }
+        }
+    };
 
     useEffect(() => {
         dispatch(getUserDetailsRequest({ userId: service_providerId }));
@@ -47,6 +65,12 @@ const ServiceProviderDetails = (): JSX.Element => {
                 modalId="verify-alert-modal"
                 modalText={`Want To ${!isVerified ? "Verify This Service Provider" : "Unverify This Service Provider"}?`}
                 onDelete={handleVerifyClick}
+            />
+
+            <ConfirmationModal
+                modalId="remove-user-modal"
+                modalText={`Want To ${"Remove This Service Provider"}?`}
+                onDelete={handleDeleteUser}
             />
 
             <div className="card">
@@ -185,6 +209,16 @@ const ServiceProviderDetails = (): JSX.Element => {
                             className={isVerified ? "btn btn-danger" : "btn btn-success"}
                         >
                             {!isVerified ? "Verify Service Provider" : "Unverify Service Provider"}
+                        </button>
+                    </div>
+                        {/* Remove Button */}
+                    <div className="mt-4 text-center">
+                        <button
+                            data-bs-toggle="modal"
+                            data-bs-target="#remove-user-modal"
+                            className={ "btn btn-danger"}
+                        >
+                            {"Remove Service Provider"}
                         </button>
                     </div>
                 </div>
