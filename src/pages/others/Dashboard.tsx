@@ -75,7 +75,7 @@ const Dashboard = (): JSX.Element => {
                     borderColor: '#299bf6'
                 },
                 {
-                    title: "Pending Transactions",
+                    title: "Revenue",
                     value: `$${String(dashboardCardData?.balance.pending / 100)}`,
                     icon: "ri-pulse-line",
                     iconBg: "text-bg-warning",
